@@ -1,9 +1,12 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TokenResponse {
 
 	  private String accessToken;
 	    private String refreshToken;
+	    @JsonProperty("isDeliverPerson")
 	    private boolean isDeliverPerson;
 		public TokenResponse() {
 			super();

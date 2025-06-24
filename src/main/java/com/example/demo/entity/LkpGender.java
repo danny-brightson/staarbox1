@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "LkpGender")
+@Table(name = "lkpgender")
 @Where(clause = "StatusId = 1")
 public class LkpGender {
 

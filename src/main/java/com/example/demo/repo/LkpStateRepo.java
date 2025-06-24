@@ -12,7 +12,7 @@ import com.example.demo.projection.StateProjection;
 @Repository
 public interface LkpStateRepo extends JpaRepository<LkpState, Long> {
 	
-	@Query(value = "SELECT Id,State FROM LkpState WHERE StatusId=1", nativeQuery = true)
+	@Query(value = "SELECT Id,State FROM lkpstate WHERE StatusId=1", nativeQuery = true)
 	List<StateProjection> getState();
 
 }

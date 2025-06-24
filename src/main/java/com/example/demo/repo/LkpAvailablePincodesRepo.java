@@ -12,7 +12,7 @@ public interface LkpAvailablePincodesRepo extends JpaRepository<LkpAvailablePinc
 
 	
 	
-	@Query(value = "SELECT District  FROM availablePincodes WHERE PinCode = :pincode And StatusId=1", nativeQuery = true)
+	@Query(value = "SELECT District  FROM availablepincodes WHERE PinCode = :pincode And StatusId=1", nativeQuery = true)
 	String checkPincode(String pincode);
 
 	

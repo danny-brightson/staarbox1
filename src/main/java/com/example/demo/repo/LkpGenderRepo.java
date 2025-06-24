@@ -14,7 +14,7 @@ import com.example.demo.projection.GenderProjection;
 @Repository
 public interface LkpGenderRepo extends JpaRepository<LkpGender, Long> {
 
-	@Query(value = "SELECT Id,GenderName FROM LkpGender WHERE StatusId=1", nativeQuery = true)
+	@Query(value = "SELECT Id,GenderName FROM lkpgender WHERE StatusId=1", nativeQuery = true)
 	List<GenderProjection> getGender();
 	
 }

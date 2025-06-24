@@ -10,7 +10,7 @@ import com.example.demo.entity.DeliveryPersonDetails;
 public interface DeliveryPersonDetailsRepo extends JpaRepository<DeliveryPersonDetails, Long>  {
 
 	
-	@Query(value = "select PhoneNumber from DeliveryPersonDetails where StatusId=1 and PhoneNumber = :phoneNumber", nativeQuery = true)
+	@Query(value = "select PhoneNumber from deliverypersondetails where StatusId=1 and PhoneNumber = :phoneNumber", nativeQuery = true)
 	String findyPhoneNumber(String phoneNumber);
 
 }

@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "RefreshToken")
+@Table(name = "refreshtoken")
 @Where(clause = "IsTokenValid = 1")
 public class RefreshToken {
 
