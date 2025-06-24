@@ -16,15 +16,25 @@ import com.example.demo.dto.CustomerResponseDto;
 import com.example.demo.dto.addressChangeDto;
 import com.example.demo.dto.packageDetailsSaveRequest;
 import com.example.demo.entity.CustomerDetails;
+import com.example.demo.entity.DeliveryPersonDetails;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.repo.CustomerDetailsRepo;
+import com.example.demo.repo.DeliveryPersonDetailsRepo;
+import com.example.demo.repo.LkpAvailablePincodesRepo;
 import com.example.demo.repo.RefreshTokenRepo;
+import com.example.demo.entity.LkpAvailablePincodes;
 
 @Service
 public class CustomerDeatilService {
 
 	@Autowired
 	private CustomerDetailsRepo customerDetailsRepo;
+	
+	@Autowired
+	private  LkpAvailablePincodesRepo lkpAvailablePincodesRepo;
+	
+	@Autowired
+	private DeliveryPersonDetailsRepo deliveryPersonDetailsRepo;
 	
 	
 	@Autowired
@@ -33,6 +43,10 @@ public class CustomerDeatilService {
 	public CustomerResponseDto SaveCustomerDetails(CustomerDatailsDTO CustomerDatailsDTO) throws IOException {
 		
 		Optional<RefreshToken> refreshToken = refreshTokenRepo.findTopByPhoneNumberOrderByCreatedTimeDesc(CustomerDatailsDTO.getPhoneNumber());
+		
+		Optional<LkpAvailablePincodes> lkpAvailablePincodes =lkpAvailablePincodesRepo.findByPinCode(CustomerDatailsDTO.getPinCode());
+		
+		String deliveryCode = deliveryPersonDetailsRepo.getdeliveryCode(CustomerDatailsDTO.getDistrictId(),lkpAvailablePincodes.get().getZoneId(),lkpAvailablePincodes.get().getDistanceId());
 		
 		if(refreshToken.isPresent()) {
 			CustomerDetails customerDetails = new CustomerDetails();
@@ -47,6 +61,9 @@ public class CustomerDeatilService {
 			customerDetails.setMailId(CustomerDatailsDTO.getMailId());
 			customerDetails.setPinCode(CustomerDatailsDTO.getPinCode());
 			customerDetails.setDistrictId(CustomerDatailsDTO.getDistrictId());
+			customerDetails.setZoneId(lkpAvailablePincodes.get().getZoneId());
+			customerDetails.setDistanceId(lkpAvailablePincodes.get().getDistanceId());
+			customerDetails.setDeliveryCode(deliveryCode);
 			customerDetails.setStateId(CustomerDatailsDTO.getStateId());
 			customerDetails.setAddressType(CustomerDatailsDTO.getAddressType());
 			customerDetails.setDelivaryTimingId(CustomerDatailsDTO.getDelivaryTimingId());
@@ -56,7 +73,6 @@ public class CustomerDeatilService {
 			customerDetails.setStatusId((long) 1);
 			customerDetails.setCreatedBy("User");
 			customerDetails.setCreatedTime(LocalDateTime.now());
-			customerDetails.setToken(CustomerDatailsDTO.getToken());
 			
 			
 			

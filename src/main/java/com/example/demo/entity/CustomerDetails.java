@@ -23,37 +23,37 @@ public class CustomerDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
 	private Long id;
-	
+
 	@Column(name = "Name")
 	private String name;
-	
+
 	@Column(name = "DateOfBirth")
 	private Date dateOfBirth;
-	
+
 	@Column(name = "Age")
 	private int age;
-	
+
 	@Column(name = "GenderId")
 	private String genderId;
-	
+
 	@Column(name = "AddressLine1")
 	private String addressLine1;
-	
+
 	@Column(name = "AddressLine2")
 	private String addressLine2;
-	
+
 	@Column(name = "AddressType")
 	private String addressType;
-	
+
 	@Column(name = "DistrictId")
 	private int districtId;
-	
+
 	@Column(name = "StateId")
 	private int stateId;
-	
+
 	@Column(name = "PinCode")
 	private String pinCode;
-	
+
 	@Column(name = "PhoneNumber")
 	private String phoneNumber;
 
@@ -62,66 +62,72 @@ public class CustomerDetails {
 
 	@Column(name = "DelivaryTimingId")
 	private int delivaryTimingId;
-	
-	@Column(name = "Token")
-	private String token;
-	
+
 	@Column(name = "IsPragnent")
 	private boolean isPragnent;
-	
+
 	@Column(name = "IsAlergic")
 	private boolean isAlergic;
-	
+
 	@Column(name = "AlergicFruits")
 	private String alergicFruits;
-	
+
 	@Column(name = "IsEggPreferred")
 	private boolean isEggPreferd;
-	
+
 	@Column(name = "PackDetailsId")
 	private int packDetailsId;
-	
+
 	@Column(name = "IsPaymentSuccess")
 	private boolean isPaymentSuccess;
-	 
+
 	@Column(name = "PaymentStatus")
 	private Long paymentstatus;
-	
+
 	@Column(name = "IsRenewed")
 	private boolean isRenewed;
-	
+
 	@Column(name = "RenewedDate")
 	private Date renewedDate;
-	
+
 	@Column(name = "NextRenewalDate")
 	private Date nextrenewalDate;
 
 	@Column(name = "IsCustomized")
 	private boolean isCustomized;
-	
+
 	@Column(name = "LastCustomizedDate")
 	private Date lastCustomizedDate;
-	
+
 	@Column(name = "CustomerStatusId")
 	private boolean customerStatusId;
-	
+
 	@Column(name = "StatusId")
 	private Long statusId;
-	
+
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Column(name = "CreatedTime")
-    private LocalDateTime createdTime;
-	
+	private LocalDateTime createdTime;
+
 	@Column(name = "ModefiedBy")
 	private String modefiedBy;
-    
+
 	@Column(name = "ModefiedTime")
-    private LocalDate modefiedTime;
-	
+	private LocalDate modefiedTime;
+
 	@Column(name = "OrderId")
 	private String orderId;
+
+	@Column(name = "DeliveryCode")
+	private String deliveryCode;
+
+	@Column(name = "ZoneId")
+	private int zoneId;
+
+	@Column(name = "DistanceId")
+	private int distanceId;
 
 	public CustomerDetails() {
 		super();
@@ -129,14 +135,13 @@ public class CustomerDetails {
 	}
 
 	
-
 	public CustomerDetails(Long id, String name, Date dateOfBirth, int age, String genderId, String addressLine1,
 			String addressLine2, String addressType, int districtId, int stateId, String pinCode, String phoneNumber,
-			String mailId, int delivaryTimingId, String token, boolean isPragnent, boolean isAlergic,
-			String alergicFruits, boolean isEggPreferd, int packDetailsId, boolean isPaymentSuccess, Long paymentstatus,
-			boolean isRenewed, Date renewedDate, Date nextrenewalDate, boolean isCustomized, Date lastCustomizedDate,
+			String mailId, int delivaryTimingId, boolean isPragnent, boolean isAlergic, String alergicFruits,
+			boolean isEggPreferd, int packDetailsId, boolean isPaymentSuccess, Long paymentstatus, boolean isRenewed,
+			Date renewedDate, Date nextrenewalDate, boolean isCustomized, Date lastCustomizedDate,
 			boolean customerStatusId, Long statusId, String createdBy, LocalDateTime createdTime, String modefiedBy,
-			LocalDate modefiedTime, String orderId) {
+			LocalDate modefiedTime, String orderId, String deliveryCode, int zoneId, int  distanceId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -152,7 +157,6 @@ public class CustomerDetails {
 		this.phoneNumber = phoneNumber;
 		this.mailId = mailId;
 		this.delivaryTimingId = delivaryTimingId;
-		this.token = token;
 		this.isPragnent = isPragnent;
 		this.isAlergic = isAlergic;
 		this.alergicFruits = alergicFruits;
@@ -172,8 +176,10 @@ public class CustomerDetails {
 		this.modefiedBy = modefiedBy;
 		this.modefiedTime = modefiedTime;
 		this.orderId = orderId;
+		this.deliveryCode = deliveryCode;
+		this.zoneId = zoneId;
+		this.distanceId = distanceId;
 	}
-
 
 
 	public Long getId() {
@@ -288,14 +294,6 @@ public class CustomerDetails {
 		this.delivaryTimingId = delivaryTimingId;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	public boolean isPragnent() {
 		return isPragnent;
 	}
@@ -312,7 +310,7 @@ public class CustomerDetails {
 		this.isAlergic = isAlergic;
 	}
 
-	public String isAlergicFruits() {
+	public String getAlergicFruits() {
 		return alergicFruits;
 	}
 
@@ -360,7 +358,7 @@ public class CustomerDetails {
 		this.isRenewed = isRenewed;
 	}
 
-	public Date isRenewedDate() {
+	public Date getRenewedDate() {
 		return renewedDate;
 	}
 
@@ -368,7 +366,7 @@ public class CustomerDetails {
 		this.renewedDate = renewedDate;
 	}
 
-	public Date isNextrenewalDate() {
+	public Date getNextrenewalDate() {
 		return nextrenewalDate;
 	}
 
@@ -384,7 +382,7 @@ public class CustomerDetails {
 		this.isCustomized = isCustomized;
 	}
 
-	public Date isLastCustomizedDate() {
+	public Date getLastCustomizedDate() {
 		return lastCustomizedDate;
 	}
 
@@ -440,20 +438,42 @@ public class CustomerDetails {
 		this.modefiedTime = modefiedTime;
 	}
 
-
-
 	public String getOrderId() {
 		return orderId;
 	}
-
-
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
 
+	public String getDeliveryCode() {
+		return deliveryCode;
+	}
 
-	
- 
+
+	public void setDeliveryCode(String deliveryCode) {
+		this.deliveryCode = deliveryCode;
+	}
+
+
+	public int getZoneId() {
+		return zoneId;
+	}
+
+
+	public void setZoneId(int zoneId) {
+		this.zoneId = zoneId;
+	}
+
+
+	public int getDistanceId() {
+		return distanceId;
+	}
+
+
+	public void setDistanceId(int distanceId) {
+		this.distanceId = distanceId;
+	}
+
 }

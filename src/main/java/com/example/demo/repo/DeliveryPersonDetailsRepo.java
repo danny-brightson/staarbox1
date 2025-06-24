@@ -13,4 +13,7 @@ public interface DeliveryPersonDetailsRepo extends JpaRepository<DeliveryPersonD
 	@Query(value = "select PhoneNumber from deliverypersondetails where StatusId=1 and PhoneNumber = :phoneNumber", nativeQuery = true)
 	String findyPhoneNumber(String phoneNumber);
 
+	@Query(value = "select DeliveryCode from deliverypersondetails where StatusId=1 and zoneId=:zoneId and distanceId=:distanceId and districtId=:districtId", nativeQuery = true)
+	String getdeliveryCode(int districtId, int zoneId, int distanceId);
+
 }

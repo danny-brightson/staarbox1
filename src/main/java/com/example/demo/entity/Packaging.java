@@ -10,14 +10,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "customerfeedback")
+@Table(name = "stagingpackaging")
 @Where(clause = "StatusId = 1")
-public class CustomerFeedback {
-
+public class Packaging {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
@@ -26,46 +26,36 @@ public class CustomerFeedback {
 	@Column(name = "CustomerId")
 	private Long customerId;
 	
-	@Column(name = "FeedBack")
-	private String feedBack;
+	@Column(name = "DistrictId")
+	private int districtId;
 	
-	@Column(name = "StarRating")
-	private Boolean starRating;
-	 
+	@Column(name = "NumberCode")
+	private String numberCode;
+
+	@Lob
+	@Column(name = "QrCode")
+	private byte[] qrCode;
+	
+	@Column(name = "IsPacked")
+	private boolean isPacked;
+	
 	@Column(name = "StatusId")
 	private Long statusId;
-	
+
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Column(name = "CreatedTime")
-    private LocalDateTime createdTime;
-	
+	private LocalDateTime createdTime;
+
 	@Column(name = "ModefiedBy")
 	private String modefiedBy;
-    
+
 	@Column(name = "ModefiedTime")
-    private LocalDate modefiedTime;
+	private LocalDate modefiedTime;
 
-	public CustomerFeedback() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public CustomerFeedback(Long id, Long customerId, String feedBack, Boolean starRating, Long statusId,
-			String createdBy, LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime) {
-		super();
-		this.id = id;
-		this.customerId = customerId;
-		this.feedBack = feedBack;
-		this.starRating = starRating;
-		this.statusId = statusId;
-		this.createdBy = createdBy;
-		this.createdTime = createdTime;
-		this.modefiedBy = modefiedBy;
-		this.modefiedTime = modefiedTime;
-	}
-
+	
+	// getters and setters
 	public Long getId() {
 		return id;
 	}
@@ -82,20 +72,36 @@ public class CustomerFeedback {
 		this.customerId = customerId;
 	}
 
-	public String getFeedBack() {
-		return feedBack;
+	public int getDistrictId() {
+		return districtId;
 	}
 
-	public void setFeedBack(String feedBack) {
-		this.feedBack = feedBack;
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
 
-	public Boolean getStarRating() {
-		return starRating;
+	public String getNumberCode() {
+		return numberCode;
 	}
 
-	public void setStarRating(Boolean starRating) {
-		this.starRating = starRating;
+	public void setNumberCode(String numberCode) {
+		this.numberCode = numberCode;
+	}
+
+	public byte[] getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(byte[] qrCode) {
+		this.qrCode = qrCode;
+	}
+
+	public boolean getIsPacked() {
+		return isPacked;
+	}
+
+	public void setIsPacked(boolean isPacked) {
+		this.isPacked = isPacked;
 	}
 
 	public Long getStatusId() {
@@ -137,5 +143,28 @@ public class CustomerFeedback {
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
 	}
+
+	public Packaging() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Packaging(Long id, Long customerId, int districtId, String numberCode, byte[] qrCode, boolean isPacked,
+			Long statusId, String createdBy, LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime) {
+		super();
+		this.id = id;
+		this.customerId = customerId;
+		this.districtId = districtId;
+		this.numberCode = numberCode;
+		this.qrCode = qrCode;
+		this.isPacked = isPacked;
+		this.statusId = statusId;
+		this.createdBy = createdBy;
+		this.createdTime = createdTime;
+		this.modefiedBy = modefiedBy;
+		this.modefiedTime = modefiedTime;
+	}
+
+	
 	
 }

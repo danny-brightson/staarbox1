@@ -12,6 +12,7 @@ import com.example.demo.projection.AvailableDistrictProjection;
 @Repository
 public interface LkpAvailableDistrictRepo extends JpaRepository<LkpAvailableDistrict, Long> {
 
-	@Query(value = "SELECT Id,District,StateId FROM lkpavailabledistrict WHERE StatusId=1", nativeQuery = true)
-	List<AvailableDistrictProjection> getAvailableDistrict();	
+	@Query(value = "SELECT Id,District,StateId FROM Lkpavailabledistrict WHERE StatusId=1", nativeQuery = true)
+	List<AvailableDistrictProjection> getAvailableDistrict();
+	
 }

@@ -29,6 +29,12 @@ public class LkpAvailablePincodes {
 	@Column(name = "District")
 	private String district;
 	 
+	@Column(name = "zoneId")
+	private int zoneId;
+	
+	@Column(name = "distanceId")
+	private int distanceId;
+
 	@Column(name = "StatusId")
 	private Long statusId;
 	
@@ -49,18 +55,24 @@ public class LkpAvailablePincodes {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LkpAvailablePincodes(Long id, String pinCode, String district, Long statusId, String createdBy,
-			LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime) {
+	
+
+	public LkpAvailablePincodes(Long id, String pinCode, String district, int zoneId, int distanceId, Long statusId,
+			String createdBy, LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime) {
 		super();
 		this.id = id;
 		this.pinCode = pinCode;
 		this.district = district;
+		this.zoneId = zoneId;
+		this.distanceId = distanceId;
 		this.statusId = statusId;
 		this.createdBy = createdBy;
 		this.createdTime = createdTime;
 		this.modefiedBy = modefiedBy;
 		this.modefiedTime = modefiedTime;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -124,6 +136,30 @@ public class LkpAvailablePincodes {
 
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
+	}
+
+
+
+	public int getZoneId() {
+		return zoneId;
+	}
+
+
+
+	public void setZoneId(int zoneId) {
+		this.zoneId = zoneId;
+	}
+
+
+
+	public int getDistanceId() {
+		return distanceId;
+	}
+
+
+
+	public void setDistanceId(int distanceId) {
+		this.distanceId = distanceId;
 	}
 	
 }

@@ -43,6 +43,15 @@ public class DeliveryPersonDetails {
 
 	@Column(name = "ModefiedTime")
 	private LocalDate modefiedTime;
+	
+	@Column(name = "DeliveryCode")
+	private String deliveryCode;
+
+	@Column(name = "districtId")
+	private int districtId;
+
+	@Column(name = "DistanceId")
+	private String distanceId;
 
 	public DeliveryPersonDetails() {
 		super();
@@ -50,7 +59,8 @@ public class DeliveryPersonDetails {
 	}
 
 	public DeliveryPersonDetails(Long id, String phoneNumber, int zoneId, Long statusId, String createdBy,
-			LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime) {
+			LocalDateTime createdTime, String modefiedBy, LocalDate modefiedTime, String deliveryCode, int districtId,
+			String distanceId) {
 		super();
 		this.id = id;
 		this.phoneNumber = phoneNumber;
@@ -60,7 +70,12 @@ public class DeliveryPersonDetails {
 		this.createdTime = createdTime;
 		this.modefiedBy = modefiedBy;
 		this.modefiedTime = modefiedTime;
+		this.deliveryCode = deliveryCode;
+		this.districtId = districtId;
+		this.distanceId = distanceId;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -124,6 +139,30 @@ public class DeliveryPersonDetails {
 
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
+	}
+
+	public String getDeliveryCode() {
+		return deliveryCode;
+	}
+
+	public void setDeliveryCode(String deliveryCode) {
+		this.deliveryCode = deliveryCode;
+	}
+
+	public int getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getDistanceId() {
+		return distanceId;
+	}
+
+	public void setDistanceId(String distanceId) {
+		this.distanceId = distanceId;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.rest;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
