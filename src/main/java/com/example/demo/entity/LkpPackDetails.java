@@ -42,14 +42,19 @@ public class LkpPackDetails {
     
 	@Column(name = "ModefiedTime")
     private LocalDate modefiedTime;
+	
+	@Column(name = "planCode")
+	private String planCode;
 
 	public LkpPackDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+
+
 	public LkpPackDetails(Long id, String packageName, Long statusId, String createdBy, LocalDateTime createdTime,
-			String modefiedBy, LocalDate modefiedTime) {
+			String modefiedBy, LocalDate modefiedTime, String planCode) {
 		super();
 		this.id = id;
 		this.packageName = packageName;
@@ -58,7 +63,10 @@ public class LkpPackDetails {
 		this.createdTime = createdTime;
 		this.modefiedBy = modefiedBy;
 		this.modefiedTime = modefiedTime;
+		this.planCode = planCode;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -115,5 +123,12 @@ public class LkpPackDetails {
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
 	}
-	
+
+	public String getPlanCode() {
+		return planCode;
+	}
+
+	public void setPlanCode(String planCode) {
+		this.planCode = planCode;
+	}
 }

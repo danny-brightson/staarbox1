@@ -41,6 +41,9 @@ public class LkpAvailableDistrict {
 	@Column(name = "ModefiedTime")
 	private LocalDate modefiedTime;
 
+	@Column(name = "DistrictCode")
+	private String DistrictCode;
+
 	@Column(name = "StateId")
 	private Long stateId;
 
@@ -49,7 +52,21 @@ public class LkpAvailableDistrict {
 		// TODO Auto-generated constructor stub
 	}
 
-		public LkpAvailableDistrict(Long id, String district, Long statusId, String createdBy, LocalDateTime createdTime,
+	public LkpAvailableDistrict(Long id, String district, Long statusId, String createdBy, LocalDateTime createdTime,
+			String modefiedBy, LocalDate modefiedTime, String districtCode, Long stateId) {
+		super();
+		this.id = id;
+		this.district = district;
+		this.statusId = statusId;
+		this.createdBy = createdBy;
+		this.createdTime = createdTime;
+		this.modefiedBy = modefiedBy;
+		this.modefiedTime = modefiedTime;
+		DistrictCode = districtCode;
+		this.stateId = stateId;
+	}
+
+	public LkpAvailableDistrict(Long id, String district, Long statusId, String createdBy, LocalDateTime createdTime,
 			String modefiedBy, LocalDate modefiedTime, Long stateId) {
 		super();
 		this.id = id;
@@ -117,7 +134,16 @@ public class LkpAvailableDistrict {
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
 	}
-        public Long getStateId() {
+
+	public String getDistrictCode() {
+		return DistrictCode;
+	}
+
+	public void setDistrictCode(String districtCode) {
+		DistrictCode = districtCode;
+	}
+
+	public Long getStateId() {
 		return stateId;
 	}
 

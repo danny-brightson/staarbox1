@@ -2,6 +2,7 @@ package com.example.demo.repo;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.dto.PackagingDto;
 import com.example.demo.entity.CustomerDetails;
 
 @Repository
@@ -52,6 +54,12 @@ public interface CustomerDetailsRepo extends JpaRepository<CustomerDetails, Long
 		@Query(value = "UPDATE customerdetails SET IsPaymentSuccess =:isPaymentSuccess,NextRenewalDate =:nextrenewalDate,OrderId =:orderId WHERE id = :customerId AND StatusId = 1", nativeQuery = true)
 	    int updatePaymentStatus(boolean isPaymentSuccess,
 	             LocalDateTime nextrenewalDate,long customerId,String orderId);
+
+	    @Query("SELECT new com.example.demo.dto.PackagingDto(c.id, c.zoneId, c.distanceId, c.districtId, c.deliveryCode, c.packDetailsId) " +
+	    	       "FROM CustomerDetails c " +
+	    	       "WHERE c.nextrenewalDate >= CURRENT_DATE AND c.isPaymentSuccess = true AND c.statusId = 1 " +
+	    	       "ORDER BY c.zoneId ASC, c.distanceId ASC")
+		List<PackagingDto> findAllOrderByZoneDistanceAsc();
 	
 
 
