@@ -32,7 +32,7 @@ public class CustomerDeatilService {
 	
 	public CustomerResponseDto SaveCustomerDetails(CustomerDatailsDTO CustomerDatailsDTO) throws IOException {
 		
-		Optional<RefreshToken> refreshToken = refreshTokenRepo.findByPhoneNumber(CustomerDatailsDTO.getPhoneNumber());
+		Optional<RefreshToken> refreshToken = refreshTokenRepo.findTopByPhoneNumberOrderByCreatedTimeDesc(CustomerDatailsDTO.getPhoneNumber());
 		
 		if(refreshToken.isPresent()) {
 			CustomerDetails customerDetails = new CustomerDetails();

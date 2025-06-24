@@ -1,7 +1,11 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OtpVerificationRequest {
 	   private String phoneNumber;
+	   
+	   @JsonProperty("isRegistered")
 	    private boolean IsRegistered;
 		public OtpVerificationRequest() {
 			super();

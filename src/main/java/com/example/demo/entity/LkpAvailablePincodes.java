@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "AvailablePincodes")
+@Table(name = "availablepincodes")
 @Where(clause = "StatusId = 1")
 public class LkpAvailablePincodes {
 

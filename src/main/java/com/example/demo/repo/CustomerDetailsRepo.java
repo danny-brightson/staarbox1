@@ -16,13 +16,13 @@ import com.example.demo.entity.CustomerDetails;
 public interface CustomerDetailsRepo extends JpaRepository<CustomerDetails, Long> {
 
 
-	@Query(value = "select DistrictId from CustomerDetails where id = :customerId and StatusId=1", nativeQuery = true)
+	@Query(value = "select DistrictId from customerdetails where id = :customerId and StatusId=1", nativeQuery = true)
 	int getDistrictId(int customerId);
 
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE CustomerDetails SET IsEggPreferred =:eggPreferd, PackDetailsId = :packDetailsId WHERE id = :id AND StatusId = 1", nativeQuery = true)
+	@Query(value = "UPDATE customerdetails SET IsEggPreferred =:eggPreferd, PackDetailsId = :packDetailsId WHERE id = :id AND StatusId = 1", nativeQuery = true)
 	int updatePackDetails(boolean eggPreferd, int packDetailsId, Long id);
 
 
@@ -49,7 +49,7 @@ public interface CustomerDetailsRepo extends JpaRepository<CustomerDetails, Long
 	    );
 	    @Transactional
 		@Modifying
-		@Query(value = "UPDATE CustomerDetails SET IsPaymentSuccess =:isPaymentSuccess,NextRenewalDate =:nextrenewalDate,OrderId =:orderId WHERE id = :customerId AND StatusId = 1", nativeQuery = true)
+		@Query(value = "UPDATE customerdetails SET IsPaymentSuccess =:isPaymentSuccess,NextRenewalDate =:nextrenewalDate,OrderId =:orderId WHERE id = :customerId AND StatusId = 1", nativeQuery = true)
 	    int updatePaymentStatus(boolean isPaymentSuccess,
 	             LocalDateTime nextrenewalDate,long customerId,String orderId);
 	

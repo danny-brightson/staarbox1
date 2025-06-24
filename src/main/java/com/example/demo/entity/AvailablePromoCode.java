@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "AvailablePromoCode")
+@Table(name = "availablepromocode")
 @Where(clause = "StatusId = 1")
 public class AvailablePromoCode {
 

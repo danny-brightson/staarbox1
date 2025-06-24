@@ -12,6 +12,6 @@ public interface RefreshTokenRepo extends JpaRepository<RefreshToken, Long>  {
 
 	Optional<RefreshToken> findByResfreshToken(String refreshToken);
 	
-	Optional<RefreshToken> findByPhoneNumber(String phoneNumber);
+	Optional<RefreshToken> findTopByPhoneNumberOrderByCreatedTimeDesc(String phoneNumber);
 
 }

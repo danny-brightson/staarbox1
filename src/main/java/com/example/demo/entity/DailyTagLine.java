@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "DailyTagLine")
+@Table(name = "dailytagline")
 @Where(clause = "StatusId = 1")
 public class DailyTagLine {
 

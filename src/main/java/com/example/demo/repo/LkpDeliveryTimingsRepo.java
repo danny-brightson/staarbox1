@@ -13,7 +13,7 @@ import com.example.demo.projection.DeliveryTimingProjection;
 public interface LkpDeliveryTimingsRepo extends JpaRepository<LkpDeliveryTimings, Long>{
 	
 	
-	@Query(value = "SELECT Id,DeliveryTiming FROM LkpDeliveryTimings WHERE StatusId=1", nativeQuery = true)
+	@Query(value = "SELECT Id,DeliveryTiming FROM lkpdeliverytimings WHERE StatusId=1", nativeQuery = true)
 	List<DeliveryTimingProjection> getDeliveryTimings();
 	
 

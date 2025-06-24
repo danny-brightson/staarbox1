@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "LkpAvailableDistrict")
+@Table(name = "lkpavailabledistrict")
 @Where(clause = "StatusId = 1")
 public class LkpAvailableDistrict {
 
@@ -41,13 +41,16 @@ public class LkpAvailableDistrict {
 	@Column(name = "ModefiedTime")
 	private LocalDate modefiedTime;
 
+	@Column(name = "StateId")
+	private Long stateId;
+
 	public LkpAvailableDistrict() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public LkpAvailableDistrict(Long id, String district, Long statusId, String createdBy, LocalDateTime createdTime,
-			String modefiedBy, LocalDate modefiedTime) {
+		public LkpAvailableDistrict(Long id, String district, Long statusId, String createdBy, LocalDateTime createdTime,
+			String modefiedBy, LocalDate modefiedTime, Long stateId) {
 		super();
 		this.id = id;
 		this.district = district;
@@ -56,6 +59,7 @@ public class LkpAvailableDistrict {
 		this.createdTime = createdTime;
 		this.modefiedBy = modefiedBy;
 		this.modefiedTime = modefiedTime;
+		this.stateId = stateId;
 	}
 
 	public Long getId() {
@@ -112,6 +116,13 @@ public class LkpAvailableDistrict {
 
 	public void setModefiedTime(LocalDate modefiedTime) {
 		this.modefiedTime = modefiedTime;
+	}
+        public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 
 }
