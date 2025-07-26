@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us</title>
+
+<!-- ✅ External CSS & Libraries -->
+<link rel="stylesheet" href="./index.css" />
+<link rel="stylesheet" href="./css/bootstrap.min.css" />
+<link rel="stylesheet" href="./css/swiper.css" />
+<link rel="stylesheet" href="./css/fontawesome.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<link rel="stylesheet" href="./css/googlefonts.css" />
+<link rel="stylesheet" href="./css/AOS.css" />
+<link rel="stylesheet" href="./css/Mdb.css" />
+
+<!-- ✅ Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body {
+        background: #f9f9f9;
+    }
+
+    /* ✅ Contact Container */
+    .contact-container {
+        display: flex;
+        max-width: 1100px;
+        margin: 50px auto;
+        background: #fff;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        height: auto;
+    }
+
+    /* ✅ Left Panel */
+    .contact-info {
+        width: 40%;
+        background: url('https://images.unsplash.com/photo-1522205408450-add114ad53fe') no-repeat center center/cover;
+        padding: 40px 25px;
+        color: #fff;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly; /* Equal gaps */
+    }
+    .contact-info::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 0;
+    }
+    .contact-info div {
+        position: relative;
+        z-index: 1;
+    }
+    .contact-info h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+    .contact-info p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .contact-info i {
+        margin-right: 10px;
+        color: #00c853;
+    }
+
+    /* ✅ Right Panel */
+    .contact-form {
+        width: 60%;
+        padding: 40px;
+    }
+    .contact-form h2 {
+        margin-bottom: 25px;
+        font-size: 24px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* ✅ Form Fields */
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-label {
+        font-size: 12px;
+        font-weight: bold;
+        color: #555;
+        display: block;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .form-row {
+        display: flex;
+        gap: 10px;
+    }
+    .form-row input {
+        width: 100%;
+    }
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #02614e;
+        outline: none;
+        box-shadow: 0 0 8px rgba(0,200,83,0.3);
+    }
+    .contact-form textarea {
+        resize: none;
+    }
+
+    /* ✅ Button */
+    .send-btn {
+        background: #02614e;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: 0.3s ease;
+        display: block;
+    }
+    .send-btn:hover {
+        background: #009624;
+        box-shadow: 0 4px 15px rgba(0,200,83,0.4);
+    }
+
+    /* ✅ Responsive */
+    @media (max-width: 768px) {
+        .contact-container {
+            flex-direction: column;
+        }
+        .contact-info, .contact-form {
+            width: 100%;
+        }
+    }
+     @media (min-width: 2560px) {
+        .contact-container {
+            height: calc(100vh - 80px); /* Full screen height */
+            max-width: 100%;
+        }
+        .contact-info, .contact-form {
+            height: 100%;
+        }
+        .contact-info h3 { font-size: 3rem; }
+        .contact-info p { font-size: 2rem; }
+        .contact-form h2 { font-size: 4rem; margin-bottom: 50px; }
+        .contact-form input, .contact-form textarea {
+            font-size: 28px;
+            padding: 30px;
+        }
+        .send-btn {
+            font-size: 36px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- ✅ NAVBAR -->
+<header>
+  <nav class="navbar container-fluid" id="home">
+    <div class="logo">
+      <a href="#"><img src="./css/image/staarbox.png" height="60" width="100" alt="StaarBox"></a>
+    </div>
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <ul>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./aboutus.html">About Us</a></li>
+        <li><a href="./Terms&Conditions.html" class="active">Terms&Conditions</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- ✅ CONTACT SECTION -->
+<div class="contact-container">
+    <!-- Left Panel -->
+    <div class="contact-info">
+        <div>
+            <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+            <p>Mada Center 8th floor, 379 Hudson St,<br> New York, NY 10018 US</p>
+        </div>
+        <div>
+            <h3><i class="fas fa-phone-alt"></i> Let's Talk</h3>
+            <p style="color:#00c853;">+1 800 1236879</p>
+        </div>
+        <div>
+            <h3><i class="fas fa-envelope"></i> General Support</h3>
+            <p style="color:#00c853;">contact@example.com</p>
+        </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="contact-form">
+        <h2>Send Us A Message</h2>
+       <form action="sendMail.php" method="POST">
+    <div class="form-group">
+        <label class="form-label">Tell Us Your Name *</label>
+        <div class="form-row">
+            <input type="text" name="first_name" placeholder="First name" required>
+            <input type="text" name="last_name" placeholder="Last name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Enter Your Email *</label>
+        <input type="email" name="email" placeholder="Eg. example@email.com" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Enter Phone Number</label>
+        <input type="text" name="phone" placeholder="Eg. +1 800 000000" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Message *</label>
+        <textarea name="message" rows="6" placeholder="Write us a message" required></textarea>
+    </div>
+    <button type="submit" class="send-btn">SEND MESSAGE</button>
+</form>
+
+    </div>
+</div>
+
+<!-- ✅ FOOTER -->
+<footer style="text-align:center;padding:20px;background:#02614e;margin-top:20px;">
+    © 2025 StaarBox | All Rights Reserved
+</footer>
+
+<script>
+    const toggle = document.getElementById("menuToggle");
+    const links = document.getElementById("navLinks");
+    toggle.addEventListener("click", () => {
+        links.classList.toggle("active");
+    });
+</script>
+
+</body>
+</html>
