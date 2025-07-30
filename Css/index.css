@@ -321,93 +321,30 @@ body {
   position: relative;
 }
 
-/* Default Easter Egg styling */
-.easter-egg-gif {
-  position: absolute;
-  right: 0vw;
-  height: 13vw;  /* 250px ≈ 13vw */
-  width: 13vw;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-}
-
-.easter-egg-gif-2 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  top: 13vh; /* 250px ≈ 13vh */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-}
-
-.easter-egg-gif-3 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  left: 65vw;  /* 1250px ≈ 65vw */
-  top: 18vh;   /* 350px ≈ 18vh */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-  z-index: -9999;
-}
-
-.easter-egg-gif-4 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  top: 28vh;   /* 550px ≈ 28vh */
-  right: 66vw; /* 1270px ≈ 66vw */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-}
-
-.easter-egg-gif-5 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  bottom: 25vh; /* 480px ≈ 25vh */
-  left: 52vw;   /* 1000px ≈ 52vw */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-}
-
-.easter-egg-gif-6 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  bottom: 10vh; /* 200px ≈ 10vh */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-  z-index: -1;
-}
-
-.easter-egg-gif-7 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  bottom: 8vh; /* 150px ≈ 8vh */
-  right: 2vw;  /* 30px ≈ 2vw */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  opacity: 0.2;
-}
-
+/* Default size for desktop */
+.easter-egg-gif,
+.easter-egg-gif-2,
+.easter-egg-gif-3,
+.easter-egg-gif-4,
+.easter-egg-gif-5,
+.easter-egg-gif-6,
+.easter-egg-gif-7,
 .easter-egg-gif-8 {
-  position: absolute;
-  height: 13vw;
-  width: 13vw;
-  top: 3vh; /* 50px ≈ 3vh */
+  height: 16vw;
+  width: 16vw;
   cursor: pointer;
   transition: transform 0.3s ease;
-  opacity: 0.2;
+  opacity: 0.25;
 }
-
+/* Positioning for Easter Egg GIFs */
+.easter-egg-gif { position: absolute; right: 0vw; }
+.easter-egg-gif-2 { position: absolute; top: 1vh; }
+.easter-egg-gif-3 { position: absolute; left: 65vw; top: 8vh; z-index: -9999; }
+.easter-egg-gif-4 { position: absolute; top: 28vh; right: 66vw; }
+.easter-egg-gif-5 { position: absolute; bottom: 28vh; left: 57vw; }
+.easter-egg-gif-6 { position: absolute; bottom: 10vh; z-index: -1; }
+.easter-egg-gif-7 { position: absolute; bottom: 8vh; right: 2vw; }
+.easter-egg-gif-8 { position: absolute; top: 3vh; }
 /* Hover Animation */
 .easter-egg-gif:hover,
 .easter-egg-gif-2:hover,
@@ -417,8 +354,40 @@ body {
 .easter-egg-gif-6:hover,
 .easter-egg-gif-7:hover,
 .easter-egg-gif-8:hover {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.15) rotate(5deg);
 }
+
+/* ✅ Make smaller for tablets */
+@media (max-width: 992px) {
+  .easter-egg-gif,
+  .easter-egg-gif-2,
+  .easter-egg-gif-3,
+  .easter-egg-gif-4,
+  .easter-egg-gif-5,
+  .easter-egg-gif-6,
+  .easter-egg-gif-7,
+  .easter-egg-gif-8 {
+    height: 20vw;
+    width: 20vw;
+  }
+}
+
+/* ✅ Make even smaller for mobile */
+@media (max-width: 600px) {
+  .easter-egg-gif,
+  .easter-egg-gif-2,
+  .easter-egg-gif-3,
+  .easter-egg-gif-4,
+  .easter-egg-gif-5,
+  .easter-egg-gif-6,
+  .easter-egg-gif-7,
+  .easter-egg-gif-8 {
+    height: 25vw;
+    width: 25vw;
+    opacity: 0.3; /* More visible on mobile */
+  }
+}
+
 
 
 /* ================ */
