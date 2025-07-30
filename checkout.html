@@ -456,7 +456,7 @@
    const accessToken = localStorage.getItem("accessToken");
 
  try {
-  const res = await fetch(`https://69.62.78.237:8080/api/checkPromoCode?promoCode=${encodeURIComponent(code)}`, {
+  const res = await fetch(`http://69.62.78.237:8080/api/checkPromoCode?promoCode=${encodeURIComponent(code)}`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${accessToken}`, // ✅ Attach token
@@ -527,7 +527,7 @@ const data = {
 
 
   try {
-    const response = await fetch("https://69.62.78.237:8080/api/checkout", {
+    const response = await fetch("http://69.62.78.237:8080/api/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -574,7 +574,7 @@ const data = {
 
     try {
       // Step 1: Call backend to create Razorpay order
-      const response = await fetch(`https://69.62.78.237:8080/api/payment/create-order?amount=${roundedAmount}&customerId=${customerId}`, {
+      const response = await fetch(`http://69.62.78.237:8080/api/payment/create-order?amount=${roundedAmount}&customerId=${customerId}`, {
         method: 'POST',
         headers: {
       "Authorization": `Bearer ${accessToken}` // ✅ Attach token
@@ -631,7 +631,7 @@ const data = {
   }
 
  async function verifyPayment(paymentResponse, orderId, customerId, accessToken) {
-  const verifyUrl = `https://69.62.78.237:8080/api/payment/verify` +
+  const verifyUrl = `http://69.62.78.237:8080/api/payment/verify` +
     `?orderId=${paymentResponse.razorpay_order_id}` +
     `&paymentId=${paymentResponse.razorpay_payment_id}` +
     `&signature=${paymentResponse.razorpay_signature}` +
