@@ -863,7 +863,7 @@ h2 {
 /* FAQ Section Styles */
 .faq {
   position: relative;
-  background: url('./Image/staarbox.png') no-repeat center center;
+  background: url('../Image/staarbox.png') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   background-color: #fff;
