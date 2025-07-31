@@ -542,7 +542,7 @@ const data = {
       const result = await response.json();
       console.log("Success:", result);
  localStorage.setItem("accessToken", result.accessToken);
-  localStorage.setItem("refreshToken", result.refeshtoken);
+  localStorage.setItem("refreshToken", result.refreshtoken);
    localStorage.setItem("CustomerId", result.id);
       // Use the accessToken, refreshToken, etc.
       alert("Checkout successful!");
@@ -609,11 +609,11 @@ const data = {
     accessToken
   );
 },
-        prefill: {
-          name: "Customer Name",    // Optional: Replace with user data
-          email: "user@example.com",
-          contact: "9876543210"
-        },
+       prefill: {
+  name: document.getElementById("s_fname").value + " " + document.getElementById("s_lname").value,
+  email: document.getElementById("s_email").value,
+  contact: document.getElementById("s_phone").value
+},
         notes: {
           customer_id: customerId
         },
