@@ -764,6 +764,12 @@ rel="stylesheet"
 ></script>
   <!-- AOS -->
 <script src="./JS/aos.js"></script>
-
+<script>
+  // Clear localStorage for a fresh start
+  localStorage.removeItem("CustomerId");
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("Amount"); // optional if you're storing amount
+</script>
 </body>
 </html> 
