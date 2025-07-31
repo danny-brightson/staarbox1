@@ -542,7 +542,7 @@ const data = {
       const result = await response.json();
       console.log("Success:", result);
  localStorage.setItem("accessToken", result.accessToken);
-  localStorage.setItem("refreshToken", result.refreshtoken);
+  localStorage.setItem("refreshToken", result.refreshToken);
    localStorage.setItem("CustomerId", result.id);
       // Use the accessToken, refreshToken, etc.
       alert("Checkout successful!");
