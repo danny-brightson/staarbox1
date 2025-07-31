@@ -366,7 +366,7 @@
   </div>
 </div>
       </div>
-      <button type="submit" class="pay-btn">Save</button>
+      <button type="submit" id="saveBtn" class="pay-btn">Save</button>
 
     </form>
   </div>
@@ -546,7 +546,7 @@ const data = {
    localStorage.setItem("CustomerId", result.id);
       // Use the accessToken, refreshToken, etc.
       alert("Checkout successful!");
-
+     document.getElementById("saveBtn").style.display = "none";
       // 🔁 Redirect or call next step
       // window.location.href = "/payment.html?token=" + result.accessToken;
     } else {
