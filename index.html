@@ -177,7 +177,7 @@ rel="stylesheet"
         <div class="plan-container plan-card">
           <div class="box-custom">
             <h2 class="title">PREMIUM</h2>
-            <p class="weight">400g - 450g</p>
+            <p class="weight">[400g - 450g]</p>
             <ul class="list-unstyled">
               <li>5 Fruits</li>
               <li>Sprouts</li>
@@ -186,7 +186,7 @@ rel="stylesheet"
               <li>Dry Fruits</li>
               <li>Legumes</li>
             </ul>
-            <p class="price">₹3449 / month</p>
+            <p class="price">₹3499 / month</p>
           </div>
           <div class="select-plan">
             <input type="radio" name="plan" value="Premium" />
@@ -199,7 +199,7 @@ rel="stylesheet"
         <div class="plan-container plan-card">
           <div class="box-custom">
             <h2 class="title">STANDARD</h2>
-            <p class="weight">300g - 350g</p>
+            <p class="weight">[300g - 350g]</p>
             <ul class="list-unstyled">
               <li>4 Fruits</li>
               <li>Sprouts</li>
@@ -208,7 +208,7 @@ rel="stylesheet"
               <li>Dry Fruits</li>
               <li>Legumes</li>
             </ul>
-            <p class="price">₹2779 / month</p>
+            <p class="price">₹2829 / month</p>
           </div>
           <div class="select-plan">
             <input type="radio" name="plan" value="Standard" />
@@ -221,7 +221,7 @@ rel="stylesheet"
         <div class="plan-container plan-card">
           <div class="box-custom">
             <h2 class="title">KIDS</h2>
-            <p class="weight">250g - 300g</p>
+            <p class="weight">[250g - 300g]</p>
             <ul class="list-unstyled">
               <li>3 Fruits</li>
               <li>Sprouts</li>
@@ -230,7 +230,7 @@ rel="stylesheet"
               <li>Dry Fruits</li>
               <li>Legumes</li>
             </ul>
-            <p class="price">₹2249 / month</p>
+            <p class="price">₹2299 / month</p>
           </div>
           <div class="select-plan">
             <input type="radio" name="plan" value="Kids" />
@@ -694,9 +694,9 @@ rel="stylesheet"
 
   // ✅ Define price for each plan
   let price = 0;
-  if (selected.value === "Premium") price = 3449;
-  else if (selected.value === "Standard") price = 2779;
-  else if (selected.value === "Kids") price = 2249;
+  if (selected.value === "Premium") price = 3499;
+  else if (selected.value === "Standard") price = 2829;
+  else if (selected.value === "Kids") price = 2299;
 
   // ✅ Redirect to checkout page with plan & price
   window.location.href = `checkout.html?plan=${selected.value}&price=${price}`;
