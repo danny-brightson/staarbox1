@@ -474,6 +474,7 @@ body {
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 20px;
+  text-align: center; /* Center text for better readability */
 }
 
 .card .card-footer {
@@ -1142,3 +1143,4 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
