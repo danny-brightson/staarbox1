@@ -605,7 +605,7 @@ body {
 }
 
 .delivery-info .text-muted {
-  font-size:medium;
+  font-size:larger;
 }
 
 .delivery-info .fw-bold {
@@ -1143,4 +1143,5 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
