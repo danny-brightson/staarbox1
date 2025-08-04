@@ -518,7 +518,6 @@ const data = {
   city: document.getElementById("s_city").value,
   state: document.getElementById("s_state").value,
   planName: document.getElementById("planName").textContent.trim() || "Standard",
-  deliveryNotes: document.getElementById("s_notes").value,
   // Billing Address
   B_firstName: sameAsShipping ? document.getElementById("s_fname").value : document.getElementById("b_fname").value,
   B_lastName: sameAsShipping ? document.getElementById("s_lname").value : document.getElementById("b_lname").value,
@@ -685,6 +684,7 @@ document.getElementById("saveBtn").style.display = "none";
 </script>
 </body>
 </html>
+
 
 
 
