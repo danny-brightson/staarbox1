@@ -137,6 +137,7 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+      margin:10px;
     }
 
     .checkout-form {
@@ -305,7 +306,12 @@
           </div>
         </div>
       </div>
-
+      <!-- ✅ Delivery Notes (Optional) -->
+        <div class="form-group">
+          <label>Delivery Notes (Optional)</label>
+          <textarea id="s_notes" rows="3" placeholder="Any special instructions for delivery"></textarea>
+          <div class="error" id="err_s_notes"></div>
+      </div>
       <div class="checkbox">
         <label><input type="checkbox" id="useSame" checked> Use this as billing address</label>
       </div>
@@ -512,7 +518,7 @@ const data = {
   city: document.getElementById("s_city").value,
   state: document.getElementById("s_state").value,
   planName: document.getElementById("planName").textContent.trim() || "Standard",
-
+  deliveryNotes: document.getElementById("s_notes").value,
   // Billing Address
   B_firstName: sameAsShipping ? document.getElementById("s_fname").value : document.getElementById("b_fname").value,
   B_lastName: sameAsShipping ? document.getElementById("s_lname").value : document.getElementById("b_lname").value,
@@ -679,6 +685,7 @@ document.getElementById("saveBtn").style.display = "none";
 </script>
 </body>
 </html>
+
 
 
 
