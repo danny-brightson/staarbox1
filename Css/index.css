@@ -1328,7 +1328,7 @@ footer {
 }
 
 .product-carousel h2 {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   color:rgba(55, 91, 0, 0.985);;
   margin-bottom: 10px;
 }
@@ -1378,6 +1378,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
