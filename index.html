@@ -923,6 +923,25 @@ rel="stylesheet"
     }
   });
 </script>
+  <script>
+  const zoneSwiper = new Swiper('.zone-swiper', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 5000, // 5 seconds between slides
+      disableOnInteraction: false, // keeps autoplay after manual swipe
+    },
+    pagination: {
+      el: '.zone-swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.zone-swiper-button-next',
+      prevEl: '.zone-swiper-button-prev',
+    },
+  });
+</script>
 <!-- plan selection -->
 <script>
   const cards = document.querySelectorAll(".plan-card");
@@ -1028,6 +1047,7 @@ rel="stylesheet"
 </script>
 </body>
 </html> 
+
 
 
 
