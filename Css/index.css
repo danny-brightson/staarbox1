@@ -1357,7 +1357,7 @@ footer {
 .product-carousel .buttons label {
   cursor: pointer;
   font-size: 1.4rem;
-  color: rgba(10, 48, 8, 0.35);;
+  color: rgba(0, 0, 0, 0.811);;
   transition: transform 0.3s;
 }
 
@@ -1369,6 +1369,63 @@ footer {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ================ */
+/* Zone Map */
+/* ================ */
+.zone-swiper {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.zone-slide {
+  text-align: center;
+  background: #fff;
+  padding: 20px;
+}
+
+.zone-slide img {
+  width: 100%;
+  height: 700px;
+  object-fit: contain;
+}
+
+.zone-slide h3 {
+  margin-top: 12px;
+  font-size: 1.2rem;
+}
+.zone-swiper-button-next,
+.zone-swiper-button-prev {
+  color: #333;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.zone-swiper-button-next {
+  right: 10px;
+}
+
+.zone-swiper-button-prev {
+  left: 10px;
+}
+@media (min-width: 768px) {
+  .zone-slide img {
+    max-height: 500px;
+  }
+}
+
+/* Laptop/Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .zone-slide img {
+    max-height: 600px;
+  }
+}
 
 
 
@@ -1378,6 +1435,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
