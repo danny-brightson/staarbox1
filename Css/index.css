@@ -695,6 +695,16 @@ body {
 .flip-card-back button:hover {
   transform: scale(1.1);
 }
+.egg-label {
+  background-color: #ffeb3b;
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .flip-card-front {
     animation: pulse 1.5s infinite;
@@ -1392,7 +1402,7 @@ footer {
 }
 
 .zone-slide h3 {
-  margin-top: 12px;
+  margin-top: 1px;
   font-size: 1.2rem;
 }
 .zone-swiper-button-next,
@@ -1435,6 +1445,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
