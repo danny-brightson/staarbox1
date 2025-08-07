@@ -213,6 +213,13 @@
         flex-direction: column;
       }
     }
+    .egg-checkbox {
+  font-weight: bold;
+  color: #000000; /* Dark text */
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
   </style>
 </head>
 <body>
@@ -312,10 +319,10 @@
           <textarea id="s_notes" rows="3" placeholder="Any special instructions for delivery"></textarea>
           <div class="error" id="err_s_notes"></div>
       </div>
-      <div class="checkbox">
-        <label><input type="checkbox" id="useSame" checked> Use this as billing address</label>
-      </div>
-
+      <div class="checkbox" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+      <label class="egg-checkbox"><input  type="checkbox" id="eggPreferred"> 🥚 Egg Preferred</label>
+  <label><input type="checkbox" id="useSame" checked> Use this as billing address</label>
+</div>
       <!-- BILLING FORM -->
       <div id="billingForm" style="display:none;">
         <h2>Billing Details</h2>
@@ -518,6 +525,8 @@ const data = {
   city: document.getElementById("s_city").value,
   state: document.getElementById("s_state").value,
   planName: document.getElementById("planName").textContent.trim() || "Standard",
+  deliveryNotes: document.getElementById("s_notes").value,
+  isEggadded: document.getElementById("eggPreferred").checked,
   // Billing Address
   B_firstName: sameAsShipping ? document.getElementById("s_fname").value : document.getElementById("b_fname").value,
   B_lastName: sameAsShipping ? document.getElementById("s_lname").value : document.getElementById("b_lname").value,
@@ -684,6 +693,7 @@ document.getElementById("saveBtn").style.display = "none";
 </script>
 </body>
 </html>
+
 
 
 
