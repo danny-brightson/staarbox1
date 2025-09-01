@@ -468,6 +468,10 @@
     return;
   }
    const accessToken = localStorage.getItem("accessToken");
+    if(!accessToken){
+        alert("Please save before applying promo code");
+    return;
+    }
 
  try {
   const res = await fetch(`https://api.staarbox.in/api/checkPromoCode?promoCode=${encodeURIComponent(code)}`, {
@@ -693,6 +697,7 @@ document.getElementById("saveBtn").style.display = "none";
 </script>
 </body>
 </html>
+
 
 
 
