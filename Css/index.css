@@ -249,6 +249,7 @@ body {
   font-size: 1.8rem;
   cursor: pointer;
   margin-right: 10px;
+  color: var(--primary-color);
   }
 
   .nav-links {
@@ -1445,6 +1446,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
