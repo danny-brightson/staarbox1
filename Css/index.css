@@ -249,6 +249,7 @@ body {
   font-size: 1.8rem;
   cursor: pointer;
   margin-right: 10px;
+  }
 
   .nav-links {
     position: relative;
@@ -1444,6 +1445,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
