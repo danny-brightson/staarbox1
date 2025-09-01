@@ -90,17 +90,7 @@ body {
   color: var(--primary-color);
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   letter-spacing: 1px;
-  background-clip: text;
-  color: transparent; 
-  background: linear-gradient(
-    to bottom,
-    #FF9933 33%,  /* Saffron */
-    #FFFFFF 33%,  /* White */
-    #FFFFFF 66%,  
-    #138808 66%   /* Green */
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 800;
 }
 
 .hero-content p {
@@ -260,17 +250,6 @@ body {
   cursor: pointer;
   margin-right: 10px;
 
-  /* Indian flag gradient */
-  background: linear-gradient(
-    to bottom,
-    #FF9933 33%,  /* Saffron */
-    #FFFFFF 33%,  /* White */
-    #FFFFFF 66%,  
-    #138808 66%   /* Green */
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
   .nav-links {
     position: relative;
     top: auto;
@@ -1465,6 +1444,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
