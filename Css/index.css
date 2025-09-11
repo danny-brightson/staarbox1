@@ -706,6 +706,21 @@ body {
   border-radius: 4px;
   margin-bottom: 8px;
 }
+@media (max-width: 1024px) and (min-width: 768px) {
+  .box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* same as carousel section */
+    padding: 20px;
+  }
+
+  .flip-card {
+    width: 320px;  /* same sizing style as carousel cards */
+    height: 420px;
+    margin: 0 auto;
+  }
+}
 @media (max-width: 768px) {
   .flip-card-front {
     animation: pulse 1.5s infinite;
@@ -1446,6 +1461,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 
 
 
