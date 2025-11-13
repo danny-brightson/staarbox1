@@ -64,6 +64,11 @@
     }
 
     .small-muted { color: #4a7365; font-size: 0.9rem; }
+    #recaptcha-container {
+       visibility: hidden;
+       height: 0;
+}
+
   </style>
 </head>
 
@@ -123,15 +128,19 @@
 
     // reCAPTCHA initializer
     async function initRecaptcha() {
-      if (window.recaptchaVerifier) {
-        try { window.recaptchaVerifier.clear(); } catch(e){}
-      }
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'normal',
-        callback: () => console.log('recaptcha solved')
-      });
-      return window.recaptchaVerifier.render();
+  if (window.recaptchaVerifier) {
+    try { window.recaptchaVerifier.clear(); } catch(e){}
+  }
+
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    size: 'invisible',  // 👈 Completely hidden
+    callback: () => {
+      console.log("Invisible reCAPTCHA solved automatically");
     }
+  });
+
+  return window.recaptchaVerifier.render();
+}
     initRecaptcha();
 
     // Send OTP with validation
@@ -202,5 +211,6 @@
 
 </body>
 </html>
+
 
 
