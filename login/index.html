@@ -64,11 +64,15 @@
     }
 
     .small-muted { color: #4a7365; font-size: 0.9rem; }
-    #recaptcha-container {
-       visibility: hidden;
-       height: 0;
-}
 
+    /* IMPORTANT: do NOT use display:none for recaptcha container.
+       Keep element present so Google can attach iframe. */
+    #recaptcha-container {
+      visibility: hidden;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
   </style>
 </head>
 
@@ -102,6 +106,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
 
   <script>
+    // ---------- Firebase config ----------
     const firebaseConfig = {
       apiKey: "AIzaSyD78WXxyUeHl_rIlnRSQydj9WN0Ss4jqMs",
       authDomain: "staarbox-91945.firebaseapp.com",
@@ -110,10 +115,10 @@
       messagingSenderId: "591533689732",
       appId: "1:591533689732:web:45f6abb7dbe9e42508ebd1"
     };
-
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // ---------- DOM ----------
     const phoneInput = document.getElementById('phoneNumber');
     const sendOtpBtn = document.getElementById('sendOtpBtn');
     const otpSection = document.getElementById('otp-section');
@@ -124,94 +129,148 @@
     function showStatus(msg, isError=false) {
       statusText.textContent = msg;
       statusText.style.color = isError ? 'crimson' : '#02614e';
+      console.log(msg);
     }
 
-    // reCAPTCHA initializer
+    // ---------- init invisible reCAPTCHA safely ----------
+    // Returns true if initialized, throws or returns false on failure.
     async function initRecaptcha() {
-  if (window.recaptchaVerifier) {
-    try { window.recaptchaVerifier.clear(); } catch(e){}
-  }
-
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-    size: 'invisible',  // 👈 Completely hidden
-    callback: () => {
-      console.log("Invisible reCAPTCHA solved automatically");
-    }
-  });
-
-  return window.recaptchaVerifier.render();
-}
-    initRecaptcha();
-
-    // Send OTP with validation
-    sendOtpBtn.addEventListener('click', async () => {
-      let phone = phoneInput.value.trim().replace(/\s+/g, '');
-
-      if (!phone) return showStatus("⚠️ Enter your mobile number.", true);
-      if (!phone.startsWith("+"))
-        return showStatus("⚠️ Country code missing. Example: +91XXXXXXXXXX", true);
-
-      const clean = phone.replace(/\D/g, "");
-      if (clean.length < 10)
-        return showStatus("⚠️ Phone number too short. Must be at least 10 digits.", true);
-
-      if (phone.startsWith("+91")) {
-        if (clean.length !== 12)
-          return showStatus("⚠️ Indian number must be exactly 10 digits. Example: +919876543210", true);
+      if (window.recaptchaVerifier && typeof window.recaptchaVerifier.clear === 'function') {
+        try { window.recaptchaVerifier.clear(); } catch(e){ console.warn('recaptcha clear failed', e); }
       }
 
-      showStatus("Sending OTP...");
-      sendOtpBtn.disabled = true;
-
-      await initRecaptcha();
-
-      auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
-        .then((confirmationResult) => {
-          window.confirmationResult = confirmationResult;
-          otpSection.style.display = "block";
-          otpInput.focus();
-          showStatus("OTP sent successfully!");
-        })
-        .catch((error) => {
-          console.error(error);
-          showStatus("❌ Failed to send OTP. " + error.message, true);
-          sendOtpBtn.disabled = false;
+      // build verifier (invisible)
+      try {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          size: 'invisible',
+          callback: (token) => {
+            console.log('Invisible reCAPTCHA callback, token length:', (token || '').length);
+          },
+          'expired-callback': () => {
+            console.warn('reCAPTCHA expired');
+          }
         });
+
+        // render returns a promise and ensures iframe attached
+        const widgetId = await window.recaptchaVerifier.render();
+        console.log('reCAPTCHA rendered widgetId:', widgetId);
+        return true;
+      } catch (err) {
+        console.error('initRecaptcha error:', err);
+        showStatus('reCAPTCHA init failed. Try Incognito or check network/extensions.', true);
+        return false;
+      }
+    }
+
+    // initialize once (best-effort)
+    initRecaptcha().then(ok => {
+      if (ok) console.log('Initial reCAPTCHA ready');
     });
 
-    // Verify OTP
-    verifyOtpBtn.addEventListener('click', () => {
+    // ---------- Send OTP handler with diagnostics ----------
+    sendOtpBtn.addEventListener('click', async () => {
+      sendOtpBtn.disabled = true;
+      const rawPhone = phoneInput.value || '';
+      let phone = rawPhone.trim().replace(/\s+/g, '');
+
+      // basic validation
+      if (!phone) { showStatus('⚠️ Enter your mobile number.', true); sendOtpBtn.disabled = false; return; }
+      if (!phone.startsWith('+')) { showStatus('⚠️ Country code missing. Example: +91XXXXXXXXXX', true); sendOtpBtn.disabled = false; return; }
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length < 10) { showStatus('⚠️ Phone number too short. Must be at least 10 digits.', true); sendOtpBtn.disabled = false; return; }
+      if (phone.startsWith('+91') && digits.length !== 12) { showStatus('⚠️ Indian number must be exactly 10 digits. Example: +919876543210', true); sendOtpBtn.disabled = false; return; }
+
+      showStatus('Initializing reCAPTCHA and sending OTP...');
+      // ensure recaptcha initialized
+      const ok = await initRecaptcha();
+      if (!ok) { sendOtpBtn.disabled = false; return; }
+
+      // safety timeout (if Firebase call never resolves)
+      let timedOut = false;
+      const timeoutId = setTimeout(() => {
+        timedOut = true;
+        showStatus('Request timed out. Please try again.', true);
+        sendOtpBtn.disabled = false;
+      }, 20000); // 20s
+
+      try {
+        const confirmationResult = await auth.signInWithPhoneNumber(phone, window.recaptchaVerifier);
+        if (timedOut) {
+          console.warn('Confirmation returned after timeout', confirmationResult);
+          return;
+        }
+        clearTimeout(timeoutId);
+        // store globally
+        window.confirmationResult = confirmationResult;
+        console.log('confirmationResult set', confirmationResult);
+        otpSection.style.display = 'block';
+        otpInput.focus();
+        showStatus('OTP sent successfully! Enter the code.');
+        // keep send button disabled to prevent duplicate requests; enable if you implement resend flow
+      } catch (err) {
+        clearTimeout(timeoutId);
+        console.error('signInWithPhoneNumber error:', err);
+        // friendly messages for common error codes
+        const code = err && err.code;
+        if (code === 'auth/invalid-phone-number') {
+          showStatus('Invalid phone number. Please check digits and country code.', true);
+        } else if (code === 'auth/too-many-requests') {
+          showStatus('Too many requests. Please wait a few minutes and try again.', true);
+        } else if (code === 'auth/quota-exceeded') {
+          showStatus('SMS quota exceeded for your project. Use Firebase test numbers or check quotas.', true);
+        } else {
+          showStatus('Failed to send OTP: ' + (err && err.message ? err.message : String(err)), true);
+        }
+        sendOtpBtn.disabled = false;
+        // attempt to re-init recaptcha so next try is fresh
+        try { await initRecaptcha(); } catch(e){ console.warn(e); }
+      }
+    });
+
+    // ---------- Verify OTP ----------
+    verifyOtpBtn.addEventListener('click', async () => {
       const code = otpInput.value.trim();
-      if (!code) return showStatus("⚠️ Enter the OTP.", true);
+      if (!code) { showStatus('⚠️ Enter the OTP.', true); return; }
 
-      showStatus("Verifying...");
-      confirmationResult.confirm(code)
-  .then(() => {
-    showStatus("✅ Login Successful!");
-    setTimeout(() => {
-      // Redirect here
-     // ✅ Redirect to checkout page with plan & price
-  window.location.href = "../checkout/index.html";
- }, 1000); // 1 second delay
-  })
-  .catch(() => showStatus("❌ Incorrect OTP. Try again.", true));
+      if (!window.confirmationResult) {
+        showStatus('⚠️ No OTP request found. Please request OTP first.', true);
+        return;
+      }
 
+      showStatus('Verifying...');
+      verifyOtpBtn.disabled = true;
+      try {
+        const result = await window.confirmationResult.confirm(code);
+        console.log('OTP verified result:', result);
+        showStatus('✅ Login Successful! Redirecting...');
+        // redirect after small delay
+        setTimeout(() => {
+          const target = '../checkout/index.html'; // adjust as needed
+          console.log('Redirecting to', target);
+          window.location.href = target;
+        }, 900);
+      } catch (err) {
+        console.error('verify error', err);
+        showStatus('❌ Incorrect OTP or verification failed. Try again.', true);
+        verifyOtpBtn.disabled = false;
+      }
     });
 
-    // Resend OTP
+    // ---------- Resend (re-init) ----------
     document.getElementById('resendOtp').addEventListener('click', async (e) => {
       e.preventDefault();
       sendOtpBtn.disabled = false;
-      otpSection.style.display = "none";
-      otpInput.value = "";
-      showStatus("Reinitializing...");
+      otpSection.style.display = 'none';
+      otpInput.value = '';
+      showStatus('Reinitializing reCAPTCHA...');
       await initRecaptcha();
     });
-  </script>
 
+    // helpful dev hook
+    window.addEventListener('error', ev => {
+      console.error('Global error', ev.error || ev.message);
+      showStatus('An unexpected error occurred — check console.', true);
+    });
+  </script>
 </body>
 </html>
-
-
-
-
