@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJM0SLEFQZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CJM0SLEFQZ');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="google-site-verification" content="U4WrpzFDmaHcuK-NfsTwmPedGPnYUGSSiPciP5e0z18" />
+  <meta name="facebook-domain-verification" content="61sleqq2sotq6rqysbiv9mide254nk" />
+  <title>Checkout - Staarbox</title>
+
+  <!-- CSS & libs (kept as your project) -->
+  <link rel="stylesheet" href="../Css/index.css" />
+  <link rel="stylesheet" href="../Css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../Css/swiper.css" />
+  <link rel="stylesheet" href="../Css/fontawesome.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="../Css/googlefonts.css" />
+  <link rel="stylesheet" href="../Css/AOS.css" />
+  <link rel="stylesheet" href="../Css/Mdb.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Layout */
+    body { font-family: Poppins, Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .checkout-container { display:flex; justify-content:center; max-width:1200px; margin:auto; padding:8px; }
+    .checkout-form { background:#fff; padding:20px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); width:100%; }
+    h2.section-title { margin:6px 0 14px; font-size:18px; }
+    .form-row { display:flex; flex-wrap:wrap; gap:15px; margin-bottom:6px; }
+    .form-group { box-sizing:border-box; }
+    .form-group label { display:block; font-weight:600; margin-bottom:6px; font-size:14px; }
+    .form-group input, .form-group textarea, .form-group select { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; }
+    .half { flex: 1 1 calc(50% - 15px); min-width: 200px; } /* default half */
+    .full { flex: 1 1 100%; } /* full-width */
+    .pay-btn { width:100%; background:#4CAF50; color:white; font-size:16px; padding:12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; }
+    .pay-btn:hover { background:#45a049; }
+    .small-btn { padding:8px 10px; border-radius:6px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    .muted { color:#666; font-size:13px; }
+    .error { color:red; font-size:12px; margin-top:3px; }
+    /* customer card */
+    .customer-card { border:1px solid #eee; padding:12px; border-radius:10px; margin-bottom:12px; background:#fafafa; position:relative; }
+    .customer-header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; }
+    .remove-customer { background:#fff; border:1px solid #e74c3c; color:#e74c3c; padding:6px 8px; border-radius:6px; cursor:pointer; font-weight:600; }
+    .add-user-row { display:flex; gap:12px; margin:12px 0; align-items:center; }
+    .hidden-summary { display:none; }
+    .plan-select { max-width:220px; }
+    .egg-select { max-width:160px; }
+    .billing-dynamic .form-row { margin-bottom:8px; }
+
+    /* Responsive breakpoints */
+    @media (max-width: 767px) {
+      .half { flex: 1 1 100%; min-width: auto; }
+      .form-row { gap:10px; }
+      .checkout-form { padding:14px; }
+    }
+
+    @media (min-width: 768px) and (max-width: 1100px) {
+      .half { min-width: 220px; }
+    }
+
+    /* small visual tweaks */
+    label small { color:#666; font-weight:400; }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar container-fluid" id="home">
+    <div class="logo"><a href="#"><img src="../Image/staarbox.png" height="60" width="100" alt="StaarBox"></a></div>
+    <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+    <div class="nav-links" id="navLinks">
+      <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../Aboutus/" class="active">Aboutus</a></li>
+      <li><a href="../Contactus/">Contact</a></li>
+    </ul></div>
+  </nav>
+</header>
+
+<div class="checkout-container">
+  <div class="checkout-form" role="main" aria-labelledby="checkoutHeading">
+    <h2 id="checkoutHeading" class="section-title">Customer Details</h2>
+
+    <form id="checkoutForm" autocomplete="on" novalidate>
+      <div id="customersContainer">
+        <template id="customerTemplate">
+          <div class="customer-card customer-form" data-customer-index="{index}">
+            <div class="customer-header">
+              <div style="font-weight:700;">Customer <span class="customer-number">{num}</span></div>
+              <div>
+                <button type="button" class="remove-customer" data-action="remove">Remove</button>
+              </div>
+            </div>
+
+            <!-- dynamic fields -->
+            <div class="customer-fields"></div>
+
+            <div class="form-row" style="margin-top:8px;">
+              <div class="form-group half">
+                <label>Egg Preferred</label>
+                <select data-key="isEggadded" class="c_egg egg-select">
+                  <option value="false" selected>No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- <div class="add-user-row">
+        <button type="button" id="addUserBtn" class="small-btn">+ Add User</button>
+        <div class="muted">Billing details are common for all users. Choose a plan and egg preference per customer.</div>
+      </div> -->
+
+      <div class="form-group">
+        <label>Delivery Notes (Optional)</label>
+        <textarea id="s_notes" rows="3" placeholder="Any special instructions for delivery"></textarea>
+        <div class="error" id="err_s_notes"></div>
+      </div>
+
+      <div class="left-alone">
+        <label><input type="checkbox" id="useSame" checked> Use this as billing address</label>
+      </div>
+
+      <div id="billingForm" style="display:none; margin-top:6px;">
+        <h2 class="section-title">Billing Details</h2>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>First Name</label>
+            <input type="text" data-key="firstName" id="b_fname" pattern="[A-Za-z ]+" title="Only letters allowed">
+          </div>
+          <div class="form-group half">
+            <label>Last Name</label>
+            <input type="text" data-key="lastName" id="b_lname" pattern="[A-Za-z ]+" title="Only letters allowed">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Email</label>
+            <input type="email" data-key="email" id="b_email">
+          </div>
+          <div class="form-group half">
+            <label>Company Name (Optional)</label>
+            <input type="text" data-key="companyName" id="b_company" placeholder="Enter Company Name" pattern="[A-Za-z0-9 &.-]+">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Phone</label>
+            <input type="text" data-key="phone" id="b_phone" pattern="[0-9]{10}" maxlength="10" title="Enter 10-digit phone number">
+          </div>
+          <div class="form-group half">
+            <label>Pincode</label>
+            <input type="text" data-key="pincode" id="b_zip" pattern="[0-9]{6}" maxlength="6" title="Enter 6-digit pincode">
+          </div>
+        </div>
+
+        <div class="billing-dynamic"></div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>GST Number (Optional)</label>
+            <input type="text" data-key="gstNumber" id="b_gst" placeholder="Enter GST Number" pattern="^([0-9]{2})([A-Z]{5})([0-9]{4})([A-Z]{1})(Z{1})([0-9A-Z]{1})$">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="pay-btn" id="saveBtn">Save</button>
+    </form>
+  </div>
+</div>
+
+<div class="hidden-summary" aria-hidden="true">
+  <span id="planName"></span>
+  <span id="basePrice"></span>
+  <span id="cgst"></span>
+  <span id="sgst"></span>
+  <span id="discountAmt"></span>
+  <span id="totalPrice"></span>
+</div>
+
+<script>
+/************* Utilities ****************/
+function calculateAge(dob) {
+  if (!dob) return 0;
+  const birth = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+
+/************* Read plan / price & show summary *************/
+const params = new URLSearchParams(window.location.search);
+const plan = params.get("plan") || "Standard";
+const price = parseFloat(params.get("price")) || 0;
+const cgst = price * 0.025;
+const sgst = price * 0.025;
+const total = price + cgst + sgst;
+try { localStorage.setItem("Amount", total); } catch (e) {}
+if (document.getElementById("planName")) document.getElementById("planName").textContent = plan;
+if (document.getElementById("basePrice")) document.getElementById("basePrice").textContent = "₹" + price.toFixed(2);
+if (document.getElementById("cgst")) document.getElementById("cgst").textContent = "₹" + cgst.toFixed(2);
+if (document.getElementById("sgst")) document.getElementById("sgst").textContent = "₹" + sgst.toFixed(2);
+if (document.getElementById("totalPrice")) document.getElementById("totalPrice").textContent = "₹" + total.toFixed(2);
+
+/************* Field configs (kept same as your page) *************/
+const customerFields = [
+  { key: "firstName", label: "First Name", type: "text", required: true },
+  { key: "lastName", label: "Last Name", type: "text", required: false },
+  { key: "email", label: "Email", type: "email", required: true },
+  { key: "phone", label: "Phone", type: "text", required: true, pattern: "^[0-9]{10}$", maxlength: 10 },
+  { key: "pincode", label: "Pincode", type: "text", required: true, pattern: "^[0-9]{6}$", maxlength: 6 },
+
+  { key: "addressLine1", label: "Address Line 1", type: "text", required: true, full: true },
+  { key: "addressLine2", label: "Address Line 2", type: "text", required: false, full: true },
+
+  { key: "district", label: "District", type: "select", required: true, options: [{value:"",text:"Select"},{value:1,text:"MADURAI"}
+ // ,{value:"Office",text:"Office"},{value:"Other",text:"Other"}
+ ] 
+ },
+  { key: "state", label: "State", type: "select", required: true, options: [{value:"",text:"Select"},{value:1,text:"TAMILNADU "}]},
+  { key: "addressType", label: "Address Type", type: "select", required: true, options: [{value:"",text:"Select"},{value:"Home",text:"Home"},{value:"Office",text:"Office"},{value:"Other",text:"Other"}] },
+
+  { key: "deliveryTiming", label: "Delivery Timing", type: "select", required: true,
+    options: [
+      { value: "", text: "Select" },
+      { value: 1, text: "6AM-7AM" },
+      { value: 2, text: "7AM-8AM" },
+      { value: 3, text: "8AM-9:30AM" }
+    ]
+  },
+
+  { key: "gender", label: "Gender", type: "select", required: true, options: [{value:"",text:"Select"},{value:1,text:"Male"},{value:2,text:"Female"}] },
+  { key: "dob", label: "Date of Birth", type: "date", required: true },
+  { key: "diabetic", label: "Do you have diabetes?", type: "select", required: true, options: [{value:"",text:"Select"},{value:"No",text:"No"},{value:"Yes",text:"Yes"}] },
+
+  { key: "allergicToFruits", label: "Are you allergic to any fruits?", type: "select", required: true, options: [{value:"",text:"Select"},{value:"No",text:"No"},{value:"Yes",text:"Yes"}] },
+  { key: "allergicFruitDetails", label: "If yes, specify the fruit(s)", type: "text", required: true, full: true },
+
+  { key: "pregnancyStatus", label: "Are you currently pregnant?", type: "select", required: true, options: [{value:"",text:"Select"},{value:"No",text:"No"},{value:"Yes",text:"Yes"}] }
+];
+
+const billingFields = [
+  { key: "firstName", label: "First Name", type: "text", required: false },
+  { key: "lastName", label: "Last Name", type: "text", required: false },
+  { key: "email", label: "Email", type: "email", required: false },
+  { key: "companyName", label: "Company Name (Optional)", type: "text", required: false },
+  { key: "phone", label: "Phone", type: "text", required: false, pattern: "^[0-9]{10}$", maxlength: 10 },
+  { key: "pincode", label: "Pincode", type: "text", required: false, pattern: "^[0-9]{6}$", maxlength: 6 },
+
+  { key: "addressLine1", label: "Address Line 1", type: "text", required: false, full: true },
+  { key: "addressLine2", label: "Address Line 2", type: "text", required: false, full: true },
+  { key: "district", label: "District", type: "text", required: false },
+  { key: "state", label: "State", type: "text", required: false },
+  { key: "addressType", label: "Address Type", type: "select", required: false, options: [{value:"",text:"Select"},{value:"Home",text:"Home"},{value:"Office",text:"Office"},{value:"Other",text:"Other"}] },
+
+  { key: "gstNumber", label: "GST Number (Optional)", type: "text", required: false, pattern: "^([0-9]{2})([A-Z]{5})([0-9]{4})([A-Z]{1})(Z{1})([0-9A-Z]{1})$" }
+];
+
+const customerGroups = [
+  ["firstName","lastName"],
+  ["email","phone"],
+  ["pincode","district"],
+  ["state","addressType"],
+  ["addressLine1"],
+  ["addressLine2"],
+  ["deliveryTiming","gender"],
+  ["dob","diabetic"],
+  ["allergicToFruits","allergicFruitDetails"],
+  ["pregnancyStatus"]
+];
+
+const billingGroups = [
+  ["firstName","lastName"],
+  ["email","companyName"],
+  ["phone","pincode"],
+  ["addressLine1"],
+  ["addressLine2"],
+  ["district","state"],
+  ["addressType"],
+  ["gstNumber"]
+];
+
+/************* Rendering helpers (kept from original page) *************/
+function getFieldByKey(fields, key) {
+  return fields.find(f => f.key === key);
+}
+
+function makeFieldNode(f, prefill = {}) {
+  const fg = document.createElement("div");
+  fg.className = "form-group";
+  const label = document.createElement("label");
+  label.textContent = f.label;
+  fg.appendChild(label);
+
+  let input;
+  if (f.type === "select") {
+    input = document.createElement("select");
+    input.setAttribute("data-key", f.key);
+    (f.options || []).forEach(opt => {
+      const o = document.createElement("option");
+      o.value = opt.value;
+      o.textContent = opt.text;
+      input.appendChild(o);
+    });
+  } else {
+    input = document.createElement("input");
+    input.type = f.type || "text";
+    input.setAttribute("data-key", f.key);
+    if (f.maxlength) input.maxLength = f.maxlength;
+    if (f.pattern) input.pattern = f.pattern;
+    if (f.placeholder) input.placeholder = f.placeholder;
+  }
+
+  if (f.required) input.required = true;
+  if (prefill[f.key] !== undefined && prefill[f.key] !== null) input.value = prefill[f.key];
+
+  input.classList.add("c_input");
+  fg.appendChild(input);
+
+  const err = document.createElement("div");
+  err.className = "error err_" + f.key;
+  fg.appendChild(err);
+
+  return fg;
+}
+
+function renderGroupedFields(container, fields, groups, prefill = {}) {
+  container.innerHTML = "";
+  groups.forEach(rowKeys => {
+    const row = document.createElement("div");
+    row.className = "form-row";
+    if (rowKeys.length === 1) {
+      const f = getFieldByKey(fields, rowKeys[0]);
+      if (!f) return;
+      const node = makeFieldNode(f, prefill);
+      node.classList.add(f.full ? "full" : "full");
+      row.appendChild(node);
+    } else {
+      rowKeys.forEach(k => {
+        const f = getFieldByKey(fields, k);
+        if (!f) return;
+        const node = makeFieldNode(f, prefill);
+        node.classList.add(f.full ? "full" : "half");
+        row.appendChild(node);
+      });
+    }
+    container.appendChild(row);
+  });
+}
+
+/************* Customer blocks handling *************/
+let customerCount = 0;
+const customersContainer = document.getElementById('customersContainer');
+const templateHTML = document.getElementById('customerTemplate').innerHTML;
+
+function createCustomerCard(prefill = {}) {
+  customerCount++;
+  const html = templateHTML.replace(/{index}/g, customerCount).replace(/{num}/g, customerCount);
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  const node = wrapper.firstElementChild;
+
+  // For the first customer, hide remove button
+  const removeBtn = node.querySelector('[data-action="remove"]');
+  if (customerCount === 1 && removeBtn) removeBtn.style.display = 'none';
+
+  // render grouped fields into .customer-fields
+  const fieldsContainer = node.querySelector('.customer-fields');
+  renderGroupedFields(fieldsContainer, customerFields, customerGroups, prefill);
+
+  // append a small pincode status element near pincode field (for UX)
+  const pinInput = fieldsContainer.querySelector('[data-key="pincode"]');
+  if (pinInput) {
+    let existing = fieldsContainer.querySelector('.pin-status');
+    if (!existing) {
+      const pinStatus = document.createElement('div');
+      pinStatus.className = 'pin-status muted';
+      pinStatus.style.marginTop = '6px';
+      pinStatus.style.fontSize = '13px';
+      pinStatus.id = `pinStatus-${customerCount}`;
+      pinInput.parentElement.appendChild(pinStatus);
+    }
+  }
+
+  // Setup event listeners for dynamic behavior inside this card
+  fieldsContainer.addEventListener('change', (e) => {
+    const target = e.target;
+    // allergic toggle
+    if (target.getAttribute('data-key') === 'allergicToFruits') {
+      const spec = fieldsContainer.querySelector('[data-key="allergicFruitDetails"]')?.closest('.form-group');
+      if (spec) spec.style.display = (target.value === 'Yes') ? 'block' : 'none';
+      if (target.value !== 'Yes') {
+        const inp = fieldsContainer.querySelector('[data-key="allergicFruitDetails"]');
+        if (inp) inp.value = '';
+      }
+    }
+
+    // pregnancy logic
+    if (target.getAttribute('data-key') === 'gender' || target.getAttribute('data-key') === 'dob') {
+      const genderVal = fieldsContainer.querySelector('[data-key="gender"]')?.value;
+      const dobVal = fieldsContainer.querySelector('[data-key="dob"]')?.value;
+      const age = calculateAge(dobVal);
+      const preg = fieldsContainer.querySelector('[data-key="pregnancyStatus"]')?.closest('.form-group');
+      if (preg) {
+        if (genderVal === 'Female' && age > 18) preg.style.display = 'block';
+        else {
+          preg.style.display = 'none';
+          const sel = fieldsContainer.querySelector('[data-key="pregnancyStatus"]');
+          if (sel) sel.value = "";
+        }
+      }
+    }
+  });
+
+  // run initial toggle state
+  setTimeout(() => {
+    fieldsContainer.querySelectorAll('[data-key="allergicToFruits"]').forEach(t => t.dispatchEvent(new Event('change')));
+    fieldsContainer.querySelectorAll('[data-key="gender"]').forEach(t => t.dispatchEvent(new Event('change')));
+  }, 0);
+
+  customersContainer.appendChild(node);
+  return node;
+}
+
+// init with one empty customer if none exist
+if (!document.querySelectorAll('.customer-card').length) createCustomerCard();
+
+// document.getElementById('addUserBtn').addEventListener('click', function () {
+//   const cards = document.querySelectorAll('.customer-card');
+//   if (cards.length >= 4) { alert("Maximum 4 customers allowed."); return; }
+//   createCustomerCard();
+//   window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+// });
+
+// delegated remove
+customersContainer.addEventListener('click', function (e) {
+  const btn = e.target.closest('[data-action="remove"]');
+  if (!btn) return;
+  const card = btn.closest('.customer-card');
+  if (!card) return;
+  card.remove();
+  const cards = customersContainer.querySelectorAll('.customer-card');
+  customerCount = 0;
+  cards.forEach((c) => {
+    customerCount++;
+    c.setAttribute('data-customer-index', customerCount);
+    const numSpan = c.querySelector('.customer-number');
+    if (numSpan) numSpan.textContent = customerCount;
+    const rem = c.querySelector('[data-action="remove"]');
+    if (rem) rem.style.display = (cards.length > 1) ? 'inline-block' : 'none';
+  });
+});
+
+/************* Delegated change events (additional behaviors) *************/
+customersContainer.addEventListener('change', function (e) {
+  const target = e.target;
+  const card = target.closest('.customer-card');
+  if (!card) return;
+
+  // ensure allergic visibility (this is a duplicate-safe guard)
+  if (target.getAttribute('data-key') === 'allergicToFruits') {
+    const specGroup = card.querySelector('[data-key="allergicFruitDetails"]')?.closest('.form-group');
+    if (specGroup) specGroup.style.display = (target.value === 'Yes') ? 'block' : 'none';
+    if (target.value !== 'Yes') {
+      const input = card.querySelector('[data-key="allergicFruitDetails"]');
+      if (input) input.value = '';
+    }
+  }
+
+  // pregnancy check (duplicate safe)
+  if (target.getAttribute('data-key') === 'gender' || target.getAttribute('data-key') === 'dob') {
+    const gender = card.querySelector('[data-key="gender"]')?.value;
+    const dob = card.querySelector('[data-key="dob"]')?.value;
+    const age = calculateAge(dob);
+    const pregGroup = card.querySelector('[data-key="pregnancyStatus"]')?.closest('.form-group');
+    if (pregGroup) {
+      if (gender === 'Female' && age > 18) pregGroup.style.display = 'block';
+      else {
+        pregGroup.style.display = 'none';
+        const s = card.querySelector('[data-key="pregnancyStatus"]');
+        if (s) s.value = '';
+      }
+    }
+  }
+});
+
+/************* Billing toggle *************/
+document.getElementById("useSame").addEventListener("change", function () {
+  document.getElementById("billingForm").style.display = this.checked ? "none" : "block";
+});
+document.getElementById("billingForm").style.display = document.getElementById("useSame").checked ? "none" : "block";
+
+/************* Geocoding helper *************/
+/**
+ * NOTE: maps.co geocoding used below which does not require an API key.
+ * If you have a different provider, replace the URL and headers accordingly.
+ */
+async function getLatLongFromAddress(fullAddress) {
+  if (!fullAddress || !String(fullAddress).trim()) return null;
+
+    const apiKey = "691e009576b9d956706916fil56d0ca"; 
+ const url = `https://geocode.maps.co/search?api_key=${apiKey}&q=${encodeURIComponent(fullAddress)};
+`;
+
+   try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data && data.length > 0) {
+      return {
+        lat: data[0].lat,
+        lon: data[0].lon
+      };
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Geocode error:", err);
+    return null;
+  }
+}
+
+/************* Pincode availability check (delegated) *************/
+// When any customer pincode input loses focus, validate it via API and show status
+customersContainer.addEventListener('blur', function (e) {
+  const t = e.target;
+  if (t && t.getAttribute && t.getAttribute('data-key') === 'pincode') {
+    const card = t.closest('.customer-card');
+    validatePincodeForCard(t.value.trim(), card);
+  }
+}, true);
+
+async function validatePincodeForCard(pin, card) {
+  const pinMessageEl = card ? card.querySelector('.pin-status') : null;
+  if (!pinMessageEl) return false;
+
+  if (!pin || pin.length !== 6 || isNaN(pin)) {
+    pinMessageEl.style.color = "red";
+    pinMessageEl.textContent = "Invalid pincode format";
+    return false;
+  }
+const token = localStorage.getItem("accessToken");  // ⬅ get saved token
+  try {
+    // Replace with your actual pincode-check endpoint if different.
+    const url = `http://31.97.230.54:8080/api/checkPinCodeAvailability?pincode=${encodeURIComponent(pin)}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        // keep or replace token as needed
+        "Authorization": token ? `Bearer ${token}` : "",   // ⬅ use dynamic token
+      }
+    });
+
+    if (!response.ok) {
+      pinMessageEl.style.color = "red";
+      pinMessageEl.textContent = "Pincode check failed. Try again.";
+      return false;
+    }
+
+    const data = await response.json();
+    if (data.valid) {
+      pinMessageEl.style.color = "green";
+      pinMessageEl.textContent = "Pincode verified ✓";
+      // optionally prefill district/state if returned
+      // if (data.districtId) card.querySelector('[data-key="district"]').value = data.districtId;
+      // if (data.stateId) card.querySelector('[data-key="state"]').value = data.stateId;
+      return true;
+    } else {
+      pinMessageEl.style.color = "red";
+      pinMessageEl.textContent = "Service not available in this pincode";
+      return false;
+    }
+  } catch (err) {
+    console.error("Pincode error:", err);
+    if (pinMessageEl) {
+      pinMessageEl.style.color = "red";
+      pinMessageEl.textContent = "Pincode check failed. Try again.";
+    }
+    return false;
+  }
+}
+
+/************* Form submission -> send to /api/save (array) *************/
+        document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+        
+          const cards = document.querySelectorAll('.customer-card');
+          if (!cards.length) { alert('Please add customer details'); return; }
+        
+          const resultArray = [];
+          let invalid = false;
+        // district mapping
+const districtMap = {
+  1: "Madurai",
+  2: "Chennai",
+  3: "Coimbatore",
+  // add more if needed
+};
+
+// state mapping
+const stateMap = {
+  1: "Tamil Nadu",
+  2: "Kerala",
+  3: "Karnataka",
+  // add more if needed
+};
+          // sequentially process cards (to allow geocoding per card)
+          for (const card of cards) {
+            const read = (k) => {
+              const el = card.querySelector(`[data-key="${k}"]`);
+              return el ? (el.value || '').toString().trim() : '';
+            };
+        
+            const firstName = read('firstName');
+            const lastName = read('lastName');
+            const email = read('email');
+            const phone = read('phone');
+            const pincode = read('pincode');
+        
+            if (!firstName || !email || !phone || !pincode) invalid = true;
+
+            // convert raw values
+let districtVal = read('district');
+let stateVal = read('state');
+
+// if district/state are numbers, convert them to names
+const districtName = districtMap[districtVal] || districtVal;
+const stateName = stateMap[stateVal] || stateVal;
+        
+            // build full address and geocode
+            const fullAddress = [ 
+              //read('addressLine1'), 
+            //read('addressLine2'),
+            districtName, stateName, read('pincode') ].filter(Boolean).join(', ');
+            let lat = null, lon = null;
+            try {
+              const loc = await getLatLongFromAddress(fullAddress);
+              if (loc) { lat = Number(loc.lat); lon = Number(loc.lon); }
+            } catch (err) { console.warn('geocode failed', err); }
+        
+            // boolean flags
+            const allergic = (read('allergicToFruits') || '').toString().toLowerCase() === 'yes';
+            const fruitstoAvoid = allergic ? (read('allergicFruitDetails') || '') : '';
+            const preg = (read('pregnancyStatus') || '').toString().toLowerCase() === 'yes';
+        
+            // egg pref
+            const eggEl = card.querySelector('[data-key="isEggadded"], .c_egg');
+            let eggPref = false;
+            if (eggEl) { const v = (eggEl.value || '').toString().toLowerCase(); eggPref = (v === 'true' || v === 'yes'); }
+        
+            // districtId/stateId are taken from select value (your selects use numeric values)
+            const districtId = (() => {
+              const v = read('district'); return v === '' ? null : Number(v);
+            })();
+            const stateId = (() => {
+              const v = read('state'); return v === '' ? null : Number(v);
+            })();
+        
+            const delivaryTimingId = (() => {
+              const v = read('deliveryTiming'); return v === '' ? null : Number(v);
+            })();
+        
+            const genderId = (() => {
+              const v = read('gender'); return v === '' ? null : Number(v);
+            })();
+        
+            const obj = {
+              name: `${firstName}${lastName ? ' ' + lastName : ''}`,
+              mailId: email,
+              dOB: read('dob') || null,
+              genderId: genderId,
+              addressLine1: read('addressLine1') || '',
+              addressLine2: read('addressLine2') || '',
+              pinCode: pincode || '',
+              districtId: districtId,
+              stateId: stateId,
+              addressType: read('addressType') || '',
+              delivaryTimingId: delivaryTimingId,
+              isPragnent: !!preg,
+              isAllergic: !!allergic,
+              fruitstoAvoid: fruitstoAvoid || '',
+              phoneNumber: phone || '',
+              latitude: lat,
+              longtitude: lon,
+              isEggPreferd: !!eggPref,
+              B_firstName: '',
+              B_lastName: '',
+              B_email: '',
+              B_phone: '',
+              B_address: '',
+              B_companyName: '',
+              B_gstNumber: '',
+              B_landmark: '',
+              B_city: read('district') || '',
+              B_state: read('state') || ''
+            };
+        
+            resultArray.push(obj);
+          }
+        
+          if (invalid) { alert('Please fill required fields: First Name, Email, Phone and Pincode for all customers.'); return; }
+        
+          // billing values
+          const sameAsShipping = document.getElementById('useSame').checked;
+          const billingVals = {
+            b_firstName: '',
+            b_lastName: '',
+            b_email: '',
+            b_phone: '',
+            b_address: '',
+            b_companyName: '',
+            b_gstNumber: '',
+            b_landmark: '',
+            b_city: '',
+            b_state: ''
+          };
+        
+          if (sameAsShipping) {
+            const firstCard = document.querySelector('.customer-card');
+            if (firstCard) {
+              billingVals.b_firstName = (firstCard.querySelector('[data-key="firstName"]')?.value || '').trim();
+              billingVals.b_lastName  = (firstCard.querySelector('[data-key="lastName"]')?.value || '').trim();
+              billingVals.b_email     = (firstCard.querySelector('[data-key="email"]')?.value || '').trim();
+              billingVals.b_phone     = (firstCard.querySelector('[data-key="phone"]')?.value || '').trim();
+              billingVals.b_address   = (firstCard.querySelector('[data-key="addressLine1"]')?.value || '').trim();
+              billingVals.b_city      = (firstCard.querySelector('[data-key="district"]')?.value || '').trim();
+              billingVals.b_state     = (firstCard.querySelector('[data-key="state"]')?.value || '').trim();
+              billingVals.b_landmark  = '';
+            }
+          } else {
+            billingVals.b_firstName = (document.getElementById('b_fname')?.value || '').trim();
+            billingVals.b_lastName  = (document.getElementById('b_lname')?.value || '').trim();
+            billingVals.b_email     = (document.getElementById('b_email')?.value || '').trim();
+            billingVals.b_phone     = (document.getElementById('b_phone')?.value || '').trim();
+            billingVals.b_address   = (document.querySelector('#billingForm [data-key="addressLine1"]')?.value || '').trim();
+            billingVals.b_companyName = (document.getElementById('b_company')?.value || '').trim();
+            billingVals.b_gstNumber   = (document.getElementById('b_gst')?.value || '').trim();
+            billingVals.b_landmark    = '';
+            billingVals.b_city = (document.querySelector('#billingForm [data-key="district"]')?.value || '').trim();
+            billingVals.b_state = (document.querySelector('#billingForm [data-key="state"]')?.value || '').trim();
+          }
+        
+          // attach billing to every object as B_ fields
+          resultArray.forEach(item => {
+            item.B_firstName = billingVals.b_firstName || '';
+            item.B_lastName  = billingVals.b_lastName  || '';
+            item.B_email     = billingVals.b_email     || '';
+            item.B_phone     = billingVals.b_phone     || '';
+            item.B_address   = billingVals.b_address   || '';
+            item.B_companyName = billingVals.b_companyName || '';
+            item.B_gstNumber   = billingVals.b_gstNumber || '';
+            item.B_landmark    = billingVals.b_landmark || '';
+            item.B_city = billingVals.b_city || item.B_city || '';
+            item.B_state = billingVals.b_state || item.B_state || '';
+          });
+        
+          // send to save API
+          try {
+            const token = localStorage.getItem('accessToken') || '';
+            const url = 'http://31.97.230.54:8080/api/save';
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+              },
+              body: JSON.stringify(resultArray)
+            });
+        
+            if (!res.ok) {
+              const text = await res.text();
+              console.error('Save API error:', text);
+              alert('Save failed: ' + text);
+              return;
+            }
+        
+            const json = await res.json();
+            console.log('Save success:', json);
+            alert('Saved successfully!');
+            // optional: redirect or clear form
+          } catch (err) {
+            console.error('Save request failed:', err);
+            alert('Unexpected error while saving. See console.');
+          }
+        });
+
+/************* Menu toggle (kept) *************/
+const toggle = document.getElementById("menuToggle");
+const links = document.getElementById("navLinks");
+if (toggle) toggle.addEventListener("click", () => links.classList.toggle("active"));
+</script>
+</body>
+</html>
