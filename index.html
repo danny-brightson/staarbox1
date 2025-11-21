@@ -47,7 +47,7 @@ rel="stylesheet"
   <div class="nav-links" id="navLinks">
     <ul>
       <li class="profile-nav-item">
-  <a href="./login/">
+  <a href="./login/" id="signbtn">
     <i class="fa-solid fa-user"></i>
     <span>Sign In</span>
   </a>
@@ -1085,9 +1085,48 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = './login/';
   });
 </script>
+<script>
+  document.getElementById('signbtn').addEventListener('click', function () {
+    // read localStorage keys (used earlier in your pages)
+    const amountRaw = localStorage.getItem('Amount');
+    const amount = amountRaw ? Number(amountRaw) : 0;
+    const customerId = localStorage.getItem('CustomerId'); // presence means customer profile exists
+    const token = localStorage.getItem('accessToken');     // presence means signed-in (session)
+
+    // debug (optional)
+    // console.log({ amountRaw, amount, customerId, token });
+
+    // 1) If amount exists (positive) -> go to home page
+    if (amount && !Number.isNaN(amount) && amount > 0) {
+      // change to your real home URL if different
+     alert("You have an active subscription. Redirecting to home page.");
+      window.location.href = '/index.html';
+      return;
+    }
+
+    // 2) If customerId exists -> go to subscription page
+    if (customerId) {
+      // change to your subscription page URL
+      window.location.href = '../checkout/payment.html';
+      return;
+    }
+
+    // 3) If user is signed in (has token) -> go to checkout
+    if (token) {
+      // change to your checkout page URL
+      window.location.href = './checkout/form.html';
+      return;
+    }
+
+    // 4) Otherwise send user to login page (so they can sign-in)
+    // change to your actual login page URL
+    window.location.href = './login/';
+  });
+</script>
 
 </body>
 </html> 
+
 
 
 
