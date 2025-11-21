@@ -571,7 +571,7 @@ const token = localStorage.getItem("accessToken");  // ⬅ get saved token
     }
 
     const data = await response.json();
-    if (data.valid) {
+    if (data === true) {
       pinMessageEl.style.color = "green";
       pinMessageEl.textContent = "Pincode verified ✓";
       // optionally prefill district/state if returned
@@ -804,5 +804,6 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
