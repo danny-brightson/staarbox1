@@ -1086,46 +1086,33 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 </script>
 <script>
-  document.getElementById('signbtn').addEventListener('click', function () {
-    // read localStorage keys (used earlier in your pages)
-    const amountRaw = localStorage.getItem('Amount');
-    const amount = amountRaw ? Number(amountRaw) : 0;
-    const customerId = localStorage.getItem('CustomerId'); // presence means customer profile exists
-    const token = localStorage.getItem('accessToken');     // presence means signed-in (session)
+ document.getElementById('signbtn').addEventListener('click', function () {
 
-    // debug (optional)
-    // console.log({ amountRaw, amount, customerId, token });
+  const userName   = localStorage.getItem("staarbox_user_name"); // logged-in user name
+  const customerId = localStorage.getItem('CustomerId');          // customer profile exists
+  const token      = localStorage.getItem('accessToken');         // session available
 
-    // 1) If amount exists (positive) -> go to home page
-    if (amount && !Number.isNaN(amount) && amount > 0) {
-      // change to your real home URL if different
-     alert("You have an active subscription. Redirecting to home page.");
-      window.location.href = '/index.html';
-      return;
-    }
+  // 1️⃣ Not logged in → send to login
+  if (!userName || !token) {
+    window.location.href = "./login/";
+    return;
+  }
 
-    // 2) If customerId exists -> go to subscription page
-    if (customerId) {
-      // change to your subscription page URL
-      window.location.href = '../checkout/payment.html';
-      return;
-    }
+  // 2️⃣ Logged in + Customer profile exists → payment page
+  if (customerId) {
+    window.location.href = "./checkout/Payment.htm";
+    return;
+  }
 
-    // 3) If user is signed in (has token) -> go to checkout
-    if (token) {
-      // change to your checkout page URL
-      window.location.href = './checkout/form.html';
-      return;
-    }
+  // 3️⃣ Logged in + No customer profile → form page
+  window.location.href = "./checkout/form.html";
+});
 
-    // 4) Otherwise send user to login page (so they can sign-in)
-    // change to your actual login page URL
-    window.location.href = './login/';
-  });
 </script>
 
 </body>
 </html> 
+
 
 
 
