@@ -257,7 +257,7 @@
     }
 
     // ---------- helper: verify payment on server ----------
-    async function verifyPaymentOnServer(payload){
+    async function verifyPaymentOnServer({ orderId, paymentId, signature, customerIds }){
       const accessToken = localStorage.getItem('accessToken') || '';
       const qs = new URLSearchParams({
     orderId,
@@ -317,13 +317,13 @@
             try {
               payBtn.textContent = 'Verifying...';
               // call verify with the server-expected payload
+              const customerIds = Array.isArray(selectedCustomers) ? selectedCustomers.map(c=>c.id).join(',') : String(customerId);
+
               const payload = {
                 orderId: response.razorpay_order_id,
                 paymentId: response.razorpay_payment_id,
                 signature: response.razorpay_signature,
-                customerIds: Array.isArray(customerId)
-    ? customerId.join(",")          // → "15,16"
-    : String(customerId)
+                customerIds
                 // planId: Number(selected.planId),
                 // promo: appliedPromo ? appliedPromo.label : null,
                 // orderId: serverResp.id || serverResp.orderId
@@ -384,6 +384,7 @@
   </script>
 </body>
 </html>
+
 
 
 
