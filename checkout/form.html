@@ -555,7 +555,7 @@ async function validatePincodeForCard(pin, card) {
 const token = localStorage.getItem("accessToken");  // ⬅ get saved token
   try {
     // Replace with your actual pincode-check endpoint if different.
-    const url = `http://api.staarbox.in/api/checkPinCodeAvailability?pincode=${encodeURIComponent(pin)}`;
+    const url = `https://api.staarbox.in/api/checkPinCodeAvailability?pincode=${encodeURIComponent(pin)}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -770,7 +770,7 @@ const stateName = stateMap[stateVal] || stateVal;
           // send to save API
           try {
             const token = localStorage.getItem('accessToken') || '';
-            const url = 'http://api.staarbox.in/api/save';
+            const url = 'https://api.staarbox.in/api/save';
             const res = await fetch(url, {
               method: 'POST',
               headers: {
@@ -804,4 +804,5 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
