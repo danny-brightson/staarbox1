@@ -821,7 +821,9 @@ const stateName = stateMap[stateVal] || stateVal;
   if (response.ok) {
     // if (result.accessToken) localStorage.setItem("accessToken", result.accessToken);
     // if (result.refreshToken) localStorage.setItem("refreshToken", result.refreshToken);
-    if (result.id) localStorage.setItem("CustomerId", result.id);
+   if (Array.isArray(result) && result.length > 0 && result[0].id != null) {
+  localStorage.setItem("CustomerId", String(result[0].id)); // store id as string
+}
 
     document.getElementById("saveBtn").style.display = "none";
    // alert("Checkout saved successfully!");
@@ -844,6 +846,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
