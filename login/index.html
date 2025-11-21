@@ -266,7 +266,7 @@ try {
   savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^91/, '');
 
   const payload = {
-    phoneNumber: savedPhoneNormalized,
+    phoneNumber: window._pendingUser.phone,
     IsRegistered: true
   };
 
@@ -329,6 +329,7 @@ try {
   </script>
 </body>
 </html>
+
 
 
 
