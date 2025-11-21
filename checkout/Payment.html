@@ -268,7 +268,6 @@
       const res = await fetch(`${API_BASE}/api/payment/verify?${qs}`, {
         method: 'POST',
         headers: {
-          'Content-Type':'application/json',
           'Authorization': accessToken ? `Bearer ${accessToken}` : ''
         }
       });
@@ -331,20 +330,21 @@
                 // orderId: serverResp.id || serverResp.orderId
               };
 
-              const verifyResult = await verifyPaymentOnServer(payload);
+const verifyResult = await verifyPaymentOnServer(payload);
+console.log('verifyResult (parsed):', verifyResult);
 
-              // adapt this check to your API response format
-              const ok = verifyResult && (verifyResult.ok || verifyResult.success || verifyResult.verified || verifyResult.status === 'OK');
-              if(ok){
-                alert('✅ Payment successful!');
-                try { localStorage.setItem('Amount'); } catch(e){}
-                // navigate to thank you or order summary
-                window.location.href = '/Thankyou/index.html';
-              } else {
-                console.warn('Verification response', verifyResult);
-                alert('Payment verification failed — please contact support.');
-                payBtn.disabled = false; payBtn.textContent = 'Pay with Razorpay';
-              }
+const body = verifyResult && verifyResult.body;
+const ok = body && (body.ok === true || body.success === true || body.verified === true || body.status === 'OK' || body.status === 'success');
+
+if(ok){
+  alert('✅ Payment successful!');
+  window.location.href = '/Thankyou/index.html';
+} else {
+  const serverMsg = body && (body.message || body.error || JSON.stringify(body));
+  console.warn('Verification response (not OK):', verifyResult);
+  alert('Payment verification failed — please contact support. ' + (serverMsg ? '\nServer: '+serverMsg : ''));
+  payBtn.disabled = false; payBtn.textContent = 'Pay with Razorpay';
+}
             } catch (err) {
               console.error('Verify error', err);
               alert('Payment verification failed: ' + (err.message || 'Error'));
@@ -386,6 +386,7 @@
   </script>
 </body>
 </html>
+
 
 
 
