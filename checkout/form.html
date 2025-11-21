@@ -825,7 +825,7 @@ const stateName = stateMap[stateVal] || stateVal;
 
     document.getElementById("saveBtn").style.display = "none";
    // alert("Checkout saved successfully!");
-   window.location.href = './checkout/payment.html';
+   window.location.href = '/checkout/Payment.html';
   } else {
     // server returned JSON error info
     const msg = result.message || JSON.stringify(result);
@@ -844,6 +844,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
