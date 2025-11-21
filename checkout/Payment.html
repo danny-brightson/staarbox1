@@ -316,7 +316,7 @@
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                cusId: Array.isArray(customerId)
+                customerIds: Array.isArray(customerId)
     ? customerId.join(",")          // → "15,16"
     : String(customerId),
                 planId: Number(selected.planId),
@@ -379,6 +379,7 @@
   </script>
 </body>
 </html>
+
 
 
 
