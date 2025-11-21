@@ -270,7 +270,7 @@ try {
     IsRegistered: true
   };
 
-  const res = await fetch('http://api.staarbox.in/api/verify-otp', {
+  const res = await fetch('https://api.staarbox.in/api/verify-otp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -329,5 +329,6 @@ try {
   </script>
 </body>
 </html>
+
 
 
