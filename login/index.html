@@ -258,50 +258,65 @@
         // optional: call backend to create/update user profile here (fetch POST)
 
         // ------------ call server verify-otp API (replaces previous try block) ------------
+// Put this inside your try block where you currently call verify-otp
 try {
-  // Normalize phone to digits only and remove common prefixes so it matches your curl sample
-  let savedPhoneNormalized = (window._pendingUser.phone || '').replace(/\D/g, '');
-  // If your backend expects just 10-digit mobile (like the curl), trim country code prefixes:
-  // remove leading 0, remove leading 91 or +91 if present
-  savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^91/, '');
+  // Normalize phone (same as you had)
+  let savedPhoneNormalized = (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '').replace(/\D/g, '');
+  savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^\+?91/, '').replace(/^91/, '');
 
-  const payload = {
-    phoneNumber: savedPhoneNormalized,
-    IsRegistered: true
-  };
+  const payload = { phoneNumber: savedPhoneNormalized, IsRegistered: true };
 
-  const res = await fetch('https://api.staarbox.in/api/verify-otp', {
+  // Use the HTTPS hostname if your page is HTTPS. IMPORTANT: change to your HTTPS API origin
+  const apiUrl = 'https://api.staarbox.in/api/verify-otp'; // <- use HTTPS and your domain, not raw IP
+
+  console.log('[verify-otp] Sending request to:', apiUrl, 'payload:', payload);
+
+  const res = await fetch(apiUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    mode: 'cors',                // ensure we intend cross-origin request
+    cache: 'no-cache',
+    credentials: 'omit',         // change to 'include' if you need cookies
+    headers: {
+      'Content-Type': 'application/json'
+      // add Authorization here only if required by your API
+      // 'Authorization': 'Bearer ...'
+    },
     body: JSON.stringify(payload)
   });
 
-  const text = await res.text();
-  // try to parse JSON if possible
-  let json;
+  console.log('[verify-otp] fetch completed. status:', res.status, res.statusText);
+
+  // read text / json
+  const text = await res.text().catch(() => '');
+  let json = null;
   try { json = text ? JSON.parse(text) : null; } catch(e) { json = null; }
 
   if (!res.ok) {
-    console.warn('verify-otp API failed:', res.status, text);
-    // optional: surface a non-blocking message to the user
-    showStatus('⚠️ Logged in but server verify failed (non-blocking).', false);
+    console.warn('[verify-otp] server returned not-ok:', res.status, text);
+    // Common browser console message for CORS: check console for an error before this line
+    showStatus('⚠️ Login succeeded but server verify returned an error. See console.', false);
   } else {
-    console.log('verify-otp success', json ?? text);
+    console.log('[verify-otp] success payload:', json ?? text);
     showStatus('✅ Login synced with server.', false);
 
-    // Optional: if backend returns tokens or an id, save them
     if (json) {
       if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
       if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
       if (json.id) localStorage.setItem('CustomerId', json.id);
     }
   }
+
 } catch (err) {
-  console.error('Error calling verify-otp API:', err);
-  // keep it non-blocking — still redirect to checkout
+  // This block will catch network / blocked-by-CORS / mixed-content errors
+  console.error('[verify-otp] fetch error:', err);
+
+  // Helpful hint for you / QA
+  if (typeof err === 'object' && err.message && err.message.indexOf('Failed to fetch') !== -1) {
+    console.error('Possible causes: CORS failure, mixed-content (HTTPS page calling HTTP API), network error, or blocked by browser/extension.');
+  }
+
   showStatus('⚠️ Logged in but server sync failed. Continuing...', false);
 }
-// -----------------------------------------------------------------------------------
 
 
         /**********************************/
@@ -329,6 +344,7 @@ try {
   </script>
 </body>
 </html>
+
 
 
 
