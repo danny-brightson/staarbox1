@@ -824,7 +824,8 @@ const stateName = stateMap[stateVal] || stateVal;
     if (result.id) localStorage.setItem("CustomerId", result.id);
 
     document.getElementById("saveBtn").style.display = "none";
-    alert("Checkout saved successfully!");
+   // alert("Checkout saved successfully!");
+    window.location.href = "/checkout/payment.html";
   } else {
     // server returned JSON error info
     const msg = result.message || JSON.stringify(result);
@@ -843,6 +844,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
