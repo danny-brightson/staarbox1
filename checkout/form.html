@@ -768,33 +768,69 @@ const stateName = stateMap[stateVal] || stateVal;
           });
         
           // send to save API
-          try {
-            const token = localStorage.getItem('accessToken') || '';
-            const url = 'https://api.staarbox.in/api/save';
-            const res = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token ? `Bearer ${token}` : ''
-              },
-              body: JSON.stringify(resultArray)
-            });
-        
-            if (!res.ok) {
-              const text = await res.text();
-              console.error('Save API error:', text);
-              alert('Save failed: ' + text);
-              return;
-            }
-        
-            const json = await res.json();
-            console.log('Save success:', json);
-            alert('Saved successfully!');
-            // optional: redirect or clear form
-          } catch (err) {
-            console.error('Save request failed:', err);
-            alert('Unexpected error while saving. See console.');
-          }
+              try {
+  const response = await fetch("https://api.staarbox.in/api/save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  // debug info for easier diagnosis
+  console.log("Save response status:", response.status, response.statusText);
+  console.log("Save response headers:", Array.from(response.headers.entries()));
+
+  // read raw text first (safe even if body is empty)
+  const text = await response.text();
+
+  // if empty string, handle it gracefully
+  if (!text || text.trim() === "") {
+    if (response.ok) {
+      console.log("Save request succeeded with empty body.");
+      // fallback behavior: you can still treat as success
+      document.getElementById("saveBtn").style.display = "none";
+      alert("Checkout saved (no response body).");
+    } else {
+      // non-OK with empty body
+      alert("Save request failed: server returned status " + response.status);
+    }
+    return;
+  }
+
+  // attempt to parse JSON (in try/catch in case server returned non-JSON)
+  let result;
+  try {
+    result = JSON.parse(text);
+  } catch (err) {
+    console.warn("Response not JSON:", text);
+    if (response.ok) {
+      // server sent plain text success message
+      document.getElementById("saveBtn").style.display = "none";
+      alert("Checkout saved: " + text);
+    } else {
+      alert("Save request failed: " + text);
+    }
+    return;
+  }
+
+  // now we have parsed JSON in `result`
+  console.log("Save result (JSON):", result);
+
+  if (response.ok) {
+    // if (result.accessToken) localStorage.setItem("accessToken", result.accessToken);
+    // if (result.refreshToken) localStorage.setItem("refreshToken", result.refreshToken);
+    if (result.id) localStorage.setItem("CustomerId", result.id);
+
+    document.getElementById("saveBtn").style.display = "none";
+    alert("Checkout saved successfully!");
+  } else {
+    // server returned JSON error info
+    const msg = result.message || JSON.stringify(result);
+    alert("❌ " + msg);
+  }
+} catch (err) {
+  console.error("Save request failed:", err);
+  alert("An unexpected error occurred. Please try again.");
+}
         });
 
 /************* Menu toggle (kept) *************/
@@ -804,6 +840,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
