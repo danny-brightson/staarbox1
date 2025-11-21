@@ -333,8 +333,20 @@
 const verifyResult = await verifyPaymentOnServer(payload);
 console.log('verifyResult (parsed):', verifyResult);
 
-const body = verifyResult && verifyResult.body;
-const ok = body && (body.ok === true || body.success === true || body.verified === true || body.status === 'OK' || body.status === 'success');
+// normalize body: server may return an array [ { ... } ] or an object
+let body = verifyResult;
+if (Array.isArray(verifyResult) && verifyResult.length) body = verifyResult[0];
+
+// some servers return string status like "Payment Verified"
+const statusStr = body && (body.status || body.message || body.result || '').toString();
+
+// consider it OK when one of the common flags is present OR status contains "verified"
+const ok = Boolean(
+  (body && (body.ok === true || body.success === true || body.verified === true)) ||
+  /verified/i.test(statusStr) ||
+  statusStr === 'OK' ||
+  statusStr === 'success'
+);
 
 if(ok){
   alert('✅ Payment successful!');
@@ -386,6 +398,7 @@ if(ok){
   </script>
 </body>
 </html>
+
 
 
 
