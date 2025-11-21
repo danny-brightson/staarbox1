@@ -260,13 +260,13 @@
         // ------------ call server verify-otp API (replaces previous try block) ------------
 try {
   // Normalize phone to digits only and remove common prefixes so it matches your curl sample
-  let savedPhoneNormalized = (savedPhone || '').replace(/\D/g, '');
+  let savedPhoneNormalized = (window._pendingUser.phone || '').replace(/\D/g, '');
   // If your backend expects just 10-digit mobile (like the curl), trim country code prefixes:
   // remove leading 0, remove leading 91 or +91 if present
   savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^91/, '');
 
   const payload = {
-    phoneNumber: window._pendingUser.phone,
+    phoneNumber: savedPhoneNormalized,
     IsRegistered: true
   };
 
@@ -329,6 +329,7 @@ try {
   </script>
 </body>
 </html>
+
 
 
 
