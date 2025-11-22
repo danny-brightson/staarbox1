@@ -769,7 +769,7 @@ document.getElementById("checkoutForm").addEventListener("submit", async functio
       if (response.ok) {
         document.getElementById("saveBtn").style.display = "none";
         alert("Checkout saved (no response body).");
-        window.location.href = '../checkout/payment.html';
+       // window.location.href = '../checkout/payment.html';
       } else {
         alert("Save request failed: server returned status " + response.status);
       }
@@ -781,7 +781,7 @@ document.getElementById("checkoutForm").addEventListener("submit", async functio
       if (response.ok) {
         document.getElementById("saveBtn").style.display = "none";
         alert("Checkout saved: " + text);
-        window.location.href = '../checkout/payment.html';
+      //  window.location.href = '../checkout/payment.html';
       } else { alert("Save request failed: " + text); }
       return;
     }
@@ -818,4 +818,5 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
