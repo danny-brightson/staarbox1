@@ -1100,25 +1100,26 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1️⃣ Not logged in → send to login
       //    (we only check userName; token is optional here)
       if (!userName) {
-        window.location.href = "./Staarbox/login/index.html";
+        window.location.href = './login/';
         return;
       }
 
       // 2️⃣ Logged in + Customer profile exists → payment page
       if (customerId) {
         // keep this consistent with subscribeBtn (same path & same case!)
-        window.location.href = "./checkout/Payment.html";
+        window.location.href = './checkout/Payment.html';
         return;
       }
 
       // 3️⃣ Logged in + No customer profile → form page
-      window.location.href = "./checkout/form.html";
+      window.location.href = './checkout/form.html';
     });
   });
 </script>
 
 </body>
 </html> 
+
 
 
 
