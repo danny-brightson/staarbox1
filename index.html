@@ -1086,32 +1086,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 </script>
 <script>
- document.getElementById('signbtn').addEventListener('click', function () {
+  document.addEventListener("DOMContentLoaded", () => {
+    const signbtn = document.getElementById('signbtn');
+    if (!signbtn) return;
 
-  const userName   = localStorage.getItem("staarbox_user_name"); // logged-in user name
-  const customerId = localStorage.getItem('CustomerId');          // customer profile exists
-  const token      = localStorage.getItem('accessToken');         // session available
+    signbtn.addEventListener('click', function (e) {
+      e.preventDefault(); // stop the default <a href="..."> navigation
 
-  // 1️⃣ Not logged in → send to login
-  if (!userName || !token) {
-    window.location.href = "./login/";
-    return;
-  }
+      const userName   = localStorage.getItem("staarbox_user_name"); // logged-in user name
+      const customerId = localStorage.getItem('CustomerId');          // customer profile exists
+      const token      = localStorage.getItem('accessToken');         // session available (optional)
 
-  // 2️⃣ Logged in + Customer profile exists → payment page
-  if (customerId) {
-    window.location.href = "./checkout/Payment.htm";
-    return;
-  }
+      // 1️⃣ Not logged in → send to login
+      //    (we only check userName; token is optional here)
+      if (!userName) {
+        window.location.href = "./Staarbox/login/index.html";
+        return;
+      }
 
-  // 3️⃣ Logged in + No customer profile → form page
-  window.location.href = "./checkout/form.html";
-});
+      // 2️⃣ Logged in + Customer profile exists → payment page
+      if (customerId) {
+        // keep this consistent with subscribeBtn (same path & same case!)
+        window.location.href = "./checkout/Payment.html";
+        return;
+      }
 
+      // 3️⃣ Logged in + No customer profile → form page
+      window.location.href = "./checkout/form.html";
+    });
+  });
 </script>
 
 </body>
 </html> 
+
 
 
 
