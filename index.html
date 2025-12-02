@@ -1063,21 +1063,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (amount && !Number.isNaN(amount) && amount > 0) {
       // change to your real home URL if different
      alert("You have an active subscription. Redirecting to home page.");
-      window.location.href = '/index.html';
+      window.location.href = '/';
       return;
     }
 
     // 2) If customerId exists -> go to subscription page
     if (customerId) {
       // change to your subscription page URL
-      window.location.href = './checkout/Payment.html';
+      window.location.href = './Payment/';
       return;
     }
 
     // 3) If user is signed in (has token) -> go to checkout
     if (token) {
       // change to your checkout page URL
-      window.location.href = './checkout/form.html';
+      window.location.href = './Form/';
       return;
     }
 
@@ -1108,18 +1108,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // 2️⃣ Logged in + Customer profile exists → payment page
       if (customerId) {
         // keep this consistent with subscribeBtn (same path & same case!)
-        window.location.href = './checkout/Payment.html';
+        window.location.href = './Payment/';
         return;
       }
 
       // 3️⃣ Logged in + No customer profile → form page
-      window.location.href = './checkout/form.html';
+      window.location.href = './Form/';
     });
   });
 </script>
 
 </body>
 </html> 
+
 
 
 
