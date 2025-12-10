@@ -343,6 +343,10 @@ function validateInputElement(input, config = {}) {
   clearError(input);
   return true;
 }
+/* -----------------------
+  Element creation & grouped rendering (unchanged mostly)
+-------------------------*/
+function getFieldByKey(fields, key) { return fields.find(f => f.key === key); }
 
 function makeFieldNode(f, prefill = {}) {
   const fg = document.createElement("div");
@@ -424,6 +428,157 @@ function renderGroupedFields(container, fields, groups, prefill = {}) {
   });
 }
 
+/* -----------------------
+  GOOGLE: Autocomplete & Geocoding helpers
+-------------------------*/
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // <-- replace
+// Attach autocomplete to an input element (addressLine1). idSuffix helps to create per-card storage.
+function attachAutocompleteToInput(inputEl, cardElement) {
+  if (!inputEl || !window.google || !google.maps || !google.maps.places) return;
+
+  // Create Autocomplete for address
+  const autocomplete = new google.maps.places.Autocomplete(inputEl, {
+    types: ['address'],
+    componentRestrictions: { country: 'in' } // restrict to India; remove/change as needed
+  });
+
+  // when user selects a place
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+    if (!place || !place.geometry) {
+      // if no geometry, try a geocode fallback
+      const val = inputEl.value;
+      if (val) {
+        geocodeAddress(val, cardElement).then(loc => {
+          if (loc) {
+            setCardLocation(cardElement, loc.lat, loc.lng);
+            openMapsAt(loc.lat, loc.lng);
+          }
+        });
+      }
+      return;
+    }
+
+    // fill addressLine1 (already selected), attempt to parse components
+    inputEl.value = place.formatted_address || (inputEl.value || '');
+
+    // parse components to fill pincode/district/state if possible
+    const comp = place.address_components || [];
+    let postal = '', district = '', state = '';
+    comp.forEach(c => {
+      const types = c.types || [];
+      if (types.indexOf('postal_code') !== -1) postal = c.long_name;
+      if (types.indexOf('sublocality') !== -1 && !district) district = c.long_name;
+      if (types.indexOf('administrative_area_level_2') !== -1) district = district || c.long_name;
+      if (types.indexOf('administrative_area_level_1') !== -1) state = c.long_name;
+      if (types.indexOf('locality') !== -1 && !district) district = district || c.long_name;
+    });
+
+    if (postal) {
+      const pEl = cardElement.querySelector('[data-key="pincode"]');
+      if (pEl) pEl.value = postal;
+    }
+    if (district) {
+      const dEl = cardElement.querySelector('[data-key="district"]');
+      if (dEl) {
+        // if district is select with numeric values, we leave selection to user; otherwise fill text field.
+        if (dEl.tagName.toLowerCase() === 'select') {
+          // try to match option text case-insensitively
+          const opt = Array.from(dEl.options).find(o => String(o.text).toLowerCase().includes(String(district).toLowerCase()));
+          if (opt) dEl.value = opt.value;
+        } else {
+          dEl.value = district;
+        }
+      }
+    }
+    if (state) {
+      const sEl = cardElement.querySelector('[data-key="state"]');
+      if (sEl) {
+        if (sEl.tagName.toLowerCase() === 'select') {
+          const opt = Array.from(sEl.options).find(o => String(o.text).toLowerCase().includes(String(state).toLowerCase()));
+          if (opt) sEl.value = opt.value;
+        } else {
+          sEl.value = state;
+        }
+      }
+    }
+
+    // store coordinates and open maps
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+    setCardLocation(cardElement, lat, lng);
+    // Open Google Maps at this location in a new tab
+    openMapsAt(lat, lng);
+  });
+}
+
+// fallback: use Google Geocoding API (for typed addresses or when place has no geometry)
+async function geocodeAddress(address, cardElement = null) {
+  if (!address || !address.trim()) return null;
+  const encoded = encodeURIComponent(address);
+  GOOGLE_API_KEY = AIzaSyCfaDlnAA4Hx5dDpehaMgUQ7ClYmMN0i9M;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encoded}&key=${GOOGLE_API_KEY}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Geocode request failed');
+    const data = await res.json();
+    if (data.status === 'OK' && data.results && data.results.length) {
+      const r = data.results[0];
+      const loc = r.geometry.location;
+      // attempt to populate pincode/state/district same as place handler
+      if (cardElement) {
+        const comp = r.address_components || [];
+        let postal = '', district = '', state = '';
+        comp.forEach(c => {
+          const types = c.types || [];
+          if (types.indexOf('postal_code') !== -1) postal = c.long_name;
+          if (types.indexOf('administrative_area_level_2') !== -1) district = district || c.long_name;
+          if (types.indexOf('administrative_area_level_1') !== -1) state = state || c.long_name;
+          if (types.indexOf('locality') !== -1 && !district) district = district || c.long_name;
+        });
+        if (postal) cardElement.querySelector('[data-key="pincode"]') && (cardElement.querySelector('[data-key="pincode"]').value = postal);
+        if (district) {
+          const dEl = cardElement.querySelector('[data-key="district"]');
+          if (dEl) {
+            if (dEl.tagName.toLowerCase() === 'select') {
+              const opt = Array.from(dEl.options).find(o => String(o.text).toLowerCase().includes(String(district).toLowerCase()));
+              if (opt) dEl.value = opt.value;
+            } else dEl.value = district;
+          }
+        }
+        if (state) {
+          const sEl = cardElement.querySelector('[data-key="state"]');
+          if (sEl) {
+            if (sEl.tagName.toLowerCase() === 'select') {
+              const opt = Array.from(sEl.options).find(o => String(o.text).toLowerCase().includes(String(state).toLowerCase()));
+              if (opt) sEl.value = opt.value;
+            } else sEl.value = state;
+          }
+        }
+      }
+      return { lat: loc.lat, lng: loc.lng };
+    }
+    return null;
+  } catch (err) {
+    console.error('Google geocode error', err);
+    return null;
+  }
+}
+
+function openMapsAt(lat, lng) {
+  if (!lat || !lng) return;
+  const url = `https://www.google.com/maps?q=${lat},${lng}`;
+  window.open(url, '_blank');
+}
+
+function setCardLocation(cardElement, lat, lng) {
+  if (!cardElement) return;
+  // store data attributes on the card so submit can read them
+  cardElement.dataset.lat = lat;
+  cardElement.dataset.lng = lng;
+}
+
+
 /************* Customer blocks handling *************/
 let customerCount = 0;
 const customersContainer = document.getElementById('customersContainer');
@@ -454,6 +609,17 @@ function createCustomerCard(prefill = {}) {
       pinInput.parentElement.appendChild(pinStatus);
     }
   }
+   // Attach autocomplete to addressLine1 (if google loaded)
+  const addressInput = fieldsContainer.querySelector('[data-key="addressLine1"]');
+  if (addressInput) {
+    // small delay to ensure google object is ready (script is loaded synchronously above)
+    try {
+      attachAutocompleteToInput(addressInput, node);
+    } catch (err) {
+      console.warn('Autocomplete attach failed', err);
+    }
+  }
+
 
   // pregnancy logic: show only when gender indicates 'Female' AND age > 18 (strict)
   fieldsContainer.addEventListener('change', (e) => {
@@ -523,26 +689,49 @@ customersContainer.addEventListener('click', function (e) {
 });
 
 /************* Billing toggle *************/
+// document.getElementById("useSame").addEventListener("change", function () {
+//   document.getElementById("billingForm").style.display = this.checked ? "none" : "block";
+// });
+// document.getElementById("billingForm").style.display = document.getElementById("useSame").checked ? "none" : "block";
+
+// /************* Geocoding helper (unchanged) *************/
+// async function getLatLongFromAddress(fullAddress) {
+//   if (!fullAddress || !String(fullAddress).trim()) return null;
+//   const apiKey = "691e009576b9d956706916fil56d0ca";
+//   const url = `https://geocode.maps.co/search?api_key=${apiKey}&q=${encodeURIComponent(fullAddress)}`;
+//   try {
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     if (data && data.length > 0) return { lat: data[0].lat, lon: data[0].lon };
+//     return null;
+//   } catch (err) {
+//     console.error("Geocode error:", err);
+//     return null;
+//   }
+// }
+
+
+/* -----------------------
+  Billing autocomplete attach (when billing form is shown)
+-------------------------*/
+function attachAutocompleteToBilling() {
+  const billingContainer = document.getElementById('billingForm');
+  if (!billingContainer) return;
+  const addr = billingContainer.querySelector('[data-key="addressLine1"]');
+  if (addr) attachAutocompleteToInput(addr, billingContainer);
+}
+
+// Billing toggle listener to attach autocomplete when opened
 document.getElementById("useSame").addEventListener("change", function () {
   document.getElementById("billingForm").style.display = this.checked ? "none" : "block";
+  if (!this.checked) {
+    // billing shown -> attach autocomplete
+    setTimeout(attachAutocompleteToBilling, 100);
+  }
 });
 document.getElementById("billingForm").style.display = document.getElementById("useSame").checked ? "none" : "block";
+if (document.getElementById("billingForm").style.display !== 'none') attachAutocompleteToBilling();
 
-/************* Geocoding helper (unchanged) *************/
-async function getLatLongFromAddress(fullAddress) {
-  if (!fullAddress || !String(fullAddress).trim()) return null;
-  const apiKey = "691e009576b9d956706916fil56d0ca";
-  const url = `https://geocode.maps.co/search?api_key=${apiKey}&q=${encodeURIComponent(fullAddress)}`;
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data && data.length > 0) return { lat: data[0].lat, lon: data[0].lon };
-    return null;
-  } catch (err) {
-    console.error("Geocode error:", err);
-    return null;
-  }
-}
 
 /************* Pincode availability (unchanged) *************/
 customersContainer.addEventListener('blur', function (e) {
@@ -641,20 +830,38 @@ document.getElementById("checkoutForm").addEventListener("submit", async functio
     const pincode = read('pincode');
 
     if (!firstName || !email || !phone || !pincode) invalid = true;
-    if (!/^[0-9]{10}$/.test(phone)) { invalid = true; card.querySelector('.err_phone') && (card.querySelector('.err_phone').textContent = 'Phone must be 10 digits'); }
-    if (!/^[0-9]{6}$/.test(pincode)) { invalid = true; card.querySelector('.err_pincode') && (card.querySelector('.err_pincode').textContent = 'Pincode must be 6 digits'); }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { invalid = true; card.querySelector('.err_email') && (card.querySelector('.err_email').textContent = 'Enter a valid email'); }
+    // if (!/^[0-9]{10}$/.test(phone)) { invalid = true; card.querySelector('.err_phone') && (card.querySelector('.err_phone').textContent = 'Phone must be 10 digits'); }
+    // if (!/^[0-9]{6}$/.test(pincode)) { invalid = true; card.querySelector('.err_pincode') && (card.querySelector('.err_pincode').textContent = 'Pincode must be 6 digits'); }
+    // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { invalid = true; card.querySelector('.err_email') && (card.querySelector('.err_email').textContent = 'Enter a valid email'); }
+  if (!/^[0-9]{10}$/.test(phone)) { invalid = true; const el = card.querySelector('.err_phone'); if (el) el.textContent = 'Phone must be 10 digits'; }
+    if (!/^[0-9]{6}$/.test(pincode)) { invalid = true; const el = card.querySelector('.err_pincode'); if (el) el.textContent = 'Pincode must be 6 digits'; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { invalid = true; const el = card.querySelector('.err_email'); if (el) el.textContent = 'Enter a valid email'; }
 
     let districtVal = read('district');
     let stateVal = read('state');
     const districtName = districtMap[districtVal] || districtVal;
     const stateName = stateMap[stateVal] || stateVal;
-    const fullAddress = [districtName, stateName, read('pincode')].filter(Boolean).join(', ');
-    let lat = null, lon = null;
-    try {
-      const loc = await getLatLongFromAddress(fullAddress);
-      if (loc) { lat = Number(loc.lat); lon = Number(loc.lon); }
-    } catch (err) { console.warn('geocode failed', err); }
+    // const fullAddress = [districtName, stateName, read('pincode')].filter(Boolean).join(', ');
+    // let lat = null, lon = null;
+    // try {
+    //   const loc = await getLatLongFromAddress(fullAddress);
+    //   if (loc) { lat = Number(loc.lat); lon = Number(loc.lon); }
+    // } catch (err) { console.warn('geocode failed', err); }
+
+      // read stored lat/lng set by autocomplete (if any)
+    const latAttr = card.dataset.lat;
+    const lngAttr = card.dataset.lng;
+    let lat = latAttr ? Number(latAttr) : null;
+    let lon = lngAttr ? Number(lngAttr) : null;
+
+    // if lat/lng missing, attempt geocode with Google
+    if ((lat === null || lon === null) && (districtName || stateName || pincode)) {
+      const fullAddress = [read('addressLine1') || '', districtName, stateName, pincode].filter(Boolean).join(', ');
+      try {
+        const loc = await geocodeAddress(fullAddress, card);
+        if (loc) { lat = Number(loc.lat); lon = Number(loc.lng); setCardLocation(card, lat, lon); }
+      } catch (err) { console.warn('geocode fallback failed', err); }
+    }
 
     const allergic = (read('allergicToFruits') || '').toString().toLowerCase() === 'yes';
     const fruitstoAvoid = allergic ? (read('allergicFruitDetails') || '') : '';
@@ -821,7 +1028,6 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
-
 
 
 
