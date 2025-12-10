@@ -431,7 +431,7 @@ function renderGroupedFields(container, fields, groups, prefill = {}) {
 /* -----------------------
   GOOGLE: Autocomplete & Geocoding helpers
 -------------------------*/
-const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // <-- replace
+const GOOGLE_API_KEY = 'AIzaSyCfaDlnAA4Hx5dDpehaMgUQ7ClYmMN0i9M'; // <-- replace
 // Attach autocomplete to an input element (addressLine1). idSuffix helps to create per-card storage.
 function attachAutocompleteToInput(inputEl, cardElement) {
   if (!inputEl || !window.google || !google.maps || !google.maps.places) return;
@@ -516,7 +516,7 @@ function attachAutocompleteToInput(inputEl, cardElement) {
 async function geocodeAddress(address, cardElement = null) {
   if (!address || !address.trim()) return null;
   const encoded = encodeURIComponent(address);
-  GOOGLE_API_KEY = AIzaSyCfaDlnAA4Hx5dDpehaMgUQ7ClYmMN0i9M;
+ // GOOGLE_API_KEY = AIzaSyCfaDlnAA4Hx5dDpehaMgUQ7ClYmMN0i9M;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encoded}&key=${GOOGLE_API_KEY}`;
   try {
     const res = await fetch(url);
@@ -1028,6 +1028,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
