@@ -658,7 +658,7 @@ rel="stylesheet"
         <ul class="faq-list">
           <li class="faq-item" data-answer="We offer freshly cut fruits, cleaned vegetables, sprouts, and nuts.">What products do you include in your daily breakfast supply?</li>
           <li class="faq-item" data-answer="Yes! You can customize your order by selecting your preferred items and add‑ons through our application.">Can I customize my order?</li>
-          <li class="faq-item" data-answer="You can place your order directly through our application. Simply browse the menu, choose your items, and complete the checkout process.
+          <li class="faq-item" data-answer="You can place your order directly through our website. Simply browse the menu, choose your items, and complete the checkout process.
 
 ">How do I place an order?</li>
         </ul>
@@ -671,7 +671,7 @@ rel="stylesheet"
       <button class="faq-category-title">Plans & Subscription</button>
       <div class="faq-content">
         <ul class="faq-list">
-          <li class="faq-item" data-answer="We offer a monthly subscription plan with three options: Premium, Standard, and Kids. You can select your preferred plan directly through our application.">What subscription plans do you offer?</li>
+          <li class="faq-item" data-answer="We offer a monthly subscription plan with three options: Premium, Standard, and Kids. You can select your preferred plan directly through our website.">What subscription plans do you offer?</li>
           <li class="faq-item" data-answer="Yes, minimum subscription is 1 month.">Is there a minimum subscription period?</li>
           <li class="faq-item" data-answer="You can manage your subscription via your account on our application.">How can I manage my subscription?</li>
         </ul>
@@ -686,7 +686,7 @@ rel="stylesheet"
         <ul class="faq-list">
           <li class="faq-item" data-answer="We accept UPI, cards, and wallets.">What payment methods are accepted?</li>
           <li class="faq-item" data-answer="Yes, your subscription includes exclusive offers.">Will I get offers with my subscription?</li>
-          <li class="faq-item" data-answer="You can pay for your order securely through our application using debit/credit cards, UPI, or other available online payment options.">How can I pay for my order?</li>
+          <li class="faq-item" data-answer="You can pay for your order securely through our website using debit/credit cards, UPI, or other available online payment options.">How can I pay for my order?</li>
         </ul>
         <div class="faq-answer-box"></div>
       </div>
@@ -1091,36 +1091,75 @@ document.addEventListener("DOMContentLoaded", () => {
     const signbtn = document.getElementById('signbtn');
     if (!signbtn) return;
 
+    // Modal element must exist in DOM (your file includes it at the end)
+    const logoutModalEl = document.getElementById('logoutConfirmModal');
+    const logoutModal = logoutModalEl ? new bootstrap.Modal(logoutModalEl, { keyboard: true }) : null;
+    const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
     signbtn.addEventListener('click', function (e) {
-      e.preventDefault(); // stop the default <a href="..."> navigation
+      e.preventDefault();
 
       const userName   = localStorage.getItem("staarbox_user_name"); // logged-in user name
-      const customerId = localStorage.getItem('CustomerId');          // customer profile exists
-      const token      = localStorage.getItem('accessToken');         // session available (optional)
 
-      // 1️⃣ Not logged in → send to login
-      //    (we only check userName; token is optional here)
+      // If NOT logged in → keep existing behavior: send to login
       if (!userName) {
         window.location.href = './login/';
         return;
       }
 
-      // 2️⃣ Logged in + Customer profile exists → payment page
-      if (customerId) {
-        // keep this consistent with subscribeBtn (same path & same case!)
-        window.location.href = './Payment/';
-        return;
+      // If logged in → show logout confirmation modal
+      if (logoutModal) {
+        logoutModal.show();
+      } else {
+        // Fallback if bootstrap modal unavailable
+        if (confirm('Do you want to logout?')) performLogout();
       }
-
-      // 3️⃣ Logged in + No customer profile → form page
-      window.location.href = './Form/';
     });
+
+    // If user confirms in modal → perform logout
+    if (logoutConfirmBtn) {
+      logoutConfirmBtn.addEventListener('click', function () {
+        performLogout();
+      });
+    }
+
+    function performLogout() {
+      // Clear client-side session/auth keys
+      localStorage.removeItem("staarbox_user_name");
+      localStorage.removeItem("CustomerId");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("Amount");
+
+      // Close modal if open
+      if (logoutModal) logoutModal.hide();
+
+      // Redirect after logout
+      window.location.href = './login/';
+    }
   });
 </script>
+<!-- Logout Confirmation Modal (Bootstrap) -->
+<div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutConfirmLabel">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="logoutCancelBtn" class="btn btn-warning" data-bs-dismiss="modal">No</button>
+        <button type="button" id="logoutConfirmBtn" class="btn btn-success">Yes, logout</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html> 
-
 
 
 
