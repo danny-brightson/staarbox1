@@ -238,6 +238,8 @@
 
     // ---------- Verify OTP flow ----------
     verifyOtpBtn.addEventListener('click', async () => {
+      let isExistingCustomer = false;
+
       showStatus('', false);
       const code = otpInput.value.trim();
       if (!code) { showStatus('⚠️ Enter the OTP code.', true); return; }
@@ -403,7 +405,6 @@
   </script>
 </body>
 </html>
-
 
 
 
