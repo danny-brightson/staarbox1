@@ -363,6 +363,12 @@
       isExistingCustomer = true;
     }
   }
+    if (isExistingCustomer) {
+      alert('✅ You are an existing customer. Welcome back!');
+      window.location.href = '../';        // HOME
+    } else {
+      window.location.href = '../Form/';   // NEW CUSTOMER
+    }
 
 } catch (err) {
   console.error('[verify-otp] network error:', err);
@@ -380,14 +386,14 @@
       //   verifyOtpBtn.disabled = false;
       // }
     });
-    setTimeout(() => {
-  if (isExistingCustomer) {
-    alert('✅ You are an existing customer. Welcome back!');
-    window.location.href = '../'; // HOME
-  } else {
-    window.location.href = '../Form/'; // NEW CUSTOMER
-  }
-}, 700);
+//     setTimeout(() => {
+//   if (isExistingCustomer) {
+//     alert('✅ You are an existing customer. Welcome back!');
+//     window.location.href = '../'; // HOME
+//   } else {
+//     window.location.href = '../Form/'; // NEW CUSTOMER
+//   }
+// }, 700);
 
 
     // ---------- Resend / reinit ----------
