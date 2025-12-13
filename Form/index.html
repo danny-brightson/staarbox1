@@ -223,7 +223,7 @@ if (document.getElementById("totalPrice")) document.getElementById("totalPrice")
 /* All customer/billing fields will be created required by JS OR we keep optional explicitly for company/gst. */
 const customerFields = [
   { key: "firstName", label: "First Name", type: "text", required: true },
-  { key: "lastName", label: "Last Name", type: "text", required: true },
+  { key: "lastName", label: "Last Name", type: "text", required: false },
   { key: "email", label: "Email", type: "email", required: true },
   { key: "phone", label: "Phone", type: "tel", required: true, pattern: "^[0-9]{10}$", maxlength: 10 },
   { key: "pincode", label: "Pincode", type: "text", required: true, pattern: "^[0-9]{6}$", maxlength: 6 },
@@ -943,14 +943,65 @@ const toggle = document.getElementById("menuToggle");
 const links = document.getElementById("navLinks");
 if (toggle) toggle.addEventListener("click", () => links.classList.toggle("active"));
 
+
+function prefillFromLoginAndLockPhone() {
+  const storedName  = localStorage.getItem('staarbox_user_name');
+  const storedPhone = localStorage.getItem('staarbox_user_phone');
+
+  if (!storedName && !storedPhone) return;
+
+  const firstCard = document.querySelector('.customer-card');
+  if (!firstCard) return;
+
+  const fields = firstCard.querySelector('.customer-fields');
+  if (!fields) return;
+
+  /* ---------- NAME ---------- */
+  if (storedName) {
+    const parts = storedName.trim().split(/\s+/);
+    const firstNameInput = fields.querySelector('[data-key="firstName"]');
+    const lastNameInput  = fields.querySelector('[data-key="lastName"]');
+
+    if (firstNameInput && !firstNameInput.value) {
+      firstNameInput.value = parts[0] || '';
+    }
+
+    if (lastNameInput && !lastNameInput.value) {
+      lastNameInput.value = parts.slice(1).join(' ');
+    }
+  }
+
+  /* ---------- PHONE ---------- */
+  if (storedPhone) {
+    const phoneInput = fields.querySelector('[data-key="phone"]');
+    if (phoneInput) {
+      phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
+
+      // 🔒 lock the phone field
+      phoneInput.readOnly = true;
+      phoneInput.style.backgroundColor = '#f1f1f1';
+      phoneInput.style.cursor = 'not-allowed';
+
+      // prevent manual focus/edit tricks
+      phoneInput.addEventListener('keydown', e => e.preventDefault());
+      phoneInput.addEventListener('paste', e => e.preventDefault());
+    }
+  }
+}
+
+
 /************* init *************/
 (function init() {
-  if (!document.querySelectorAll('.customer-card').length) createCustomerCard();
+  if (!document.querySelectorAll('.customer-card').length) {
+    createCustomerCard();
+
+    // ⏳ wait for dynamic fields to render
+    setTimeout(prefillFromLoginAndLockPhone, 50);
+  }
 })();
 </script>
 </body>
 </html>
-
 
 
 
