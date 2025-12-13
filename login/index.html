@@ -234,11 +234,7 @@
       }
     });
 
-    function showExistingCustomerPopupAndRedirect() {
-  alert('✅ You are an existing customer. Welcome back!');
-  window.location.href = '../index.html'; // Home page
-}
-
+    
 
     // ---------- Verify OTP flow ----------
     verifyOtpBtn.addEventListener('click', async () => {
@@ -267,94 +263,130 @@
 
         // ------------ call server verify-otp API (replaces previous try block) ------------
 // Put this inside your try block where you currently call verify-otp
-try {
-  // Normalize phone (same as you had)
-  let savedPhoneNormalized = (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '').replace(/\D/g, '');
-  savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^\+?91/, '').replace(/^91/, '');
+// try {
+//   // Normalize phone (same as you had)
+//   let savedPhoneNormalized = (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '').replace(/\D/g, '');
+//   savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^\+?91/, '').replace(/^91/, '');
 
-  const payload = { phoneNumber: savedPhoneNormalized, IsRegistered: true };
+//   const payload = { phoneNumber: savedPhoneNormalized, IsRegistered: true };
 
-  // Use the HTTPS hostname if your page is HTTPS. IMPORTANT: change to your HTTPS API origin
-  const apiUrl = 'https://api.staarbox.in/api/verify-otp'; // <- use HTTPS and your domain, not raw IP
+//   // Use the HTTPS hostname if your page is HTTPS. IMPORTANT: change to your HTTPS API origin
+//   const apiUrl = 'https://api.staarbox.in/api/verify-otp'; // <- use HTTPS and your domain, not raw IP
 
-  console.log('[verify-otp] Sending request to:', apiUrl, 'payload:', payload);
+//   console.log('[verify-otp] Sending request to:', apiUrl, 'payload:', payload);
+
+//   const res = await fetch(apiUrl, {
+//     method: 'POST',
+//     mode: 'cors',                // ensure we intend cross-origin request
+//     cache: 'no-cache',
+//     credentials: 'omit',         // change to 'include' if you need cookies
+//     headers: {
+//       'Content-Type': 'application/json'
+//       // add Authorization here only if required by your API
+//       // 'Authorization': 'Bearer ...'
+//     },
+//     body: JSON.stringify(payload)
+//   });
+
+//   console.log('[verify-otp] fetch completed. status:', res.status, res.statusText);
+
+//   // read text / json
+//   const text = await res.text().catch(() => '');
+//   let json = null;
+//   try { json = text ? JSON.parse(text) : null; } catch(e) { json = null; }
+
+//   if (!res.ok) {
+//     console.warn('[verify-otp] server returned not-ok:', res.status, text);
+//     // Common browser console message for CORS: check console for an error before this line
+//     showStatus('⚠️ Login succeeded but server verify returned an error. See console.', false);
+//   } else {
+//     console.log('[verify-otp] success payload:', json ?? text);
+//     showStatus('✅ Login synced with server.', false);
+
+//     if (json) {
+//       if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
+//       if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
+//       if (json.id) localStorage.setItem('CustomerId', json.id);
+//     }
+//   }
+
+// } 
+// catch (err) {
+  // This block will catch network / blocked-by-CORS / mixed-content errors
+//   console.error('[verify-otp] fetch error:', err);
+
+//   // Helpful hint for you / QA
+//   if (typeof err === 'object' && err.message && err.message.indexOf('Failed to fetch') !== -1) {
+//     console.error('Possible causes: CORS failure, mixed-content (HTTPS page calling HTTP API), network error, or blocked by browser/extension.');
+//   }
+
+//   showStatus('⚠️ Logged in but server sync failed. Continuing...', false);
+// }try {
+  // Normalize phone number
+  let savedPhoneNormalized =
+    (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '')
+      .replace(/\D/g, '')
+      .replace(/^0+/, '')
+      .replace(/^91/, '');
+
+  const payload = {
+    phoneNumber: savedPhoneNormalized,
+    IsRegistered: true
+  };
+
+  const apiUrl = 'https://api.staarbox.in/api/verify-otp';
 
   const res = await fetch(apiUrl, {
     method: 'POST',
-    mode: 'cors',                // ensure we intend cross-origin request
-    cache: 'no-cache',
-    credentials: 'omit',         // change to 'include' if you need cookies
-    headers: {
-      'Content-Type': 'application/json'
-      // add Authorization here only if required by your API
-      // 'Authorization': 'Bearer ...'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
 
-  console.log('[verify-otp] fetch completed. status:', res.status, res.statusText);
-
-  // read text / json
-  const text = await res.text().catch(() => '');
+  const text = await res.text();
   let json = null;
-  try { json = text ? JSON.parse(text) : null; } catch(e) { json = null; }
+  try { json = text ? JSON.parse(text) : null; } catch(e) {}
 
   if (!res.ok) {
-    console.warn('[verify-otp] server returned not-ok:', res.status, text);
-    // Common browser console message for CORS: check console for an error before this line
-    showStatus('⚠️ Login succeeded but server verify returned an error. See console.', false);
+    console.warn('[verify-otp] server error:', res.status, text);
+    showStatus('⚠️ Login succeeded but server verification failed.', false);
   } else {
-    console.log('[verify-otp] success payload:', json ?? text);
-    showStatus('✅ Login synced with server.', false);
+    // ✅ TOKENS
+    if (json?.accessToken) localStorage.setItem('accessToken', json.accessToken);
+    if (json?.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
 
-let isExistingCustomer = false;
-
-if (json) {
-  if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
-  if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
-
-  // 👇 THIS IS THE KEY CHECK
-  if (json.id || json.customerId || json.CustomerId) {
-    const cid = json.id || json.customerId || json.CustomerId;
-    localStorage.setItem('CustomerId', cid);
-    isExistingCustomer = true;
-  }
-}
-      if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
-      if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
-      if (json.id) localStorage.setItem('CustomerId', json.id);
+    // ✅ EXISTING CUSTOMER CHECK (THIS IS THE KEY)
+    if (json?.id || json?.customerId || json?.CustomerId) {
+      const cid = json.id || json.customerId || json.CustomerId;
+      localStorage.setItem('CustomerId', cid);
+      isExistingCustomer = true;
     }
   }
 
- catch (err) {
-  // This block will catch network / blocked-by-CORS / mixed-content errors
-  console.error('[verify-otp] fetch error:', err);
-
-  // Helpful hint for you / QA
-  if (typeof err === 'object' && err.message && err.message.indexOf('Failed to fetch') !== -1) {
-    console.error('Possible causes: CORS failure, mixed-content (HTTPS page calling HTTP API), network error, or blocked by browser/extension.');
-  }
-
+} catch (err) {
+  console.error('[verify-otp] network error:', err);
   showStatus('⚠️ Logged in but server sync failed. Continuing...', false);
 }
 
 
+
         /**********************************/
 
-   setTimeout(() => {
+      //   setTimeout(() => { window.location.href = '../Form/'; }, 900);
+      // } catch (err) {
+      //   console.error('verify error', err);
+      //   showStatus('❌ Incorrect OTP or verification failed. Try again.', true);
+      //   verifyOtpBtn.disabled = false;
+      // }
+    });
+    setTimeout(() => {
   if (isExistingCustomer) {
-    showExistingCustomerPopupAndRedirect();
+    alert('✅ You are an existing customer. Welcome back!');
+    window.location.href = '../index.html'; // HOME
   } else {
-    window.location.href = '../Form/';
+    window.location.href = '../Form/'; // NEW CUSTOMER
   }
 }, 700);
 
-      } catch (err) {
-        console.error('verify error', err);
-        showStatus('❌ Incorrect OTP or verification failed. Try again.', true);
-        verifyOtpBtn.disabled = false;
-      }
-    });
 
     // ---------- Resend / reinit ----------
     resendLink.addEventListener('click', async (e) => {
