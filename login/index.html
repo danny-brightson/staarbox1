@@ -234,6 +234,12 @@
       }
     });
 
+    function showExistingCustomerPopupAndRedirect() {
+  alert('✅ You are an existing customer. Welcome back!');
+  window.location.href = '../index.html'; // Home page
+}
+
+
     // ---------- Verify OTP flow ----------
     verifyOtpBtn.addEventListener('click', async () => {
       showStatus('', false);
@@ -301,14 +307,26 @@ try {
     console.log('[verify-otp] success payload:', json ?? text);
     showStatus('✅ Login synced with server.', false);
 
-    if (json) {
+let isExistingCustomer = false;
+
+if (json) {
+  if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
+  if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
+
+  // 👇 THIS IS THE KEY CHECK
+  if (json.id || json.customerId || json.CustomerId) {
+    const cid = json.id || json.customerId || json.CustomerId;
+    localStorage.setItem('CustomerId', cid);
+    isExistingCustomer = true;
+  }
+}
       if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
       if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
       if (json.id) localStorage.setItem('CustomerId', json.id);
     }
   }
 
-} catch (err) {
+ catch (err) {
   // This block will catch network / blocked-by-CORS / mixed-content errors
   console.error('[verify-otp] fetch error:', err);
 
@@ -323,7 +341,14 @@ try {
 
         /**********************************/
 
-        setTimeout(() => { window.location.href = '../Form/'; }, 900);
+   setTimeout(() => {
+  if (isExistingCustomer) {
+    showExistingCustomerPopupAndRedirect();
+  } else {
+    window.location.href = '../Form/';
+  }
+}, 700);
+
       } catch (err) {
         console.error('verify error', err);
         showStatus('❌ Incorrect OTP or verification failed. Try again.', true);
@@ -346,7 +371,6 @@ try {
   </script>
 </body>
 </html>
-
 
 
 
