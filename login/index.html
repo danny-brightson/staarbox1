@@ -357,9 +357,9 @@
     if (json?.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
 
     // ✅ EXISTING CUSTOMER CHECK (THIS IS THE KEY)
-    if (json?.id || json?.customerId || json?.CustomerId) {
-      const cid = json.id || json.customerId || json.CustomerId;
-      localStorage.setItem('CustomerId', cid);
+    if (json?.id || json?.customerId || json?.customerIds) {
+      const cid = json.id || json.customerId || json.customerIds;
+      localStorage.setItem('customerIds', cid);
       isExistingCustomer = true;
     }
   }
