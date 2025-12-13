@@ -521,6 +521,48 @@ function createCustomerCard(prefill = {}) {
   const fieldsContainer = node.querySelector('.customer-fields');
   renderGroupedFields(fieldsContainer, customerFields, customerGroups, prefill);
 
+  /* ============================
+   PREFILL FROM LOGIN (FIRST CUSTOMER ONLY)
+   ============================ */
+if (customerCount === 1) {
+  const storedName  = localStorage.getItem('staarbox_user_name');
+  const storedPhone = localStorage.getItem('staarbox_user_phone');
+
+  /* ---------- NAME ---------- */
+  if (storedName) {
+    const parts = storedName.trim().split(/\s+/);
+
+    const firstNameInput = fieldsContainer.querySelector('[data-key="firstName"]');
+    const lastNameInput  = fieldsContainer.querySelector('[data-key="lastName"]');
+
+    if (firstNameInput && !firstNameInput.value) {
+      firstNameInput.value = parts[0] || '';
+    }
+
+    if (lastNameInput && !lastNameInput.value) {
+      lastNameInput.value = parts.slice(1).join(' ');
+    }
+  }
+
+  /* ---------- PHONE (LOCKED) ---------- */
+  if (storedPhone) {
+    const phoneInput = fieldsContainer.querySelector('[data-key="phone"]');
+    if (phoneInput) {
+      phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
+
+      // hard lock
+      phoneInput.readOnly = true;
+      phoneInput.style.backgroundColor = '#f1f1f1';
+      phoneInput.style.cursor = 'not-allowed';
+
+      phoneInput.addEventListener('keydown', e => e.preventDefault());
+      phoneInput.addEventListener('paste', e => e.preventDefault());
+      phoneInput.addEventListener('focus', () => phoneInput.blur());
+    }
+  }
+}
+
+
   const pinInput = fieldsContainer.querySelector('[data-key="pincode"]');
   if (pinInput) {
     let existing = fieldsContainer.querySelector('.pin-status');
@@ -943,61 +985,9 @@ const toggle = document.getElementById("menuToggle");
 const links = document.getElementById("navLinks");
 if (toggle) toggle.addEventListener("click", () => links.classList.toggle("active"));
 
-
-function prefillFromLoginAndLockPhone() {
-  const storedName  = localStorage.getItem('staarbox_user_name');
-  const storedPhone = localStorage.getItem('staarbox_user_phone');
-
-  if (!storedName && !storedPhone) return;
-
-  const firstCard = document.querySelector('.customer-card');
-  if (!firstCard) return;
-
-  const fields = firstCard.querySelector('.customer-fields');
-  if (!fields) return;
-
-  /* ---------- NAME ---------- */
-  if (storedName) {
-    const parts = storedName.trim().split(/\s+/);
-    const firstNameInput = fields.querySelector('[data-key="firstName"]');
-    const lastNameInput  = fields.querySelector('[data-key="lastName"]');
-
-    if (firstNameInput && !firstNameInput.value) {
-      firstNameInput.value = parts[0] || '';
-    }
-
-    if (lastNameInput && !lastNameInput.value) {
-      lastNameInput.value = parts.slice(1).join(' ');
-    }
-  }
-
-  /* ---------- PHONE ---------- */
-  if (storedPhone) {
-    const phoneInput = fields.querySelector('[data-key="phone"]');
-    if (phoneInput) {
-      phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
-
-      // 🔒 lock the phone field
-      phoneInput.readOnly = true;
-      phoneInput.style.backgroundColor = '#f1f1f1';
-      phoneInput.style.cursor = 'not-allowed';
-
-      // prevent manual focus/edit tricks
-      phoneInput.addEventListener('keydown', e => e.preventDefault());
-      phoneInput.addEventListener('paste', e => e.preventDefault());
-    }
-  }
-}
-
-
 /************* init *************/
 (function init() {
-  if (!document.querySelectorAll('.customer-card').length) {
-    createCustomerCard();
-
-    // ⏳ wait for dynamic fields to render
-    setTimeout(prefillFromLoginAndLockPhone, 50);
-  }
+  if (!document.querySelectorAll('.customer-card').length) createCustomerCard();
 })();
 </script>
 </body>
