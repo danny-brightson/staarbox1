@@ -438,54 +438,53 @@ function renderGroupedFields(container, fields, groups, prefill = {}) {
 function attachAutocompleteToArea(inputEl, cardElement) {
   if (!inputEl || !window.google || !google.maps?.places) return;
 
-  let placeSelected = false;
-
   const autocomplete = new google.maps.places.Autocomplete(inputEl, {
     types: ['geocode'],
     componentRestrictions: { country: 'in' },
     fields: ['geometry','formatted_address','address_components']
   });
 
-  inputEl.addEventListener('input', () => {
-    placeSelected = false;
-    cardElement.dataset.lat = '';
-    cardElement.dataset.lng = '';
+  // reset location if user types manually
+inputEl.addEventListener('input', () => {
+  cardElement.dataset.lat = '';
+  cardElement.dataset.lng = '';
+  cardElement.dataset.placeSelected = "false"; // ✅ RESET FLAG
+});
+
+
+autocomplete.addListener('place_changed', () => {
+  const place = autocomplete.getPlace();
+  if (!place || !place.geometry) return;
+
+  inputEl.value = place.formatted_address;
+
+  cardElement.dataset.lat = place.geometry.location.lat();
+  cardElement.dataset.lng = place.geometry.location.lng();
+  cardElement.dataset.placeSelected = "true"; // ✅ IMPORTANT
+
+  const comps = place.address_components || [];
+  comps.forEach(c => {
+    if (c.types.includes('postal_code')) {
+      const pin = cardElement.querySelector('[data-key="pincode"]');
+      if (pin) pin.value = c.long_name;
+    }
   });
+});
 
-  autocomplete.addListener('place_changed', () => {
-    const place = autocomplete.getPlace();
-    if (!place || !place.geometry) return;
 
-    placeSelected = true;
-    inputEl.value = place.formatted_address;
 
-    const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();
-
-    cardElement.dataset.lat = lat;
-    cardElement.dataset.lng = lng;
-
-    const comps = place.address_components || [];
-    comps.forEach(c => {
-      if (c.types.includes('postal_code')) {
-        const pin = cardElement.querySelector('[data-key="pincode"]');
-        if (pin) pin.value = c.long_name;
-      }
-    });
-
-    openMapsAt(lat, lng);
-  });
-
-  inputEl.addEventListener('blur', () => {
+  // FINAL validation — ONLY check lat/lng
+inputEl.addEventListener('blur', () => {
   setTimeout(() => {
-    if (!placeSelected) {
+    if (cardElement.dataset.placeSelected !== "true") {
       inputEl.value = '';
       alert('Please select Area / Locality from Google suggestions only.');
     }
-  }, 200); // allow Google place_changed to fire first
+  }, 300);
 });
 
 }
+
 
 const GOOGLE_API_KEY = 'AIzaSyCfaDlnAA4Hx5dDpehaMgUQ7ClYmMN0i9M'; // <-- replace
 
