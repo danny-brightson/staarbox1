@@ -713,12 +713,17 @@ async function validatePincodeForCard(pin, card) {
   const pinMessageEl = card ? card.querySelector('.pin-status') : null;
   if (!pinMessageEl) return false;
 
+  // reset status
+  card.dataset.pincodeValid = "false";
+
   if (!pin || pin.length !== 6 || isNaN(pin)) {
     pinMessageEl.style.color = "red";
     pinMessageEl.textContent = "Invalid pincode format";
     return false;
   }
+
   const token = localStorage.getItem("accessToken");
+
   try {
     const url = `https://api.staarbox.in/api/checkPinCodeAvailability?pincode=${encodeURIComponent(pin)}`;
     const response = await fetch(url, {
@@ -733,24 +738,27 @@ async function validatePincodeForCard(pin, card) {
     }
 
     const data = await response.json();
+
     if (data === true) {
       pinMessageEl.style.color = "green";
       pinMessageEl.textContent = "Pincode verified ✓";
+      card.dataset.pincodeValid = "true";   // ✅ MARK VALID
       return true;
     } else {
       pinMessageEl.style.color = "red";
       pinMessageEl.textContent = "Service not available in this pincode";
+      card.dataset.pincodeValid = "false";  // ❌ MARK INVALID
       return false;
     }
   } catch (err) {
     console.error("Pincode error:", err);
-    if (pinMessageEl) {
-      pinMessageEl.style.color = "red";
-      pinMessageEl.textContent = "Pincode check failed. Try again.";
-    }
+    pinMessageEl.style.color = "red";
+    pinMessageEl.textContent = "Pincode check failed. Try again.";
+    card.dataset.pincodeValid = "false";
     return false;
   }
 }
+
 
 /************* Form submit with inline validation *************/
 document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
@@ -777,6 +785,18 @@ document.getElementById("checkoutForm").addEventListener("submit", async functio
 
   // proceed to build payload (same logic as before)
   const cards = document.querySelectorAll('.customer-card');
+  // ❌ BLOCK SAVE IF ANY PINCODE IS INVALID
+for (const card of cards) {
+  const isValid = card.dataset.pincodeValid === "true";
+  const pinInput = card.querySelector('[data-key="pincode"]');
+
+  if (!isValid) {
+    alert("Please enter a valid serviceable pincode before saving.");
+    if (pinInput) pinInput.focus();
+    return; // ⛔ STOP FORM SUBMISSION
+  }
+}
+
   if (!cards.length) { alert('Please add customer details'); return; }
   const resultArray = [];
   let invalid = false;
