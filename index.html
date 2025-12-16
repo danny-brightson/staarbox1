@@ -1054,13 +1054,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const amountRaw = localStorage.getItem('Amount');
     const amount = amountRaw ? Number(amountRaw) : 0;
     const customerId = localStorage.getItem('CustomerId'); // presence means customer profile exists
-    const token = localStorage.getItem('accessToken');     // presence means signed-in (session)
+    const token = localStorage.getItem('accessToken');  
+    const customerIds = localStorage.getItem('customerIds');   // presence means signed-in (session)
 
     // debug (optional)
     // console.log({ amountRaw, amount, customerId, token });
 
     // 1) If amount exists (positive) -> go to home page
-    if (amount && !Number.isNaN(amount) && amount > 0) {
+    if (customerIds) {
       // change to your real home URL if different
      alert("You have an active subscription. Redirecting to home page.");
       window.location.href = '/';
@@ -1103,7 +1104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // If NOT logged in → keep existing behavior: send to login
       if (!userName) {
-        window.location.href = './login/';
+        window.location.href = './';
         return;
       }
 
@@ -1130,6 +1131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("Amount");
+       localStorage.removeItem("customerIds");
 
       // Close modal if open
       if (logoutModal) logoutModal.hide();
