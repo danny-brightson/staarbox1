@@ -357,11 +357,27 @@
     if (json?.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
 
     // ✅ EXISTING CUSTOMER CHECK (THIS IS THE KEY)
-    if (json?.id || json?.customerId || json?.customerIds) {
-      const cid = json.id || json.customerId || json.customerIds;
-      localStorage.setItem('customerIds', cid);
-      isExistingCustomer = true;
-    }
+    // ---- EXISTING CUSTOMER CHECK (ARRAY SAFE) ----
+let customerIds = [];
+
+// Normalize all possible API responses into an array
+if (Array.isArray(json?.customerIds)) {
+  customerIds = json.customerIds;
+} else if (json?.customerId) {
+  customerIds = [json.customerId];
+} else if (json?.id) {
+  customerIds = [json.id];
+}
+
+// Persist for later use
+localStorage.setItem('customerIds', JSON.stringify(customerIds));
+
+// ✅ Correct condition
+if (customerIds.length > 0) {
+  isExistingCustomer = true;
+} else {
+  isExistingCustomer = false;
+}
   }
     if (isExistingCustomer) {
       alert('✅ You are an existing customer. Welcome back!');
