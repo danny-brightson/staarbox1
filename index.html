@@ -1048,45 +1048,61 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-  <script>
-  document.getElementById('subscribeBtn').addEventListener('click', function () {
-    // read localStorage keys (used earlier in your pages)
-    const amountRaw = localStorage.getItem('Amount');
-    const amount = amountRaw ? Number(amountRaw) : 0;
-    const customerId = localStorage.getItem('CustomerId'); // presence means customer profile exists
-    const token = localStorage.getItem('accessToken');  
-    const customerIds = localStorage.getItem('customerIds');   // presence means signed-in (session)
+ <script>
+document.getElementById('subscribeBtn').addEventListener('click', function () {
 
-    // debug (optional)
-    // console.log({ amountRaw, amount, customerId, token });
+  const amountRaw = localStorage.getItem('Amount');
+  const amount = amountRaw ? Number(amountRaw) : 0;
 
-    // 1) If amount exists (positive) -> go to home page
-    if (customerIds) {
-      // change to your real home URL if different
-     alert("You have an active subscription. Redirecting to home page.");
-      window.location.href = '/';
-      return;
+  const customerId = localStorage.getItem('CustomerId');
+  const token = localStorage.getItem('accessToken');
+
+  // customerIds stored as ARRAY → parse safely
+  let customerIds = [];
+  try {
+    const raw = localStorage.getItem('customerIds');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        customerIds = parsed;
+      }
     }
+  } catch (e) {
+    console.warn("Invalid customerIds in storage");
+  }
 
-    // 2) If customerId exists -> go to subscription page
-    if (customerId) {
-      // change to your subscription page URL
-      window.location.href = './Payment/';
-      return;
-    }
+  /* ===============================
+     1️⃣ ACTIVE SUBSCRIPTION CHECK
+     =============================== */
+  if (customerIds.length > 0) {
+    alert("You already have an active subscription.");
+    window.location.href = '/';
+    return;
+  }
 
-    // 3) If user is signed in (has token) -> go to checkout
-    if (token) {
-      // change to your checkout page URL
-      window.location.href = './Form/';
-      return;
-    }
+  /* ===============================
+     2️⃣ CUSTOMER PROFILE EXISTS
+     =============================== */
+  if (customerId) {
+    window.location.href = './Payment/';
+    return;
+  }
 
-    // 4) Otherwise send user to login page (so they can sign-in)
-    // change to your actual login page URL
-    window.location.href = './login/';
-  });
+  /* ===============================
+     3️⃣ LOGGED IN BUT NO PROFILE
+     =============================== */
+  if (token) {
+    window.location.href = './Form/';
+    return;
+  }
+
+  /* ===============================
+     4️⃣ NOT LOGGED IN
+     =============================== */
+  window.location.href = './login/';
+});
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const signbtn = document.getElementById('signbtn');
@@ -1155,6 +1171,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html> 
+
 
 
 
