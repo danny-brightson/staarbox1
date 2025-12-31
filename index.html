@@ -1088,59 +1088,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const signbtn = document.getElementById('signbtn');
-    if (!signbtn) return;
+document.addEventListener("DOMContentLoaded", () => {
+  const signbtn = document.getElementById('signbtn');
+  if (!signbtn) return;
 
-    // Modal element must exist in DOM (your file includes it at the end)
-    const logoutModalEl = document.getElementById('logoutConfirmModal');
-    const logoutModal = logoutModalEl ? new bootstrap.Modal(logoutModalEl, { keyboard: true }) : null;
-    const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+  const logoutModalEl = document.getElementById('logoutConfirmModal');
+  const logoutModal = logoutModalEl ? new bootstrap.Modal(logoutModalEl) : null;
+  const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
 
-    signbtn.addEventListener('click', function (e) {
-      e.preventDefault();
+  signbtn.addEventListener('click', function (e) {
+    const userName = localStorage.getItem("staarbox_user_name");
 
-      const userName   = localStorage.getItem("staarbox_user_name"); // logged-in user name
-
-      // If NOT logged in → keep existing behavior: send to login
-      if (!userName) {
-        window.location.href = './';
-        return;
-      }
-
-      // If logged in → show logout confirmation modal
-      if (logoutModal) {
-        logoutModal.show();
-      } else {
-        // Fallback if bootstrap modal unavailable
-        if (confirm('Do you want to logout?')) performLogout();
-      }
-    });
-
-    // If user confirms in modal → perform logout
-    if (logoutConfirmBtn) {
-      logoutConfirmBtn.addEventListener('click', function () {
-        performLogout();
-      });
+    // ✅ NOT LOGGED IN → allow normal navigation to login page
+    if (!userName) {
+      // do NOT preventDefault
+      window.location.href = './login/';
+      return;
     }
 
-    function performLogout() {
-      // Clear client-side session/auth keys
-      localStorage.removeItem("staarbox_user_name");
-      localStorage.removeItem("CustomerId");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("Amount");
-       localStorage.removeItem("customerIds");
-
-      // Close modal if open
-      if (logoutModal) logoutModal.hide();
-
-      // Redirect after logout
-      window.location.href = './login/';
+    // ✅ LOGGED IN → stop navigation and show logout modal
+    e.preventDefault();
+    if (logoutModal) {
+      logoutModal.show();
+    } else {
+      if (confirm('Do you want to logout?')) performLogout();
     }
   });
+
+  if (logoutConfirmBtn) {
+    logoutConfirmBtn.addEventListener('click', performLogout);
+  }
+
+  function performLogout() {
+    localStorage.removeItem("staarbox_user_name");
+    localStorage.removeItem("CustomerId");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("Amount");
+    localStorage.removeItem("customerIds");
+
+    if (logoutModal) logoutModal.hide();
+
+    window.location.href = './login/';
+  }
+});
 </script>
+
 <!-- Logout Confirmation Modal (Bootstrap) -->
 <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1162,6 +1155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html> 
+
 
 
 
