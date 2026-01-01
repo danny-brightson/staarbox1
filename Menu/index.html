@@ -57,7 +57,7 @@
 }
 
 .disabled-nonveg::after {
-  content: "Egg not allowed";
+  content: "Box contains Non-Veg items";
   position: absolute;
   inset: 0;
   display: flex;
@@ -158,10 +158,7 @@
 </div>
 <!-- =====  ===== -->
  <script>
-  (function(){
-    // ------------ CONFIG ----------
-    const API_BASE = "https://api.staarbox.in"; // change if needed
-    const PLANS = [
+   window.PLANS = [
       { id: 'kidbox', planId: 1, name: 'Kids', price: 2299, features: ['[250g-300g]'] },
       { id: 'standardbox', planId: 2, name: 'Standard', price: 2829, features: ['[300g-350]'] },
       { id: 'premiumbox', planId: 3, name: 'Premium', price: 3499, features: ['[400g-450g]'] },
@@ -177,56 +174,60 @@
       { id: 'standardvegsandwichbox', planId: 10, name: 'Standardvegsandwichbox', price: 3739, features: ['[500g-550g]'] },
      // { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
      ];
+  // (function(){
+  //   // ------------ CONFIG ----------
+  //   const API_BASE = "https://api.staarbox.in"; // change if needed
+   
 
-    // ---------- elements ----------
-    const plansEl = document.getElementById('plans');
-    const planNameEl = document.getElementById('planName');
-    const basePriceEl = document.getElementById('basePrice');
-    const cgstEl = document.getElementById('cgst');
-    const sgstEl = document.getElementById('sgst');
-    const totalPriceEl = document.getElementById('totalPrice');
-    const promoCheck = document.getElementById('promoCheck');
-    const promoSection = document.getElementById('promoSection');
-    const promoCodeInput = document.getElementById('promoCode');
-    const applyPromoBtn = document.getElementById('applyPromo');
-    const discountRow = document.getElementById('discountRow');
-    const discountAmtEl = document.getElementById('discountAmt');
-    const payBtn = document.getElementById('razorpayBtn');
+  //   // ---------- elements ----------
+  //   const plansEl = document.getElementById('plans');
+  //   const planNameEl = document.getElementById('planName');
+  //   const basePriceEl = document.getElementById('basePrice');
+  //   const cgstEl = document.getElementById('cgst');
+  //   const sgstEl = document.getElementById('sgst');
+  //   const totalPriceEl = document.getElementById('totalPrice');
+  //   const promoCheck = document.getElementById('promoCheck');
+  //   const promoSection = document.getElementById('promoSection');
+  //   const promoCodeInput = document.getElementById('promoCode');
+  //   const applyPromoBtn = document.getElementById('applyPromo');
+  //   const discountRow = document.getElementById('discountRow');
+  //   const discountAmtEl = document.getElementById('discountAmt');
+  //   const payBtn = document.getElementById('razorpayBtn');
 
-    let selected = null;
-    let appliedPromo = null;
+  //   let selected = null;
+  //   let appliedPromo = null;
 
-    function formatINR(n){ return '₹' + Number(n).toFixed(2); }
+  //   function formatINR(n){ return '₹' + Number(n).toFixed(2); }
 
-    // ---------- render plans ----------
-    function renderPlans(){
-      plansEl.innerHTML = '';
-      PLANS.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'plan';
-        el.tabIndex = 0;
-        el.setAttribute('data-id', p.id);
-        el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
-        el.addEventListener('click', () => selectPlan(p, el));
-        el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
-        plansEl.appendChild(el);
-      });
-    }
+  //   // ---------- render plans ----------
+  //   function renderPlans(){
+  //     plansEl.innerHTML = '';
+  //     PLANS.forEach(p => {
+  //       const el = document.createElement('div');
+  //       el.className = 'plan';
+  //       el.tabIndex = 0;
+  //       el.setAttribute('data-id', p.id);
+  //       el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
+  //       el.addEventListener('click', () => selectPlan(p, el));
+  //       el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
+  //       plansEl.appendChild(el);
+  //     });
+  //   }
 
-    function selectPlan(plan, el){
-      selected = Object.assign({}, plan);
-      appliedPromo = null;
-      promoCodeInput.value = '';
-      discountRow.style.display = 'none';
-      discountAmtEl.textContent = '-₹0.00';
-      document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
-      planNameEl.textContent = plan.name;
-      basePriceEl.textContent = formatINR(plan.price);
-      computeAndShow();
-      payBtn.disabled = false;
-      el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-    }
-  })();
+  //   function selectPlan(plan, el){
+  //     selected = Object.assign({}, plan);
+  //     appliedPromo = null;
+  //     promoCodeInput.value = '';
+  //     discountRow.style.display = 'none';
+  //     discountAmtEl.textContent = '-₹0.00';
+  //     document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
+  //     planNameEl.textContent = plan.name;
+  //     basePriceEl.textContent = formatINR(plan.price);
+  //     computeAndShow();
+  //     payBtn.disabled = false;
+  //     el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  //   }
+  // })();
 </script>
 <!-- ===== JS LOGIC ===== -->
 <!-- <script>
@@ -298,17 +299,12 @@ continueBtn.addEventListener("click", async () => {
 <script>
 let selectedPlan = null;
 const continueBtn = document.getElementById("continueBtn");
-
 continueBtn.disabled = true;
 
 document.querySelectorAll(".category-card").forEach(card => {
   card.addEventListener("click", () => {
 
-    // Block disabled non-veg
-    if (card.classList.contains("disabled-nonveg")) {
-      alert("Non-Veg items are disabled.");
-      return;
-    }
+    if (card.classList.contains("disabled-nonveg")) return;
 
     document.querySelectorAll(".category-card")
       .forEach(c => c.classList.remove("selected"));
@@ -316,10 +312,11 @@ document.querySelectorAll(".category-card").forEach(card => {
     card.classList.add("selected");
 
     const planKey = card.dataset.planId;
-    selectedPlan = PLANS.find(p => p.id === planKey);
+    selectedPlan = window.PLANS.find(p => p.id === planKey);
 
     if (!selectedPlan) {
-      console.error("Plan not found for:", planKey);
+      console.error("Plan not found:", planKey);
+      continueBtn.disabled = true;
       return;
     }
 
@@ -332,10 +329,11 @@ continueBtn.addEventListener("click", async () => {
   if (!selectedPlan) return;
 
   const customerId = localStorage.getItem("CustomerId");
-  const accessToken = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
 
-  if (!customerId || !accessToken) {
+  if (!customerId || !token) {
     alert("Session expired. Please login again.");
+    window.location.href = "../login/";
     return;
   }
 
@@ -349,14 +347,13 @@ continueBtn.addEventListener("click", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(payload)
     });
 
     if (!res.ok) throw new Error(await res.text());
 
-    // ✅ Store plan for payment page
     localStorage.setItem(
       "staarbox_selected_plan",
       JSON.stringify(selectedPlan)
@@ -371,18 +368,17 @@ continueBtn.addEventListener("click", async () => {
 });
 </script>
 
+
 <script>
 (function () {
-  const isEggAllowed = JSON.parse(
-    localStorage.getItem("staarbox_isEggAllowed")
-  );
+  // default → egg NOT allowed
+  const isEggAllowed =
+    localStorage.getItem("staarbox_isEggAllowed") === "true";
 
-  // If egg is NOT allowed → disable non-veg
-  if (isEggAllowed === false) {
+  if (!isEggAllowed) {
     document.querySelectorAll('[data-nonveg="true"]').forEach(card => {
       card.classList.add('disabled-nonveg');
 
-      // block click
       card.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -392,6 +388,7 @@ continueBtn.addEventListener("click", async () => {
   }
 })();
 </script>
+
 
 </body>
 </html>
