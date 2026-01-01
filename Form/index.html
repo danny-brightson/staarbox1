@@ -987,7 +987,7 @@ for (const card of cards) {
       }
       document.getElementById("saveBtn").style.display = "none";
       alert("Checkout saved successfully!");
-      window.location.href = '../Payment/';
+      window.location.href = '../Menu/';
     } else {
       const msg = result.message || JSON.stringify(result);
       alert("❌ " + msg);
@@ -1011,6 +1011,7 @@ if (toggle) toggle.addEventListener("click", () => links.classList.toggle("activ
 </script>
 </body>
 </html>
+
 
 
 
