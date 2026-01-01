@@ -1024,44 +1024,36 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
   <script>
-  document.getElementById('subscribeBtn').addEventListener('click', function () {
-    // read localStorage keys (used earlier in your pages)
-    const amountRaw = localStorage.getItem('Amount');
-    const amount = amountRaw ? Number(amountRaw) : 0;
-    const customerId = localStorage.getItem('CustomerId'); // presence means customer profile exists
-    const token = localStorage.getItem('accessToken');  
-    const customerIds = localStorage.getItem('customerIds');   // presence means signed-in (session)
+document.getElementById('subscribeBtn').addEventListener('click', function () {
 
-    // debug (optional)
-    // console.log({ amountRaw, amount, customerId, token });
+  const token = localStorage.getItem('accessToken');
+  const customerId = localStorage.getItem('CustomerId');
+  const customerIds = JSON.parse(localStorage.getItem('customerIds') || '[]');
 
-    // 1) If amount exists (positive) -> go to home page
-    if (customerIds) {
-      // change to your real home URL if different
-     alert("You have an active subscription. Redirecting to home page.");
-      window.location.href = '/';
-      return;
-    }
+  // ✅ Existing customer with active profiles
+  if (customerIds.length > 0) {
+    alert("You are an existing customer. Redirecting to home.");
+    window.location.href = '/';
+    return;
+  }
 
-    // 2) If customerId exists -> go to subscription page
-    if (customerId) {
-      // change to your subscription page URL
-      window.location.href = './Menu/';
-      return;
-    }
+  // ✅ Logged-in customer but no subscription yet
+  if (customerId && token) {
+    window.location.href = './Menu/';
+    return;
+  }
 
-    // 3) If user is signed in (has token) -> go to checkout
-    if (token) {
-      // change to your checkout page URL
-      window.location.href = './Form/';
-      return;
-    }
+  // ✅ Logged-in but no profile
+  if (token && !customerId) {
+    window.location.href = './Form/';
+    return;
+  }
 
-    // 4) Otherwise send user to login page (so they can sign-in)
-    // change to your actual login page URL
-    window.location.href = './login/';
-  });
+  // ❌ Not logged in
+  window.location.href = './login/';
+});
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const signbtn = document.getElementById('signbtn');
@@ -1072,38 +1064,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
 
   signbtn.addEventListener('click', function (e) {
-    const userName = localStorage.getItem("staarbox_user_name");
+    const token = localStorage.getItem("accessToken");
 
-    // ✅ NOT LOGGED IN → allow normal navigation to login page
-    if (!userName) {
-      // do NOT preventDefault
+    // NOT LOGGED IN → go to login
+    if (!token) {
       window.location.href = './login/';
       return;
     }
 
-    // ✅ LOGGED IN → stop navigation and show logout modal
+    // LOGGED IN → show logout modal
     e.preventDefault();
-    if (logoutModal) {
-      logoutModal.show();
-    } else {
-      if (confirm('Do you want to logout?')) performLogout();
-    }
+    logoutModal?.show();
   });
 
-  if (logoutConfirmBtn) {
-    logoutConfirmBtn.addEventListener('click', performLogout);
-  }
+  logoutConfirmBtn?.addEventListener('click', performLogout);
 
   function performLogout() {
-    localStorage.removeItem("staarbox_user_name");
-    localStorage.removeItem("CustomerId");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("Amount");
-    localStorage.removeItem("customerIds");
-
-    if (logoutModal) logoutModal.hide();
-
+    localStorage.clear();
+    logoutModal?.hide();
     window.location.href = './login/';
   }
 });
@@ -1130,6 +1108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html> 
+
 
 
 
