@@ -60,10 +60,10 @@
       </nav>
     </header>
     </header>
-<div class="container">
-    <h1>Choose a plan</h1>
+<!-- <!-- <div class="container"> -->
+    <h1>Payment</h1>
 
-    <div class="plans" id="plans" role="list"></div>
+    <!-- <div class="plans" id="plans" role="list"></div> -->
 
     <div class="order-summary" id="orderSummary" aria-live="polite">
       <h3>Order Summary</h3>
@@ -92,7 +92,7 @@
 
       <button id="razorpayBtn" class="pay-btn" disabled>Pay with Razorpay</button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -107,16 +107,39 @@
   </script>
   <script>
   (function(){
+
+    const selected = JSON.parse(
+  localStorage.getItem("staarbox_selected_plan")
+);
+
+if (!selected) {
+  alert("No plan selected. Redirecting...");
+  window.location.href = "../Menu/";
+  return;
+}
     // ------------ CONFIG ----------
     const API_BASE = "https://api.staarbox.in"; // change if needed
-    const PLANS = [
-      { id: 'basic', planId: 1, name: 'Kids', price: 2299, features: ['[250g-300g]'] },
-      { id: 'standard', planId: 2, name: 'Standard', price: 2829, features: ['[300g-350]'] },
-      { id: 'premium', planId: 3, name: 'Premium', price: 3499, features: ['[400g-450g]'] }
-    ];
+    // const PLANS = [
+    //   { id: 'kidbox', planId: 1, name: 'Kids', price: 2299, features: ['[250g-300g]'] },
+    //   { id: 'standardbox', planId: 2, name: 'Standard', price: 2829, features: ['[300g-350]'] },
+    //   { id: 'premiumbox', planId: 3, name: 'Premium', price: 3499, features: ['[400g-450g]'] },
+    //   { id: 'premiumvegbox', planId: 3, name: 'Premiumvegbox', price: 3499, features: ['[400g-450g]'] },
+    //   { id: 'standardvegbox', planId: 2, name: 'Standardvegbox', price: 2829, features: ['[300g-350]'] },
+    //   { id: 'kidvegbox', planId: 1, name: 'Kidvegbox', price: 2299, features: ['[250g-300g]'] },
+    //   { id: 'basicfruitbowl', planId: 4, name: 'Basicfruitbowl', price: 1699, features: ['[230g-260g]'] },
+    //   { id: 'standardfruitbowl', planId: 5, name: 'Standardfruitbowl', price: 1199, features: ['[200g-240g]'] },
+    //   { id: 'premiumnonvegsandwichbox', planId: 6, name: 'Premiumnonvegsandwichbox', price: 4849, features: ['[600g-650g]'] },
+    //   { id: 'standardnonvegsandwichbox', planId: 7, name: 'Standardnonvegsandwichbox', price: 4069, features: ['[500g-550g]'] },
+    //   { id: 'kidnonvegsandwichbox', planId: 8, name: 'Kidnonvegsandwichbox', price: 3549, features: ['[400g-450]'] },
+    //   { id: 'premiumvegsandwichbox', planId: 9, name: 'Premiumvegsandwichbox', price: 4589, features: ['[600g-650g]'] },
+    //   { id: 'standardvegsandwichbox', planId: 10, name: 'Standardvegsandwichbox', price: 3739, features: ['[500g-550g]'] },
+    //   { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
+    //  ];
+
+     
 
     // ---------- elements ----------
-    const plansEl = document.getElementById('plans');
+   // const plansEl = document.getElementById('plans');
     const planNameEl = document.getElementById('planName');
     const basePriceEl = document.getElementById('basePrice');
     const cgstEl = document.getElementById('cgst');
@@ -130,39 +153,41 @@
     const discountAmtEl = document.getElementById('discountAmt');
     const payBtn = document.getElementById('razorpayBtn');
 
-    let selected = null;
+    // let selected = null;
     let appliedPromo = null;
 
     function formatINR(n){ return '₹' + Number(n).toFixed(2); }
+  
+
 
     // ---------- render plans ----------
-    function renderPlans(){
-      plansEl.innerHTML = '';
-      PLANS.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'plan';
-        el.tabIndex = 0;
-        el.setAttribute('data-id', p.id);
-        el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
-        el.addEventListener('click', () => selectPlan(p, el));
-        el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
-        plansEl.appendChild(el);
-      });
-    }
+    // function renderPlans(){
+    //   plansEl.innerHTML = '';
+    //   PLANS.forEach(p => {
+    //     const el = document.createElement('div');
+    //     el.className = 'plan';
+    //     el.tabIndex = 0;
+    //     el.setAttribute('data-id', p.id);
+    //     el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
+    //     el.addEventListener('click', () => selectPlan(p, el));
+    //     el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
+    //     plansEl.appendChild(el);
+    //   });
+    // }
 
-    function selectPlan(plan, el){
-      selected = Object.assign({}, plan);
-      appliedPromo = null;
-      promoCodeInput.value = '';
-      discountRow.style.display = 'none';
-      discountAmtEl.textContent = '-₹0.00';
-      document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
-      planNameEl.textContent = plan.name;
-      basePriceEl.textContent = formatINR(plan.price);
-      computeAndShow();
-      payBtn.disabled = false;
-      el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-    }
+    // function selectPlan(plan, el){
+    //   selected = Object.assign({}, plan);
+    //   appliedPromo = null;
+    //   promoCodeInput.value = '';
+    //   discountRow.style.display = 'none';
+    //   discountAmtEl.textContent = '-₹0.00';
+    //   document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
+    //   planNameEl.textContent = plan.name;
+    //   basePriceEl.textContent = formatINR(plan.price);
+    //   computeAndShow();
+    //   payBtn.disabled = false;
+    //   el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+    // }
 
     // ---------- compute totals ----------
     function computeAndShow(){
@@ -188,7 +213,11 @@
       //   } catch(e){}
       return { base, cgst, sgst, discount, total };
     }
-
+  // ✅ Populate order summary from selected plan
+planNameEl.textContent = selected.name;
+basePriceEl.textContent = formatINR(selected.price);
+computeAndShow();
+payBtn.disabled = false;
     // ---------- promo UI ----------
     promoCheck.addEventListener('change', function(){ promoSection.style.display = this.checked ? 'block' : 'none'; if(!this.checked){ appliedPromo = null; promoCodeInput.value=''; computeAndShow(); } });
 
@@ -283,7 +312,7 @@
 
     // ---------- pay button flow ----------
     payBtn.addEventListener('click', async function(){
-      if(!selected){ alert('Please select a plan'); return; }
+      // if(!selected){ alert('Please select a plan'); return; }
       payBtn.disabled = true;
       payBtn.textContent = 'Processing...';
 
@@ -353,6 +382,7 @@ const ok = Boolean(
 
 if(ok){
   alert('✅ Payment successful!');
+  localStorage.removeItem("staarbox_selected_plan");
   window.location.href = '../Thankyou/';
 } else {
   const serverMsg = body && (body.message || body.error || JSON.stringify(body));
@@ -394,14 +424,13 @@ if(ok){
     });
 
     // ---------- init ----------
-    renderPlans();
-    computeAndShow();
+   // renderPlans();
+   // computeAndShow();
 
   })();
   </script>
 </body>
 </html>
-
 
 
 
