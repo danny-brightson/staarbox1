@@ -726,6 +726,19 @@ body {
   position: relative;
   overflow: visible;
 }
+.category-card {
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+}
+
+.category-card:active {
+  transform: scale(0.97);
+}
 
 .menu-egg {
   pointer-events: none;
