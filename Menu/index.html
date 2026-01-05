@@ -88,7 +88,7 @@
         <span class="price">₹1699</span>
       </div>
 
-      <div class="category-card" data-plan-id="basicfruitbowl">
+      <div class="category-card" data-plan-id="standardfruitbowl">
         <img src="../Menu/Basic fruit bowl.png">
         <h3>Essential Bowl</h3>
         <span class="price">₹1199</span>
@@ -99,11 +99,47 @@
         <h3>Kid Box</h3>
         <span class="price">₹2299</span>
       </div>
+      
+       <div class="category-card" data-nonveg="true" data-plan-id="standardbox">
+        <img src="../Menu/standard box.png">
+        <h3>Standard Box</h3>
+        <span class="price">₹2829</span>
+      </div>
 
+        <div class="category-card" data-nonveg="true" data-plan-id="premiumbox">
+        <img src="../Menu/premium box.png">
+        <h3>Premium Box</h3>
+        <span class="price">₹3499</span>
+      </div>
+      
       <div class="category-card" data-plan-id="kidvegbox">
         <img src="../Menu/kid veg box.png">
         <h3>Kid Veg Box</h3>
         <span class="price">₹2299</span>
+      </div>
+
+      <div class="category-card" data-plan-id="standardvegbox">
+        <img src="../Menu/standard veg box.png">
+        <h3>Standard Veg Box</h3>
+        <span class="price">₹2829</span>
+      </div>  
+
+       <div class="category-card" data-plan-id="premiumvegbox">
+        <img src="../Menu/premium veg box.png">
+        <h3>Premium Veg Box</h3>
+        <span class="price">₹3499</span>
+      </div>
+
+       <div class="category-card" data-plan-id="premiumvegbox">
+        <img src="../Menu/kids veg sandwich.png">
+        <h3>Kids Veg Sandwich</h3>
+        <span class="price">₹2899</span>
+      </div>
+
+        <div class="category-card" data-plan-id="standardvegsandwichbox">
+        <img src="../Menu/Standard veg sandwich.png">
+        <h3>Standard Veg Sandwich Box</h3>
+        <span class="price">₹3739</span>
       </div>
 
       <div class="category-card" data-plan-id="premiumvegsandwichbox">
@@ -112,34 +148,10 @@
         <span class="price">₹4589</span>
       </div>
 
-      <div class="category-card" data-nonveg="true" data-plan-id="premiumbox">
-        <img src="../Menu/premium box.png">
-        <h3>Premium Box</h3>
-        <span class="price">₹3499</span>
-      </div>
-
-      <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox">
-        <img src="../Menu/Premium nonveg sandwich.png">
-        <h3>Premium Non-Veg Sandwich Box</h3>
-        <span class="price">₹4849</span>
-      </div>
-
-      <div class="category-card" data-plan-id="premiumvegbox">
-        <img src="../Menu/premium veg box.png">
-        <h3>Premium Veg Box</h3>
-        <span class="price">₹3499</span>
-      </div>
-
-      <div class="category-card" data-nonveg="true" data-plan-id="standardbox">
-        <img src="../Menu/standard box.png">
-        <h3>Standard Box</h3>
-        <span class="price">₹2829</span>
-      </div>
-
-      <div class="category-card" data-plan-id="standardvegbox">
-        <img src="../Menu/standard veg box.png">
-        <h3>Standard Veg Box</h3>
-        <span class="price">₹2829</span>
+        <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox">
+        <img src="../Menu/Kids non veg sandwich .png">
+        <h3>Kids Non-Veg Sandwich</h3>
+        <span class="price">₹3549</span>
       </div>
 
       <div class="category-card" data-nonveg="true" data-plan-id="standardnonvegsandwichbox">
@@ -148,11 +160,13 @@
         <span class="price">₹4069</span>
       </div>
 
-      <div class="category-card" data-plan-id="standardvegsandwichbox">
-        <img src="../Menu/Standard veg sandwich.png">
-        <h3>Standard Veg Sandwich Box</h3>
-        <span class="price">₹3739</span>
+        <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox">
+        <img src="../Menu/Premium nonveg sandwich.png">
+        <h3>Premium Non-Veg Sandwich Box</h3>
+        <span class="price">₹4849</span>
       </div>
+
+    
 
     </div>
   </section>
@@ -172,13 +186,13 @@
       { id: 'standardvegbox', planId: 2, name: 'Standardvegbox', price: 2829, features: ['[300g-350]'] },
       { id: 'kidvegbox', planId: 1, name: 'Kidvegbox', price: 2299, features: ['[250g-300g]'] },
       { id: 'basicfruitbowl', planId: 4, name: 'Basicfruitbowl', price: 1699, features: ['[230g-260g]'] },
-      //{ id: 'standardfruitbowl', planId: 5, name: 'Standardfruitbowl', price: 1199, features: ['[200g-240g]'] },
+      { id: 'standardfruitbowl', planId: 5, name: 'Standardfruitbowl', price: 1199, features: ['[200g-240g]'] },
       { id: 'premiumnonvegsandwichbox', planId: 6, name: 'Premiumnonvegsandwichbox', price: 4849, features: ['[600g-650g]'] },
       { id: 'standardnonvegsandwichbox', planId: 7, name: 'Standardnonvegsandwichbox', price: 4069, features: ['[500g-550g]'] },
-    //  { id: 'kidnonvegsandwichbox', planId: 8, name: 'Kidnonvegsandwichbox', price: 3549, features: ['[400g-450]'] },
+      { id: 'kidnonvegsandwichbox', planId: 8, name: 'Kidnonvegsandwichbox', price: 3549, features: ['[400g-450]'] },
       { id: 'premiumvegsandwichbox', planId: 9, name: 'Premiumvegsandwichbox', price: 4589, features: ['[600g-650g]'] },
       { id: 'standardvegsandwichbox', planId: 10, name: 'Standardvegsandwichbox', price: 3739, features: ['[500g-550g]'] },
-     // { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
+      { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
      ];
   // (function(){
   //   // ------------ CONFIG ----------
