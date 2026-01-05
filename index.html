@@ -414,83 +414,83 @@ rel="stylesheet"
   <div class="category-grid">
 
     
-    <div class="category-card">
-      <img src="./Menu/Basic fruit bowl.png" alt="Breakfast">
+    <div class="category-card"  >
+      <img src="./Menu/Basic fruit bowl.png" alt="Breakfast" >
       <h3>Elite Bowl</h3>
       
     </div>
 
-    <div class="category-card">
+    <div class="category-card"  >
       <img src="./Menu/Basic fruit bowl.png" alt="Breakfast">
       <h3>Essential Bowl</h3>
       
     </div> 
 
-    <div class="category-card">
+    <div class="category-card"  >
       <img src="./Menu/kid box.png" alt="Salad Veggie">
       <h3>Kid Box</h3>
       
     </div>
 
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/standard box.png" alt="Pasta">
       <h3>Standard Box</h3>
       
     </div>
 
 
-   <div class="category-card">
+   <div class="category-card" >
       <img src="./Menu/premium box.png" alt="Egg Dishes">
       <h3>Premium Box</h3>
       
     </div>
      
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/kid veg box.png" alt="Noodles">
       <h3>Kid Veg Box</h3>
       
     </div>
      
     
- <div class="category-card">
+ <div class="category-card" >
       <img src="./Menu/standard veg box.png" alt="Pasta">
       <h3>Standard Veg Box</h3>
      
     </div>
 
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/premium veg box.png" alt="Pizza">
       <h3>Premium Veg Box</h3>
       
     </div>
     
-     <div class="category-card">
+     <div class="category-card" >
       <img src="./Menu/kids veg sandwich.png" alt="Pasta">
       <h3>kids Veg Sandwich Box</h3>
     </div>
 
-    <div class="category-card">
+    <div class="category-card"  >
       <img src="./Menu/Standard veg sandwich.png" alt="Pasta">
       <h3>Standard Veg Sandwich Box</h3>
     </div>
 
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/preium veg sandwich.png" alt="Chicken Dishes">
       <h3>Premium Veg Sandwich Box</h3>
       
     </div>
 
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/Kids non veg sandwich .png" alt="Pasta">
       <h3>Kids Non-Veg Sandwich Box</h3>
     </div>
      
-    <div class="category-card">
+    <div class="category-card"  >
       <img src="./Menu/Standard nonveg sandwich.png" alt="Pasta">
       <h3>Standard Non-Veg Sandwich Box</h3>
      
     </div>
-    <div class="category-card">
+    <div class="category-card" >
       <img src="./Menu/Premium nonveg sandwich.png" alt="Seafood">
       <h3>Premium Non-Veg Sandwich Box</h3>
       
@@ -944,23 +944,6 @@ rel="stylesheet"
   });
 </script>
 
-
-
-<!-- plan selection -->
-<script>
-  document.querySelectorAll('.category-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const category = card.querySelector('h3').innerText;
-      console.log('Selected category:', category);
-
-      // Example navigation
-      // window.location.href = `/menu.html?category=${category}`;
-    });
-  });
-</script>
-
-
-
 <!-- Custom Script -->
     <script>
       new Swiper(".wrapper", {
@@ -1002,6 +985,26 @@ rel="stylesheet"
 });
 
     </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('click', () => {
+
+      // 🔁 Trigger EXISTING subscribe logic
+      const subscribeBtn = document.getElementById('subscribeBtn');
+      if (subscribeBtn) {
+        subscribeBtn.click();
+      }
+
+    });
+  });
+
+});
+</script>
+
+
 
 <!--//--Script section--// -->
   <script>
@@ -1131,7 +1134,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html> 
-
 
 
 
