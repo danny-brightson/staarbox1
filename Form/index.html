@@ -261,7 +261,14 @@
           <textarea id="s_notes" rows="3" placeholder="Any special instructions for delivery"></textarea>
           <div class="error" id="err_s_notes"></div>
         </div>
-
+        <!-- ADD CUSTOMER BUTTON -->
+        <div style="margin: 16px 0;">
+          <button type="button" id="addCustomerBtn" class="small-btn" style="font-weight:600;">
+            ➕ Add Another Customer (Max 4)
+          </button>
+          <div id="addCustomerHint" class="muted" style="margin-top:6px;"></div>
+        </div>
+        <!-- BILLING DETAILS -->
         <div class="left-alone">
           <label><input type="checkbox" id="useSame" checked> Use this as billing address</label>
         </div>
@@ -582,6 +589,8 @@
       });
     }
 
+
+
     /* -----------------------
       GOOGLE: Autocomplete & Geocoding helpers
     -------------------------*/
@@ -624,14 +633,14 @@
 
 
       // FINAL validation — ONLY check lat/lng
-      inputEl.addEventListener('blur', () => {
-        setTimeout(() => {
-          if (cardElement.dataset.placeSelected !== "true") {
-            inputEl.value = '';
-            alert('Please select Area / Locality from Google suggestions only.');
-          }
-        }, 300);
-      });
+      // inputEl.addEventListener('blur', () => {
+      //   setTimeout(() => {
+      //     if (cardElement.dataset.placeSelected !== "true") {
+      //       inputEl.value = '';
+      //       alert('Please select Area / Locality from Google suggestions only.');
+      //     }
+      //   }, 300);
+      // });
 
     }
 
@@ -696,6 +705,18 @@
         /* ---------- PHONE (LOCKED) ---------- */
         if (storedPhone) {
           const phoneInput = fieldsContainer.querySelector('[data-key="phone"]');
+          // 🔒 PHONE HANDLING FOR EXTRA CUSTOMERS
+          if (customerCount > 1) {
+            const firstPhone =
+              document.querySelector('.customer-card [data-key="phone"]')?.value || '';
+
+            if (phoneInput) {
+              phoneInput.value = firstPhone;      // copy primary number
+              phoneInput.type = "hidden";         // hide from UI
+              phoneInput.required = false;        // avoid validation issues
+            }
+          }
+
           if (phoneInput) {
             phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
 
@@ -822,7 +843,51 @@
     //   }
     // }
 
+    /* ===============================
+       ADD CUSTOMER LOGIC (SAFE)
+    ================================ */
 
+    const MAX_CUSTOMERS = 4;
+    const addBtn = document.getElementById('addCustomerBtn');
+    const hint = document.getElementById('addCustomerHint');
+
+    function updateAddCustomerUI() {
+      const count = document.querySelectorAll('.customer-card').length;
+
+      if (count >= MAX_CUSTOMERS) {
+        addBtn.disabled = true;
+        addBtn.style.opacity = "0.6";
+        hint.textContent = "Maximum of 4 customer profiles allowed.";
+      } else {
+        addBtn.disabled = false;
+        addBtn.style.opacity = "1";
+        hint.textContent = `You can add ${MAX_CUSTOMERS - count} more customer(s).`;
+      }
+    }
+
+    /* ADD CUSTOMER */
+    addBtn.addEventListener('click', () => {
+      const count = document.querySelectorAll('.customer-card').length;
+
+      if (count >= MAX_CUSTOMERS) {
+        alert("You can add a maximum of 4 customers only.");
+        return;
+      }
+
+      createCustomerCard();     // existing function
+      updateAddCustomerUI();
+    });
+
+    /* REMOVE CUSTOMER – KEEP UI IN SYNC */
+    document.getElementById('customersContainer').addEventListener('click', (e) => {
+      const removeBtn = e.target.closest('[data-action="remove"]');
+      if (!removeBtn) return;
+
+      setTimeout(updateAddCustomerUI, 50);
+    });
+
+    /* INIT */
+    document.addEventListener("DOMContentLoaded", updateAddCustomerUI);
     /* -----------------------
       Billing autocomplete attach (when billing form is shown)
     -------------------------*/
@@ -1008,7 +1073,12 @@
         const delivaryTimingId = (() => { const v = read('deliveryTiming'); return v === '' ? null : Number(v); })();
         const genderId = (() => { const v = read('gender'); return v === '' ? null : Number(v); })();
 
+        const customerIndex =
+          Number(card.getAttribute("data-customer-index")) - 1;
+
+
         const obj = {
+          customerIndex,
           name: `${firstName}${lastName ? ' ' + lastName : ''}`,
           mailId: email,
           dOB: read('dob') || null,
@@ -1131,22 +1201,57 @@
           return;
         }
 
-        if (response.ok) {
-          if (Array.isArray(result) && result.length > 0 && result[0].id != null) {
-            localStorage.setItem("CustomerId", String(result[0].id));
-          } else if (result.id != null) {
-            localStorage.setItem("CustomerId", String(result.id));
-          }
-          // SAFETY: ensure egg preference exists
-          if (!localStorage.getItem("staarbox_isEggAllowed")) {
-            localStorage.setItem("staarbox_isEggAllowed", "false"); // default Veg
-          }
+        // if (response.ok) {
+        //   if (Array.isArray(result) && result.length > 0 && result[0].id != null) {
+        //     localStorage.setItem("CustomerId", String(result[0].id));
+        //   } else if (result.id != null) {
+        //     localStorage.setItem("CustomerId", String(result.id));
+        //   }
+        //   // SAFETY: ensure egg preference exists
+        //   if (!localStorage.getItem("staarbox_isEggAllowed")) {
+        //     localStorage.setItem("staarbox_isEggAllowed", "false"); // default Veg
+        //   }
 
 
-          document.getElementById("saveBtn").style.display = "none";
+        //   document.getElementById("saveBtn").style.display = "none";
+        //   alert("Checkout saved successfully!");
+        //   window.location.href = '../Menu/';
+        // } 
+        if (response.ok && Array.isArray(result)) {
+
+          /**
+           * API response example:
+           * [
+           *   { customerId: 1, name: "Rahul" },
+           *   { customerId: 2, name: "Anita" }
+           * ]
+           */
+
+          const tempPrefs =
+            JSON.parse(localStorage.getItem("staarbox_customers") || "[]");
+
+          const finalCustomers = result.map((c, i) => ({
+            customerId: c.customerId || c.id,
+            name: c.name,
+            isEggAllowed: tempPrefs[i]?.isEggAllowed ?? false
+          }));
+
+          // ✅ FINAL authoritative storage
+          localStorage.setItem(
+            "staarbox_customers",
+            JSON.stringify(finalCustomers)
+          );
+
+          // Backward compatibility (optional)
+          localStorage.setItem(
+            "CustomerId",
+            String(finalCustomers[0].customerId)
+          );
+
           alert("Checkout saved successfully!");
           window.location.href = '../Menu/';
-        } else {
+        }
+        else {
           const msg = result.message || JSON.stringify(result);
           alert("❌ " + msg);
         }
@@ -1170,27 +1275,27 @@
 
   <script>
     /**
-     * Persist egg preference globally for Menu page
-     * Rule:
-     *  true  = Non-Veg allowed
-     *  false = Veg only
+     * Save egg preference per customer card
      */
     document.addEventListener("change", function (e) {
       const select = e.target.closest('.c_egg');
-
       if (!select) return;
 
-      const value = select.value;
+      const card = select.closest('.customer-card');
+      if (!card) return;
 
-      if (value === "true") {
-        localStorage.setItem("staarbox_isEggAllowed", "true");
-      } else if (value === "false") {
-        localStorage.setItem("staarbox_isEggAllowed", "false");
-      }
+      const index = Number(card.getAttribute("data-customer-index")) - 1;
+      const value = select.value === "true"; // true = Non-Veg
 
-      console.log("Egg preference saved:", localStorage.getItem("staarbox_isEggAllowed"));
+      const stored = JSON.parse(localStorage.getItem("staarbox_customers") || "[]");
+
+      if (!stored[index]) stored[index] = {};
+      stored[index].isEggAllowed = value;
+
+      localStorage.setItem("staarbox_customers", JSON.stringify(stored));
     });
   </script>
+
 
 </body>
 
