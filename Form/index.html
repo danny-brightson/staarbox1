@@ -703,31 +703,35 @@
         }
 
         /* ---------- PHONE (LOCKED) ---------- */
-        if (storedPhone) {
-          const phoneInput = fieldsContainer.querySelector('[data-key="phone"]');
-          // 🔒 PHONE HANDLING FOR EXTRA CUSTOMERS
-          if (customerCount > 1) {
-            const firstPhone =
-              document.querySelector('.customer-card [data-key="phone"]')?.value || '';
+  const phoneInput =
+          fieldsContainer.querySelector('[data-key="phone"]');
 
-            if (phoneInput) {
-              phoneInput.value = firstPhone;      // copy primary number
-              phoneInput.type = "hidden";         // hide from UI
-              phoneInput.required = false;        // avoid validation issues
-            }
-          }
+        const storPhone =
+          localStorage.getItem('staarbox_user_phone');
 
-          if (phoneInput) {
-            phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
+        if (storPhone && phoneInput) {
+          const cleanPhone = storPhone.replace(/\D/g, '').slice(-10);
 
-            // hard lock
+          if (customerCount === 1) {
+            // 🔹 PRIMARY CUSTOMER
+            phoneInput.value = cleanPhone;
             phoneInput.readOnly = true;
+            phoneInput.required = true;
+
             phoneInput.style.backgroundColor = '#f1f1f1';
             phoneInput.style.cursor = 'not-allowed';
 
             phoneInput.addEventListener('keydown', e => e.preventDefault());
             phoneInput.addEventListener('paste', e => e.preventDefault());
             phoneInput.addEventListener('focus', () => phoneInput.blur());
+
+          } else {
+            // 🔹 ADDITIONAL CUSTOMERS (2–4)
+            phoneInput.value = cleanPhone;
+
+            phoneInput.type = "hidden";     // hide from UI
+            phoneInput.required = false;    // avoid validation
+            phoneInput.readOnly = true;     // safety
           }
         }
       }
@@ -1300,3 +1304,4 @@
 </body>
 
 </html>
+
