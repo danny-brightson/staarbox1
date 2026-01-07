@@ -678,6 +678,46 @@
 
       const fieldsContainer = node.querySelector('.customer-fields');
       renderGroupedFields(fieldsContainer, customerFields, customerGroups, prefill);
+      /* ===========================
+   PHONE NUMBER UI FIX
+   =========================== */
+
+const phoneInput =
+  fieldsContainer.querySelector('[data-key="phone"]');
+
+const storedPhone =
+  localStorage.getItem('staarbox_user_phone');
+
+if (phoneInput && storedPhone) {
+  const cleanPhone = storedPhone.replace(/\D/g, '').slice(-10);
+
+  // Always set value
+  phoneInput.value = cleanPhone;
+
+  if (customerCount === 1) {
+    // ✅ FIRST CUSTOMER → SHOW, LOCK
+    phoneInput.type = "tel";
+    phoneInput.required = true;
+    phoneInput.readOnly = true;
+
+    phoneInput.style.display = "block";
+    phoneInput.style.backgroundColor = "#f1f1f1";
+    phoneInput.style.cursor = "not-allowed";
+
+    phoneInput.addEventListener('keydown', e => e.preventDefault());
+    phoneInput.addEventListener('paste', e => e.preventDefault());
+
+  } else {
+    // ✅ CUSTOMER 2–4 → HIDE BUT KEEP VALUE
+    phoneInput.type = "tel";            // keep tel
+    phoneInput.required = false;
+    phoneInput.readOnly = true;
+
+    // hide safely without breaking layout
+    phoneInput.closest('.form-group').style.display = "none";
+  }
+}
+
 
       /* ============================
        PREFILL FROM LOGIN (FIRST CUSTOMER ONLY)
@@ -703,37 +743,68 @@
         }
 
         /* ---------- PHONE (LOCKED) ---------- */
-  const phoneInput =
-          fieldsContainer.querySelector('[data-key="phone"]');
+        // if (storedPhone) {
+        //   const phoneInput = fieldsContainer.querySelector('[data-key="phone"]');
+        //   // 🔒 PHONE HANDLING FOR EXTRA CUSTOMERS
+        //   if (customerCount > 1) {
+        //     const firstPhone =
+        //       document.querySelector('.customer-card [data-key="phone"]')?.value || '';
 
-        const storPhone =
-          localStorage.getItem('staarbox_user_phone');
+        //     if (phoneInput) {
+        //       phoneInput.value = firstPhone;      // copy primary number
+        //       phoneInput.type = "hidden";         // hide from UI
+        //       phoneInput.required = false;        // avoid validation issues
+        //     }
+        //   }
 
-        if (storPhone && phoneInput) {
-          const cleanPhone = storPhone.replace(/\D/g, '').slice(-10);
+        //   if (phoneInput) {
+        //     phoneInput.value = storedPhone.replace(/\D/g, '').slice(-10);
 
-          if (customerCount === 1) {
-            // 🔹 PRIMARY CUSTOMER
-            phoneInput.value = cleanPhone;
-            phoneInput.readOnly = true;
-            phoneInput.required = true;
+        //     // hard lock
+        //     phoneInput.readOnly = true;
+        //     phoneInput.style.backgroundColor = '#f1f1f1';
+        //     phoneInput.style.cursor = 'not-allowed';
 
-            phoneInput.style.backgroundColor = '#f1f1f1';
-            phoneInput.style.cursor = 'not-allowed';
+        //     phoneInput.addEventListener('keydown', e => e.preventDefault());
+        //     phoneInput.addEventListener('paste', e => e.preventDefault());
+        //     phoneInput.addEventListener('focus', () => phoneInput.blur());
+        //   }
+        // }
+        /* ===========================
+   PHONE NUMBER HANDLING
+   =========================== */
 
-            phoneInput.addEventListener('keydown', e => e.preventDefault());
-            phoneInput.addEventListener('paste', e => e.preventDefault());
-            phoneInput.addEventListener('focus', () => phoneInput.blur());
+        // const phoneInput =
+        //   fieldsContainer.querySelector('[data-key="phone"]');
 
-          } else {
-            // 🔹 ADDITIONAL CUSTOMERS (2–4)
-            phoneInput.value = cleanPhone;
+        // const storPhone =
+        //   localStorage.getItem('staarbox_user_phone');
 
-            phoneInput.type = "hidden";     // hide from UI
-            phoneInput.required = false;    // avoid validation
-            phoneInput.readOnly = true;     // safety
-          }
-        }
+        // if (storPhone && phoneInput) {
+        //   const cleanPhone = storPhone.replace(/\D/g, '').slice(-10);
+
+        //   if (customerCount === 1) {
+        //     // 🔹 PRIMARY CUSTOMER
+        //     phoneInput.value = cleanPhone;
+        //     phoneInput.readOnly = true;
+        //     phoneInput.required = true;
+
+        //     phoneInput.style.backgroundColor = '#f1f1f1';
+        //     phoneInput.style.cursor = 'not-allowed';
+
+        //     phoneInput.addEventListener('keydown', e => e.preventDefault());
+        //     phoneInput.addEventListener('paste', e => e.preventDefault());
+        //     phoneInput.addEventListener('focus', () => phoneInput.blur());
+
+        //   } else {
+        //     // 🔹 ADDITIONAL CUSTOMERS (2–4)
+        //     phoneInput.value = cleanPhone;
+
+        //     phoneInput.type = "hidden";     // hide from UI
+        //     phoneInput.required = false;    // avoid validation
+        //     phoneInput.readOnly = true;     // safety
+        //   }
+        // }
       }
 
 
@@ -1304,4 +1375,5 @@
 </body>
 
 </html>
+
 
