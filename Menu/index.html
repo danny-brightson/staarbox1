@@ -2,14 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Select Product – Staarbox</title>
+<title>Select Product – UI Only</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="../Css/bootstrap.min.css">
 <link rel="stylesheet" href="../Css/index.css">
 
 <style>
-/* ===== Selection behavior ===== */
+/* ============================= */
+/* CUSTOMER NAME PILLS */
+/* ============================= */
+.customer-pill-bar {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 24px 0 16px;
+}
+
+.customer-pill {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.customer-pill.active {
+  background: #02614e;
+  color: #fff;
+  border-color: #02614e;
+}
+
+/* ============================= */
+/* PROGRESS BAR (UI ONLY) */
+/* ============================= */
+.progress-wrapper {
+  max-width: 520px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background: #e6eaf0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 25%; /* UI default */
+  background: linear-gradient(90deg, #02614e, #04a777);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #02614e;
+}
+.customer-pill.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================= */
+/* PRODUCT CARDS */
+/* ============================= */
 .category-card {
   cursor: pointer;
   transition: 0.3s ease;
@@ -21,14 +86,31 @@
   box-shadow: 0 18px 35px rgba(0,0,0,0.18);
 }
 
-/* Remove arrow completely */
-.category-card .arrow {
-  display: none !important;
+/* ============================= */
+/* NON-VEG UI INDICATOR */
+/* ============================= */
+.nonveg-ui {
+  opacity: 0.45;
+  filter: grayscale(100%) blur(1px);
+  position: relative;
+}
+
+.nonveg-ui::after {
+  content: "Contains Non-Veg";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #c0392b;
+  border-radius: 12px;
 }
 
 /* Continue Button */
 .continue-btn {
-  display: block;
+  display: none; /* hidden by default */
   margin: 50px auto 20px;
   padding: 16px 50px;
   font-size: 18px;
@@ -37,130 +119,207 @@
   color: #fff;
   border: none;
   border-radius: 14px;
-  opacity: 0.5;
-  cursor: not-allowed;
-  transition: 0.3s;
-}
-
-.continue-btn.active {
-  opacity: 1;
   cursor: pointer;
-}
-
-/* Disabled non-veg items */
-.disabled-nonveg {
-  opacity: 0.4;
-  filter: grayscale(100%);
-  pointer-events: auto;
-  cursor: not-allowed;
-  position: relative;
-}
-
-.disabled-nonveg::after {
-  content: "Box contains Non-Veg items";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.85);
-  color: #c0392b;
-  font-weight: 700;
-  font-size: 14px;
-  border-radius: 12px;
 }
 
 </style>
 </head>
 
 <body>
-
 <div class="container">
-  <h1 class="text-center fw-bold mt-5">Select Your Product</h1>
 
-  <!-- 🔁 SAME PRODUCT GRID AS YOUR WEBSITE -->
-  <section class="category-section">
+<h1 class="text-center fw-bold mt-4">Select Product</h1>
+
+<!-- CUSTOMER NAME PILLS (UI ONLY) -->
+<!-- <div class="customer-pill-bar">
+  <div class="customer-pill active">Rahul</div>
+  <div class="customer-pill">Ananya</div>
+  <div class="customer-pill">Ramesh</div>
+  <div class="customer-pill">Sita</div>
+</div> -->
+<div class="customer-pill-bar" id="customerPillBar"></div>
+
+
+<!-- PROGRESS BAR (UI ONLY) -->
+<div class="progress-wrapper">
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">1 of 4 completed</div>
+</div>
+
+<!-- FULL PRODUCT LIST (UNCHANGED) -->
+<!-- <section class="category-section">
+  <div class="category-grid">
+
+    <div class="category-card">
+      <img src="../Menu/Basic fruit bowl.png">
+      <h3>Elite Bowl</h3>
+      <span class="price">₹1699</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/Basic fruit bowl.png">
+      <h3>Essential Bowl</h3>
+      <span class="price">₹1199</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/kid box.png">
+      <h3>Kid Box</h3>
+      <span class="price">₹2299</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/standard box.png">
+      <h3>Standard Box</h3>
+      <span class="price">₹2829</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/premium box.png">
+      <h3>Premium Box</h3>
+      <span class="price">₹3499</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/kid veg box.png">
+      <h3>Kid Veg Box</h3>
+      <span class="price">₹2299</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/standard veg box.png">
+      <h3>Standard Veg Box</h3>
+      <span class="price">₹2829</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/premium veg box.png">
+      <h3>Premium Veg Box</h3>
+      <span class="price">₹3499</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/kids veg sandwich.png">
+      <h3>Kids Veg Sandwich</h3>
+      <span class="price">₹2899</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/Standard veg sandwich.png">
+      <h3>Standard Veg Sandwich Box</h3>
+      <span class="price">₹3739</span>
+    </div>
+
+    <div class="category-card">
+      <img src="../Menu/preium veg sandwich.png">
+      <h3>Premium Veg Sandwich Box</h3>
+      <span class="price">₹4589</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/Kids non veg sandwich .png">
+      <h3>Kids Non-Veg Sandwich</h3>
+      <span class="price">₹3549</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/Standard nonveg sandwich.png">
+      <h3>Standard Non-Veg Sandwich</h3>
+      <span class="price">₹4069</span>
+    </div>
+
+    <div class="category-card nonveg-ui">
+      <img src="../Menu/Premium nonveg sandwich.png">
+      <h3>Premium Non-Veg Sandwich</h3>
+      <span class="price">₹4849</span>
+    </div>
+
+  </div>
+</section> -->
+ <section class="category-section">
     <div class="category-grid">
 
-      <div class="category-card" data-plan-id="basicfruitbowl">
+      <div class="category-card" data-plan-id="basicfruitbowl" data-price="1699">
         <img src="../Menu/Basic fruit bowl.png">
         <h3>Elite Bowl</h3>
         <span class="price">₹1699</span>
       </div>
 
-      <div class="category-card" data-plan-id="standardfruitbowl">
+      <div class="category-card" data-plan-id="standardfruitbowl" data-price="1199">
         <img src="../Menu/Basic fruit bowl.png">
         <h3>Essential Bowl</h3>
         <span class="price">₹1199</span>
       </div>
 
-      <div class="category-card" data-plan-id="kidbox" data-nonveg="true">
+      <div class="category-card" data-plan-id="kidbox" data-nonveg="true" data-price="2299">
         <img src="../Menu/kid box.png">
         <h3>Kid Box</h3>
         <span class="price">₹2299</span>
       </div>
       
-       <div class="category-card" data-nonveg="true" data-plan-id="standardbox">
+       <div class="category-card" data-nonveg="true" data-plan-id="standardbox" data-price="2829">
         <img src="../Menu/standard box.png">
         <h3>Standard Box</h3>
         <span class="price">₹2829</span>
       </div>
 
-        <div class="category-card" data-nonveg="true" data-plan-id="premiumbox">
+        <div class="category-card" data-nonveg="true" data-plan-id="premiumbox" data-price="3499">
         <img src="../Menu/premium box.png">
         <h3>Premium Box</h3>
         <span class="price">₹3499</span>
       </div>
       
-      <div class="category-card" data-plan-id="kidvegbox">
+      <div class="category-card" data-plan-id="kidvegbox" data-price="2299">
         <img src="../Menu/kid veg box.png">
         <h3>Kid Veg Box</h3>
         <span class="price">₹2299</span>
       </div>
 
-      <div class="category-card" data-plan-id="standardvegbox">
+      <div class="category-card" data-plan-id="standardvegbox" data-price="2829">
         <img src="../Menu/standard veg box.png">
         <h3>Standard Veg Box</h3>
         <span class="price">₹2829</span>
       </div>  
 
-       <div class="category-card" data-plan-id="premiumvegbox">
+       <div class="category-card" data-plan-id="premiumvegbox" data-price="3499">
         <img src="../Menu/premium veg box.png">
         <h3>Premium Veg Box</h3>
         <span class="price">₹3499</span>
       </div>
 
-       <div class="category-card" data-plan-id="kidvegsandwichbox">
+       <div class="category-card" data-plan-id="kidvegsandwichbox" data-price="2899">
         <img src="../Menu/kids veg sandwich.png">
         <h3>Kids Veg Sandwich</h3>
         <span class="price">₹2899</span>
       </div>
 
-        <div class="category-card" data-plan-id="standardvegsandwichbox">
+        <div class="category-card" data-plan-id="standardvegsandwichbox" data-price="3739">
         <img src="../Menu/Standard veg sandwich.png">
         <h3>Standard Veg Sandwich Box</h3>
         <span class="price">₹3739</span>
       </div>
 
-      <div class="category-card" data-plan-id="premiumvegsandwichbox">
+      <div class="category-card" data-plan-id="premiumvegsandwichbox" data-price="4589">
         <img src="../Menu/preium veg sandwich.png">
         <h3>Premium Veg Sandwich Box</h3>
         <span class="price">₹4589</span>
       </div>
 
-        <div class="category-card" data-nonveg="true" data-plan-id="Kidnonvegsandwichbox">
+        <div class="category-card" data-nonveg="true" data-plan-id="kidnonvegsandwichbox" data-price="3549">
         <img src="../Menu/Kids non veg sandwich .png">
         <h3>Kids Non-Veg Sandwich</h3>
         <span class="price">₹3549</span>
       </div>
 
-      <div class="category-card" data-nonveg="true" data-plan-id="standardnonvegsandwichbox">
+      <div class="category-card" data-nonveg="true" data-plan-id="standardnonvegsandwichbox" data-price="4069">
         <img src="../Menu/Standard nonveg sandwich.png">
         <h3>Standard Non-Veg Sandwich Box</h3>
         <span class="price">₹4069</span>
       </div>
 
-        <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox">
+        <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox" data-price="4849">
         <img src="../Menu/Premium nonveg sandwich.png">
         <h3>Premium Non-Veg Sandwich Box</h3>
         <span class="price">₹4849</span>
@@ -170,246 +329,218 @@
 
     </div>
   </section>
+<button class="continue-btn">Continue</button>
 
-  <!-- Continue Button -->
-  <button id="continueBtn" class="continue-btn">
-    Continue to Payment
-  </button>
 </div>
-<!-- =====  ===== -->
- <script>
-   window.PLANS = [
-      { id: 'kidbox', planId: 1, name: 'Kids', price: 2299, features: ['[250g-300g]'] },
-      { id: 'standardbox', planId: 2, name: 'Standard', price: 2829, features: ['[300g-350]'] },
-      { id: 'premiumbox', planId: 3, name: 'Premium', price: 3499, features: ['[400g-450g]'] },
-      { id: 'premiumvegbox', planId: 3, name: 'Premiumvegbox', price: 3499, features: ['[400g-450g]'] },
-      { id: 'standardvegbox', planId: 2, name: 'Standardvegbox', price: 2829, features: ['[300g-350]'] },
-      { id: 'kidvegbox', planId: 1, name: 'Kidvegbox', price: 2299, features: ['[250g-300g]'] },
-      { id: 'basicfruitbowl', planId: 4, name: 'Basicfruitbowl', price: 1699, features: ['[230g-260g]'] },
-      { id: 'standardfruitbowl', planId: 5, name: 'Standardfruitbowl', price: 1199, features: ['[200g-240g]'] },
-      { id: 'premiumnonvegsandwichbox', planId: 6, name: 'Premiumnonvegsandwichbox', price: 4849, features: ['[600g-650g]'] },
-      { id: 'standardnonvegsandwichbox', planId: 7, name: 'Standardnonvegsandwichbox', price: 4069, features: ['[500g-550g]'] },
-      { id: 'kidnonvegsandwichbox', planId: 8, name: 'Kidnonvegsandwichbox', price: 3549, features: ['[400g-450]'] },
-      { id: 'premiumvegsandwichbox', planId: 9, name: 'Premiumvegsandwichbox', price: 4589, features: ['[600g-650g]'] },
-      { id: 'standardvegsandwichbox', planId: 10, name: 'Standardvegsandwichbox', price: 3739, features: ['[500g-550g]'] },
-      { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
-     ];
-  // (function(){
-  //   // ------------ CONFIG ----------
-  //   const API_BASE = "https://api.staarbox.in"; // change if needed
-   
 
-  //   // ---------- elements ----------
-  //   const plansEl = document.getElementById('plans');
-  //   const planNameEl = document.getElementById('planName');
-  //   const basePriceEl = document.getElementById('basePrice');
-  //   const cgstEl = document.getElementById('cgst');
-  //   const sgstEl = document.getElementById('sgst');
-  //   const totalPriceEl = document.getElementById('totalPrice');
-  //   const promoCheck = document.getElementById('promoCheck');
-  //   const promoSection = document.getElementById('promoSection');
-  //   const promoCodeInput = document.getElementById('promoCode');
-  //   const applyPromoBtn = document.getElementById('applyPromo');
-  //   const discountRow = document.getElementById('discountRow');
-  //   const discountAmtEl = document.getElementById('discountAmt');
-  //   const payBtn = document.getElementById('razorpayBtn');
-
-  //   let selected = null;
-  //   let appliedPromo = null;
-
-  //   function formatINR(n){ return '₹' + Number(n).toFixed(2); }
-
-  //   // ---------- render plans ----------
-  //   function renderPlans(){
-  //     plansEl.innerHTML = '';
-  //     PLANS.forEach(p => {
-  //       const el = document.createElement('div');
-  //       el.className = 'plan';
-  //       el.tabIndex = 0;
-  //       el.setAttribute('data-id', p.id);
-  //       el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
-  //       el.addEventListener('click', () => selectPlan(p, el));
-  //       el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
-  //       plansEl.appendChild(el);
-  //     });
-  //   }
-
-  //   function selectPlan(plan, el){
-  //     selected = Object.assign({}, plan);
-  //     appliedPromo = null;
-  //     promoCodeInput.value = '';
-  //     discountRow.style.display = 'none';
-  //     discountAmtEl.textContent = '-₹0.00';
-  //     document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
-  //     planNameEl.textContent = plan.name;
-  //     basePriceEl.textContent = formatINR(plan.price);
-  //     computeAndShow();
-  //     payBtn.disabled = false;
-  //     el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-  //   }
-  // })();
-</script>
-<!-- ===== JS LOGIC ===== -->
+<!-- UI-ONLY INTERACTION (SAFE TO DELETE LATER) -->
 <!-- <script>
-let selectedPlan = null;
-const continueBtn = document.getElementById("continueBtn");
-const API_BASE = "https://api.staarbox.in";
+  
+const pills = Array.from(document.querySelectorAll('.customer-pill'));
+const cards = document.querySelectorAll('.category-card:not(.nonveg-ui)');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
 
-document.querySelectorAll(".category-card").forEach(card => {
-  card.addEventListener("click", () => {
+let activeIndex = 0;
+const completed = [false, false, false, false];
 
-    document.querySelectorAll(".category-card")
-      .forEach(c => c.classList.remove("selected"));
+/* INITIAL STATE */
+pills.forEach((pill, i) => {
+  if (i !== 0) pill.classList.add('disabled');
+});
 
-    card.classList.add("selected");
+/* PILL CLICK (BLOCK FUTURE) */
+pills.forEach((pill, index) => {
+  pill.addEventListener('click', () => {
+    if (pill.classList.contains('disabled')) return;
 
-    const planKey = card.dataset.planId;
-    selectedPlan = PLANS.find(p => p.id === planKey);
+    pills.forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeIndex = index;
 
-    continueBtn.classList.add("active");
-    continueBtn.disabled = false;
+    updateProgress();
+    clearSelection();
   });
 });
 
-continueBtn.addEventListener("click", async () => {
-  if (!selectedPlan) return;
+/* PRODUCT SELECTION */
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    cards.forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
 
-  const customerId = localStorage.getItem("customerId");
-  const accessToken = localStorage.getItem("accessToken");
+    completed[activeIndex] = true;
 
-  if (!customerId || !accessToken) {
-    alert("Session expired. Please login again.");
-    return;
-  }
-
-  try {
-    const payload = [{
-      packDetailsId: selectedPlan.planId,
-      customerId: Number(customerId)
-    }];
-
-    const res = await fetch(`${API_BASE}/api/savePackDetails`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || "Failed to save pack");
+    // enable next pill
+    if (activeIndex + 1 < pills.length) {
+      pills[activeIndex + 1].classList.remove('disabled');
     }
 
-    // ✅ Store FULL PLAN for payment page
-    localStorage.setItem(
-      "staarbox_selected_plan",
-      JSON.stringify(selectedPlan)
-    );
-
-    window.location.href = "../Payment/";
-
-  } catch (err) {
-    console.error(err);
-    alert("Unable to proceed. Please try again.");
-  }
+    updateProgress();
+  });
 });
+
+/* HELPERS */
+function updateProgress() {
+  const doneCount = completed.filter(Boolean).length;
+  const percent = (doneCount / 4) * 100;
+
+  progressFill.style.width = percent + '%';
+  progressLabel.textContent = `${doneCount} of 4 completed`;
+
+  // 🔒 Show Continue ONLY when all customers are done
+  const continueBtn = document.querySelector('.continue-btn');
+  if (doneCount === 4) {
+    continueBtn.style.display = 'block';
+  } else {
+    continueBtn.style.display = 'none';
+  }
+}
 </script> -->
 <script>
-let selectedPlan = null;
-const continueBtn = document.getElementById("continueBtn");
-continueBtn.disabled = true;
+/* ================================
+   LOAD CUSTOMERS
+================================ */
+const customers =
+  JSON.parse(localStorage.getItem("staarbox_customers") || "[]");
 
-document.querySelectorAll(".category-card").forEach(card => {
+if (!customers.length) {
+  alert("No customers found. Please enroll first.");
+  window.location.href = "../Checkout/";
+}
+
+const pillBar = document.getElementById("customerPillBar");
+const cards = document.querySelectorAll(".category-card");
+const progressFill = document.getElementById("progressFill");
+const progressLabel = document.getElementById("progressLabel");
+const continueBtn = document.querySelector(".continue-btn");
+
+let activeIndex = 0;
+const selections = Array(customers.length).fill(null);
+
+/* ================================
+   CREATE CUSTOMER PILLS
+================================ */
+customers.forEach((c, i) => {
+  const pill = document.createElement("div");
+  pill.className = "customer-pill";
+  if (i === 0) pill.classList.add("active");
+  if (i !== 0) pill.classList.add("disabled");
+
+  pill.textContent = c.name;
+  pill.dataset.index = i;
+
+  pill.addEventListener("click", () => {
+    if (pill.classList.contains("disabled")) return;
+
+    document.querySelectorAll(".customer-pill")
+      .forEach(p => p.classList.remove("active"));
+
+    pill.classList.add("active");
+    activeIndex = i;
+
+    applyVegRule();
+    restoreSelection();
+    updateProgress();
+  });
+
+  pillBar.appendChild(pill);
+});
+
+/* ================================
+   APPLY VEG / NON-VEG RULE
+================================ */
+function applyVegRule() {
+  const isEggAllowed = customers[activeIndex].isEggAllowed;
+
+  cards.forEach(card => {
+    const isNonVeg = card.dataset.nonveg === "true";
+
+    if (!isEggAllowed && isNonVeg) {
+      card.classList.add("nonveg-ui");
+    } else {
+      card.classList.remove("nonveg-ui");
+    }
+  });
+}
+
+/* ================================
+   PRODUCT SELECTION
+================================ */
+cards.forEach(card => {
   card.addEventListener("click", () => {
+    if (card.classList.contains("nonveg-ui")) return;
 
-    if (card.classList.contains("disabled-nonveg")) return;
-
-    document.querySelectorAll(".category-card")
-      .forEach(c => c.classList.remove("selected"));
-
+    cards.forEach(c => c.classList.remove("selected"));
     card.classList.add("selected");
 
-    const planKey = card.dataset.planId;
-    selectedPlan = window.PLANS.find(p => p.id === planKey);
+    selections[activeIndex] = {
+      customerId: customers[activeIndex].customerId,
+      plan: card.dataset.plan,
+      price: Number(card.dataset.price)
+    };
 
-    if (!selectedPlan) {
-      console.error("Plan not found:", planKey);
-      continueBtn.disabled = true;
-      return;
-    }
+    // unlock next pill
+    const nextPill = document.querySelector(
+      `.customer-pill[data-index="${activeIndex + 1}"]`
+    );
+    if (nextPill) nextPill.classList.remove("disabled");
 
-    continueBtn.classList.add("active");
-    continueBtn.disabled = false;
+    updateProgress();
   });
 });
 
-continueBtn.addEventListener("click", async () => {
-  if (!selectedPlan) return;
+/* ================================
+   RESTORE SELECTION ON TAB SWITCH
+================================ */
+function restoreSelection() {
+  cards.forEach(c => c.classList.remove("selected"));
 
-  const customerId = localStorage.getItem("CustomerId");
-  const token = localStorage.getItem("accessToken");
+  const selected = selections[activeIndex];
+  if (!selected) return;
 
-  if (!customerId || !token) {
-    alert("Session expired. Please login again.");
-    window.location.href = "../login/";
-    return;
-  }
+  const card = [...cards].find(
+    c => c.dataset.plan === selected.plan
+  );
+  if (card) card.classList.add("selected");
+}
 
-  try {
-    const payload = [{
-      packDetailsId: selectedPlan.planId,
-      customerId: Number(customerId)
-    }];
+/* ================================
+   PROGRESS BAR
+================================ */
+function updateProgress() {
+  const done = selections.filter(Boolean).length;
+  const percent = (done / customers.length) * 100;
 
-    const res = await fetch("https://api.staarbox.in/api/savePackDetails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
+  progressFill.style.width = percent + "%";
+  progressLabel.textContent =
+    `${done} of ${customers.length} completed`;
 
-    if (!res.ok) throw new Error(await res.text());
+  continueBtn.style.display =
+    done === customers.length ? "block" : "none";
+}
 
-    localStorage.setItem(
-      "staarbox_selected_plan",
-      JSON.stringify(selectedPlan)
-    );
+/* ================================
+   CONTINUE → SAVE & PAYMENT
+================================ */
+continueBtn.addEventListener("click", () => {
+  localStorage.setItem(
+    "staarbox_selected_packages",
+    JSON.stringify(selections)
+  );
 
-    window.location.href = "../Payment/";
+  console.log("Final selection:", selections);
 
-  } catch (err) {
-    console.error(err);
-    alert("Unable to proceed. Please try again.");
-  }
+  // NEXT STEP → CALL SAVE PACKAGE API HERE
+  // THEN REDIRECT TO PAYMENT PAGE
+  window.location.href = "../Payment/";
 });
-</script>
 
-
-<script>
-(function () {
-  // default → egg NOT allowed
-  const isEggAllowed =
-    localStorage.getItem("staarbox_isEggAllowed") === "true";
-
-  if (!isEggAllowed) {
-    document.querySelectorAll('[data-nonveg="true"]').forEach(card => {
-      card.classList.add('disabled-nonveg');
-
-      card.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert("Non-Veg items are disabled because Egg preference is set to No.");
-      });
-    });
-  }
-})();
+/* INIT */
+applyVegRule();
+updateProgress();
 </script>
 
 
 </body>
 </html>
-
