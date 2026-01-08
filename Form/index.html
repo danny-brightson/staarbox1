@@ -678,7 +678,7 @@
 
       const fieldsContainer = node.querySelector('.customer-fields');
       renderGroupedFields(fieldsContainer, customerFields, customerGroups, prefill);
-  /* ===========================
+ /* ===========================
    PREFILL NAME & PHONE (ALL CUSTOMERS)
    =========================== */
 
@@ -718,28 +718,6 @@ if (phoneInput && primaryPhone) {
   phoneInput.addEventListener('paste', e => e.preventDefault());
 }
 
-// -------- PHONE (ALL CUSTOMERS) --------
-const phoneInput =
-  fieldsContainer.querySelector('[data-key="phone"]');
-
-if (phoneInput && primaryPhone) {
-  phoneInput.value = primaryPhone;
-  phoneInput.readOnly = true;
-
-  phoneInput.style.backgroundColor = '#f1f1f1';
-  phoneInput.style.cursor = 'not-allowed';
-
-  phoneInput.addEventListener('keydown', e => e.preventDefault());
-  phoneInput.addEventListener('paste', e => e.preventDefault());
-
-  // Customer 2–4 → hide phone but keep value
-  if (customerCount > 1) {
-    phoneInput.required = false;
-    phoneInput.closest('.form-group').style.display = 'none';
-  } else {
-    phoneInput.required = true;
-  }
-}
 
 
 
@@ -1400,4 +1378,3 @@ if (phoneInput && primaryPhone) {
 </body>
 
 </html>
-
