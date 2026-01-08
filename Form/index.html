@@ -690,23 +690,32 @@ const primaryPhone =
     .replace(/\D/g, '')
     .slice(-10);
 
-// -------- NAME (ALL CUSTOMERS) --------
+// -------- NAME (EDITABLE) --------
 const firstNameInput =
   fieldsContainer.querySelector('[data-key="firstName"]');
 const lastNameInput =
   fieldsContainer.querySelector('[data-key="lastName"]');
 
-if (primaryName && firstNameInput) {
+if (primaryName && firstNameInput && lastNameInput) {
   const parts = primaryName.trim().split(/\s+/);
-
   firstNameInput.value = parts[0] || '';
   lastNameInput.value = parts.slice(1).join(' ');
+}
 
-  firstNameInput.readOnly = true;
-  lastNameInput.readOnly = true;
+// -------- PHONE (VISIBLE BUT LOCKED) --------
+const phoneInput =
+  fieldsContainer.querySelector('[data-key="phone"]');
 
-  firstNameInput.style.backgroundColor = '#f1f1f1';
-  lastNameInput.style.backgroundColor = '#f1f1f1';
+if (phoneInput && primaryPhone) {
+  phoneInput.value = primaryPhone;
+  phoneInput.readOnly = true;
+  phoneInput.required = customerCount === 1;
+
+  phoneInput.style.backgroundColor = '#f1f1f1';
+  phoneInput.style.cursor = 'not-allowed';
+
+  phoneInput.addEventListener('keydown', e => e.preventDefault());
+  phoneInput.addEventListener('paste', e => e.preventDefault());
 }
 
 // -------- PHONE (ALL CUSTOMERS) --------
@@ -1391,3 +1400,4 @@ if (phoneInput && primaryPhone) {
 </body>
 
 </html>
+
