@@ -678,69 +678,84 @@
 
       const fieldsContainer = node.querySelector('.customer-fields');
       renderGroupedFields(fieldsContainer, customerFields, customerGroups, prefill);
-      /* ===========================
-   PHONE NUMBER UI FIX
+  /* ===========================
+   PREFILL NAME & PHONE (ALL CUSTOMERS)
    =========================== */
 
+const primaryName =
+  localStorage.getItem('staarbox_user_name') || "";
+
+const primaryPhone =
+  (localStorage.getItem('staarbox_user_phone') || "")
+    .replace(/\D/g, '')
+    .slice(-10);
+
+// -------- NAME (ALL CUSTOMERS) --------
+const firstNameInput =
+  fieldsContainer.querySelector('[data-key="firstName"]');
+const lastNameInput =
+  fieldsContainer.querySelector('[data-key="lastName"]');
+
+if (primaryName && firstNameInput) {
+  const parts = primaryName.trim().split(/\s+/);
+
+  firstNameInput.value = parts[0] || '';
+  lastNameInput.value = parts.slice(1).join(' ');
+
+  firstNameInput.readOnly = true;
+  lastNameInput.readOnly = true;
+
+  firstNameInput.style.backgroundColor = '#f1f1f1';
+  lastNameInput.style.backgroundColor = '#f1f1f1';
+}
+
+// -------- PHONE (ALL CUSTOMERS) --------
 const phoneInput =
   fieldsContainer.querySelector('[data-key="phone"]');
 
-const storedPhone =
-  localStorage.getItem('staarbox_user_phone');
+if (phoneInput && primaryPhone) {
+  phoneInput.value = primaryPhone;
+  phoneInput.readOnly = true;
 
-if (phoneInput && storedPhone) {
-  const cleanPhone = storedPhone.replace(/\D/g, '').slice(-10);
+  phoneInput.style.backgroundColor = '#f1f1f1';
+  phoneInput.style.cursor = 'not-allowed';
 
-  // Always set value
-  phoneInput.value = cleanPhone;
+  phoneInput.addEventListener('keydown', e => e.preventDefault());
+  phoneInput.addEventListener('paste', e => e.preventDefault());
 
-  if (customerCount === 1) {
-    // ✅ FIRST CUSTOMER → SHOW, LOCK
-    phoneInput.type = "tel";
-    phoneInput.required = true;
-    phoneInput.readOnly = true;
-
-    phoneInput.style.display = "block";
-    phoneInput.style.backgroundColor = "#f1f1f1";
-    phoneInput.style.cursor = "not-allowed";
-
-    phoneInput.addEventListener('keydown', e => e.preventDefault());
-    phoneInput.addEventListener('paste', e => e.preventDefault());
-
-  } else {
-    // ✅ CUSTOMER 2–4 → HIDE BUT KEEP VALUE
-    phoneInput.type = "tel";            // keep tel
+  // Customer 2–4 → hide phone but keep value
+  if (customerCount > 1) {
     phoneInput.required = false;
-    phoneInput.readOnly = true;
-
-    // hide safely without breaking layout
-    phoneInput.closest('.form-group').style.display = "none";
+    phoneInput.closest('.form-group').style.display = 'none';
+  } else {
+    phoneInput.required = true;
   }
 }
+
 
 
       /* ============================
        PREFILL FROM LOGIN (FIRST CUSTOMER ONLY)
        ============================ */
-      if (customerCount === 1) {
-        const storedName = localStorage.getItem('staarbox_user_name');
-        const storedPhone = localStorage.getItem('staarbox_user_phone');
+      // if (customerCount === 1) {
+      //   const storedName = localStorage.getItem('staarbox_user_name');
+      //   const storedPhone = localStorage.getItem('staarbox_user_phone');
 
-        /* ---------- NAME ---------- */
-        if (storedName) {
-          const parts = storedName.trim().split(/\s+/);
+      //   /* ---------- NAME ---------- */
+      //   if (storedName) {
+      //     const parts = storedName.trim().split(/\s+/);
 
-          const firstNameInput = fieldsContainer.querySelector('[data-key="firstName"]');
-          const lastNameInput = fieldsContainer.querySelector('[data-key="lastName"]');
+      //     const firstNameInput = fieldsContainer.querySelector('[data-key="firstName"]');
+      //     const lastNameInput = fieldsContainer.querySelector('[data-key="lastName"]');
 
-          if (firstNameInput && !firstNameInput.value) {
-            firstNameInput.value = parts[0] || '';
-          }
+      //     if (firstNameInput && !firstNameInput.value) {
+      //       firstNameInput.value = parts[0] || '';
+      //     }
 
-          if (lastNameInput && !lastNameInput.value) {
-            lastNameInput.value = parts.slice(1).join(' ');
-          }
-        }
+      //     if (lastNameInput && !lastNameInput.value) {
+      //       lastNameInput.value = parts.slice(1).join(' ');
+      //     }
+      //   }
 
         /* ---------- PHONE (LOCKED) ---------- */
         // if (storedPhone) {
@@ -805,7 +820,8 @@ if (phoneInput && storedPhone) {
         //     phoneInput.readOnly = true;     // safety
         //   }
         // }
-      }
+
+     // }
 
 
       const pinInput = fieldsContainer.querySelector('[data-key="pincode"]');
@@ -1375,5 +1391,3 @@ if (phoneInput && storedPhone) {
 </body>
 
 </html>
-
-
