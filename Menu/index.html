@@ -474,11 +474,16 @@ cards.forEach(card => {
     cards.forEach(c => c.classList.remove("selected"));
     card.classList.add("selected");
 
-    selections[activeIndex] = {
-      customerId: customers[activeIndex].customerId,
-      plan: card.dataset.plan,
-      price: Number(card.dataset.price)
-    };
+    const planName =
+  card.querySelector("h3")?.innerText.trim() || "";
+
+selections[activeIndex] = {
+  customerId: customers[activeIndex].customerId,
+
+  planId: card.dataset.planId,     // backend-safe
+  planName: planName,              // UI/payment-safe
+  price: Number(card.dataset.price)
+};
 
     // unlock next pill
     const nextPill = document.querySelector(
@@ -544,3 +549,4 @@ updateProgress();
 
 </body>
 </html>
+
