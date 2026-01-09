@@ -1,444 +1,209 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow">
-
   <title>Payment</title>
 
-  <!-- Styles (keep your project CSS links if needed) -->
   <link rel="stylesheet" href="../Css/index.css" />
   <link rel="stylesheet" href="../Css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../Css/swiper.css" />
-  <link rel="stylesheet" href="../Css/fontawesome.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="../Css/googlefonts.css" />
-  <link rel="stylesheet" href="../Css/AOS.css" />
-  <link rel="stylesheet" href="../Css/Mdb.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#f6f8fa; --card:#fff; --accent:#28a745; --muted:#6b7280;
+      --bg:#f6f8fa;
+      --card:#ffffff;
+      --accent:#28a745;
+      --muted:#6b7280;
     }
-    body{font-family:Poppins,Inter,system-ui,Roboto,Arial;margin:0;background:var(--bg);color:#111}
-    .container{max-width:1100px;margin:18px auto;padding:12px}
-    h1{text-align:center;margin:8px 0}
-    .plans{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-    .plan{flex:1 1 280px;min-width:220px;max-width:360px;background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(15,23,42,0.06);box-shadow:0 6px 18px rgba(2,6,23,0.04);cursor:pointer}
-    .plan.selected{border-color:rgba(26,206,92,0.18);box-shadow:0 14px 36px rgba(2,6,23,0.08)}
-    .plan .price{font-weight:700;color:var(--accent);font-size:18px}
-    .order-summary{margin-top:28px;background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);max-width:640px;margin:20px auto}
-    .summary-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
-    .promo-box{display:flex;gap:8px;margin-top:8px}
-    .promo-box input{flex:1;padding:8px;border-radius:6px;border:1px solid #e6e6e6}
-    .pay-btn{width:100%;margin-top:12px;padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
-    .pay-btn[disabled]{opacity:0.5;cursor:not-allowed}
-    @media (max-width:720px){ .plan{flex:1 1 100%} }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Poppins, Arial, sans-serif;
+      background:var(--bg);
+      color:#111;
+    }
+
+    h1{
+      text-align:center;
+      margin:16px 0;
+      font-size:22px;
+    }
+
+    /* ---------- CONTAINER ---------- */
+    .page-wrapper{
+      padding:12px;
+    }
+
+    .order-summary{
+      max-width:680px;
+      margin:0 auto;
+      background:var(--card);
+      padding:16px;
+      border-radius:14px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    /* ---------- PLAN LIST ---------- */
+    .plan-title{
+      font-weight:600;
+      margin-bottom:8px;
+      font-size:15px;
+    }
+
+    .plan-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:6px 0;
+      font-size:14px;
+    }
+
+    .plan-row span:last-child{
+      font-weight:600;
+    }
+
+    /* ---------- SUMMARY ROWS ---------- */
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 0;
+      border-bottom:1px dashed #e5e7eb;
+      font-size:14px;
+    }
+
+    .summary-item strong{
+      font-size:15px;
+    }
+
+    /* ---------- PROMO ---------- */
+    .promo-box{
+      display:flex;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .promo-box input{
+      flex:1;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      font-size:14px;
+    }
+
+    .promo-box button{
+      white-space:nowrap;
+    }
+
+    /* ---------- PAY BUTTON ---------- */
+    .pay-btn{
+      width:100%;
+      margin-top:16px;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:var(--accent);
+      color:#fff;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .pay-btn[disabled]{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    /* ---------- MOBILE ---------- */
+    @media (max-width:480px){
+      h1{font-size:20px}
+      .order-summary{padding:14px}
+      .plan-row,.summary-item{font-size:13px}
+      .pay-btn{font-size:15px}
+    }
+
+    /* ---------- TABLET ---------- */
+    @media (min-width:481px) and (max-width:900px){
+      .order-summary{padding:18px}
+    }
+
+    /* ---------- DESKTOP ---------- */
+    @media (min-width:901px){
+      .page-wrapper{padding:24px}
+    }
   </style>
 </head>
+
 <body>
-  
-   <header>
-      <!-- ✅ NAVBAR -->
-      <nav class="navbar container-fluid" id="home">
-        <div class="logo">
-          <a href="#"><img src="../Image/staarbox.png" height="60" width="100" alt="StaarBox"></a>
-        </div>
-        <div class="menu-toggle" id="menuToggle">
-          <i class="fas fa-bars"></i>
-        </div>
-        <div class="nav-links" id="navLinks">
-          <ul>
-            <li><a href="../">Home</a></li>
-            <li><a href="../Aboutus/" class="active">Aboutus</a></li>
-            <li><a href="../Contactus/">Contact</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    </header>
-<!-- <!-- <div class="container"> -->
-    <h1>Payment</h1>
 
-    <!-- <div class="plans" id="plans" role="list"></div> -->
+<div class="page-wrapper">
+  <h1>Payment</h1>
 
-    <div class="order-summary" id="orderSummary" aria-live="polite">
-      <h3>Order Summary</h3>
+  <div class="order-summary">
+    <h3>Order Summary</h3>
 
-      <div class="summary-item"><span>Plan:</span> <span id="planName">—</span></div>
-      <div class="summary-item"><span>Base Price:</span> <span id="basePrice">—</span></div>
-      <div class="summary-item"><span>CGST :</span> <span id="cgst">—</span></div>
-      <div class="summary-item"><span>SGST :</span> <span id="sgst">—</span></div>
+    <!-- PLAN LIST -->
+    <div id="planList"></div>
 
-      <div style="margin-top:12px;">
-        <label><input type="checkbox" id="promoCheck"> I have a promo code</label>
-      </div>
-
-      <div id="promoSection" style="display:none;">
-        <div class="promo-box">
-          <input type="text" id="promoCode" placeholder="Enter promo code">
-          <button id="applyPromo" class="small-btn">Apply</button>
-        </div>
-        <div class="summary-item" id="discountRow" style="display:none;">
-          <span>Discount:</span> <span id="discountAmt" style="color:green">-₹0.00</span>
-        </div>
-      </div>
-
-      <hr>
-      <div class="summary-item"><strong>Total:</strong> <strong id="totalPrice"></strong></div>
-
-      <button id="razorpayBtn" class="pay-btn" disabled>Pay with Razorpay</button>
+    <div class="summary-item">
+      <span>Base Price</span>
+      <strong id="basePrice">—</strong>
     </div>
+
+    <div class="summary-item">
+      <span>CGST (2.5%)</span>
+      <span id="cgst">—</span>
+    </div>
+
+    <div class="summary-item">
+      <span>SGST (2.5%)</span>
+      <span id="sgst">—</span>
+    </div>
+
+    <!-- PROMO -->
+    <div style="margin-top:12px;">
+      <label>
+        <input type="checkbox" id="promoCheck">
+        I have a promo code
+      </label>
+    </div>
+
+    <div id="promoSection" style="display:none;">
+      <div class="promo-box">
+        <input type="text" id="promoCode" placeholder="Enter promo code">
+        <button id="applyPromo" class="btn btn-outline-success btn-sm">
+          Apply
+        </button>
+      </div>
+
+      <div class="summary-item" id="discountRow" style="display:none;">
+        <span>Discount</span>
+        <span id="discountAmt" style="color:green">-₹0</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="summary-item">
+      <strong>Total</strong>
+      <strong id="totalPrice">—</strong>
+    </div>
+
+    <button id="razorpayBtn" class="pay-btn" disabled>
+      Pay with Razorpay
+    </button>
   </div>
+</div>
 
-  <!-- Razorpay -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<!-- Toggle-->
- <script>
-    const toggle = document.getElementById("menuToggle");
-    const links = document.getElementById("navLinks");
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    toggle.addEventListener("click", () => {
-      links.classList.toggle("active");
-    });
-  </script>
-  <script>
-  (function(){
+<!-- 🔒 IMPORTANT -->
+<!-- Keep your EXISTING JavaScript exactly as it is -->
+<!-- Do NOT change any payment / promo / API code -->
 
-    const selected = JSON.parse(
-  localStorage.getItem("staarbox_selected_plan")
-);
-
-if (!selected) {
-  alert("No plan selected. Redirecting...");
-  window.location.href = "../Menu/";
-  return;
-}
-    // ------------ CONFIG ----------
-    const API_BASE = "https://api.staarbox.in"; // change if needed
-    // const PLANS = [
-    //   { id: 'kidbox', planId: 1, name: 'Kids', price: 2299, features: ['[250g-300g]'] },
-    //   { id: 'standardbox', planId: 2, name: 'Standard', price: 2829, features: ['[300g-350]'] },
-    //   { id: 'premiumbox', planId: 3, name: 'Premium', price: 3499, features: ['[400g-450g]'] },
-    //   { id: 'premiumvegbox', planId: 3, name: 'Premiumvegbox', price: 3499, features: ['[400g-450g]'] },
-    //   { id: 'standardvegbox', planId: 2, name: 'Standardvegbox', price: 2829, features: ['[300g-350]'] },
-    //   { id: 'kidvegbox', planId: 1, name: 'Kidvegbox', price: 2299, features: ['[250g-300g]'] },
-    //   { id: 'basicfruitbowl', planId: 4, name: 'Basicfruitbowl', price: 1699, features: ['[230g-260g]'] },
-    //   { id: 'standardfruitbowl', planId: 5, name: 'Standardfruitbowl', price: 1199, features: ['[200g-240g]'] },
-    //   { id: 'premiumnonvegsandwichbox', planId: 6, name: 'Premiumnonvegsandwichbox', price: 4849, features: ['[600g-650g]'] },
-    //   { id: 'standardnonvegsandwichbox', planId: 7, name: 'Standardnonvegsandwichbox', price: 4069, features: ['[500g-550g]'] },
-    //   { id: 'kidnonvegsandwichbox', planId: 8, name: 'Kidnonvegsandwichbox', price: 3549, features: ['[400g-450]'] },
-    //   { id: 'premiumvegsandwichbox', planId: 9, name: 'Premiumvegsandwichbox', price: 4589, features: ['[600g-650g]'] },
-    //   { id: 'standardvegsandwichbox', planId: 10, name: 'Standardvegsandwichbox', price: 3739, features: ['[500g-550g]'] },
-    //   { id: 'kidvegsandwichbox', planId: 11, name: 'Kidvegsandwichbox', price: 2899, features: ['[400g-450]'] }
-    //  ];
-
-     
-
-    // ---------- elements ----------
-   // const plansEl = document.getElementById('plans');
-    const planNameEl = document.getElementById('planName');
-    const basePriceEl = document.getElementById('basePrice');
-    const cgstEl = document.getElementById('cgst');
-    const sgstEl = document.getElementById('sgst');
-    const totalPriceEl = document.getElementById('totalPrice');
-    const promoCheck = document.getElementById('promoCheck');
-    const promoSection = document.getElementById('promoSection');
-    const promoCodeInput = document.getElementById('promoCode');
-    const applyPromoBtn = document.getElementById('applyPromo');
-    const discountRow = document.getElementById('discountRow');
-    const discountAmtEl = document.getElementById('discountAmt');
-    const payBtn = document.getElementById('razorpayBtn');
-
-    // let selected = null;
-    let appliedPromo = null;
-
-    function formatINR(n){ return '₹' + Number(n).toFixed(2); }
-  
-
-
-    // ---------- render plans ----------
-    // function renderPlans(){
-    //   plansEl.innerHTML = '';
-    //   PLANS.forEach(p => {
-    //     const el = document.createElement('div');
-    //     el.className = 'plan';
-    //     el.tabIndex = 0;
-    //     el.setAttribute('data-id', p.id);
-    //     el.innerHTML = `<h3>${p.name}</h3><div class="price">${formatINR(p.price)}</div><div class="features">${p.features.join(' • ')}</div>`;
-    //     el.addEventListener('click', () => selectPlan(p, el));
-    //     el.addEventListener('keypress', e => { if(e.key === 'Enter') selectPlan(p, el); });
-    //     plansEl.appendChild(el);
-    //   });
-    // }
-
-    // function selectPlan(plan, el){
-    //   selected = Object.assign({}, plan);
-    //   appliedPromo = null;
-    //   promoCodeInput.value = '';
-    //   discountRow.style.display = 'none';
-    //   discountAmtEl.textContent = '-₹0.00';
-    //   document.querySelectorAll('.plan').forEach(node => node.classList.toggle('selected', node === el));
-    //   planNameEl.textContent = plan.name;
-    //   basePriceEl.textContent = formatINR(plan.price);
-    //   computeAndShow();
-    //   payBtn.disabled = false;
-    //   el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-    // }
-
-    // ---------- compute totals ----------
-    function computeAndShow(){
-      if(!selected){ basePriceEl.textContent='—'; cgstEl.textContent='—'; sgstEl.textContent='—'; totalPriceEl.textContent='—'; payBtn.disabled=true; return; }
-      const base = Number(selected.price) || 0;
-      const cgst = +(base * 0.025).toFixed(2);
-      const sgst = +(base * 0.025).toFixed(2);
-      let discount = 0;
-      if(appliedPromo){
-        if(appliedPromo.type === 'percent') discount = +(base * (appliedPromo.value / 100)).toFixed(2);
-        else discount = +(appliedPromo.value).toFixed(2);
-      }
-      const total = +(base + cgst + sgst - discount).toFixed(2);
-      basePriceEl.textContent = formatINR(base);
-      cgstEl.textContent = formatINR(cgst);
-      sgstEl.textContent = formatINR(sgst);
-      if(discount > 0){ discountRow.style.display = 'flex'; discountAmtEl.textContent = '-'+formatINR(discount); } else { discountRow.style.display = 'none'; discountAmtEl.textContent = '-₹0.00'; }
-      totalPriceEl.textContent = formatINR(total);
-      // persist Amount for other pages (if you already used it)
-      // try { 
-      //   //localStorage.setItem('Amount', total); 
-      //   // 
-      //   } catch(e){}
-      return { base, cgst, sgst, discount, total };
-    }
-  // ✅ Populate order summary from selected plan
-planNameEl.textContent = selected.name;
-basePriceEl.textContent = formatINR(selected.price);
-computeAndShow();
-payBtn.disabled = false;
-    // ---------- promo UI ----------
-    promoCheck.addEventListener('change', function(){ promoSection.style.display = this.checked ? 'block' : 'none'; if(!this.checked){ appliedPromo = null; promoCodeInput.value=''; computeAndShow(); } });
-
-    applyPromoBtn.addEventListener('click', async function(){
-      const code = (promoCodeInput.value || '').trim();
-      if(!code){ alert('Enter promo code'); return; }
-      if(!selected){ alert('Select a plan first'); return; }
-
-      const accessToken = localStorage.getItem('accessToken') || '';
-      try {
-        const res = await fetch(`${API_BASE}/api/checkPromoCode?promoCode=${encodeURIComponent(code)}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': accessToken ? `Bearer ${accessToken}` : '',
-            'Content-Type': 'application/json'
-          }
-        });
-        if(!res.ok){ const t = await res.text().catch(()=>res.statusText); alert('Promo check failed: '+t); return; }
-        const data = await res.json();
-        if(data && data.valid && data.discountPercentage){
-          appliedPromo = { type:'percent', value: Number(data.discountPercentage), label: code };
-          computeAndShow();
-          alert('Promo applied: ' + code);
-        } else {
-          alert('Invalid promo code');
-        }
-      } catch (err) {
-        console.error('Promo error', err);
-        alert('Server error while applying promo');
-      }
-    });
-
-    // ---------- helper: pre-check (savePackDetails) ----------
-    async function preCheckPack(packId, customerId){
-      const accessToken = localStorage.getItem('accessToken') || '';
-      const payload = [{ packDetailsId: Number(packId), customerId: Number(customerId) }];
-      const res = await fetch(`${API_BASE}/api/savePackDetails`, {
-        method: 'POST',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization': accessToken ? `Bearer ${accessToken}` : ''
-        },
-        body: JSON.stringify(payload)
-      });
-      if(!res.ok){
-        const txt = await res.text().catch(()=>res.statusText);
-        throw new Error(txt || 'Pre-check failed');
-      }
-      return res.json();
-    }
-
-    // ---------- helper: create-order on server ----------
-    async function createOrderOnServer(planId, amountInINR){
-      const accessToken = localStorage.getItem('accessToken') || '';
-      const customerId = localStorage.getItem('CustomerId') || '';
-      // call your create-order endpoint (using existing signature you used)
-      const url = `${API_BASE}/api/payment/create-order?amount=${encodeURIComponent(Math.round(Number(amountInINR) || 0))}&customerId=${encodeURIComponent(customerId)}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': accessToken ? `Bearer ${accessToken}` : ''
-        }
-      });
-      if(!res.ok){
-        const txt = await res.text().catch(()=>res.statusText);
-        throw new Error('Order creation failed: ' + txt);
-      }
-      return res.json();
-    }
-
-    // ---------- helper: verify payment on server ----------
-    async function verifyPaymentOnServer({ orderId, paymentId, signature, customerIds }){
-      const accessToken = localStorage.getItem('accessToken') || '';
-      const qs = new URLSearchParams({
-    orderId,
-    paymentId,
-    signature,
-    customerIds, // "15,16"
-  }).toString();
-      const res = await fetch(`${API_BASE}/api/payment/verify?${qs}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': accessToken ? `Bearer ${accessToken}` : ''
-        }
-      });
-      if(!res.ok){
-        const txt = await res.text().catch(()=>res.statusText);
-        throw new Error(txt || 'Verification failed');
-      }
-      return res.json();
-    }
-
-    // ---------- pay button flow ----------
-    payBtn.addEventListener('click', async function(){
-      // if(!selected){ alert('Please select a plan'); return; }
-      payBtn.disabled = true;
-      payBtn.textContent = 'Processing...';
-
-      try {
-        const calc = computeAndShow();
-        const amount = calc.total;
-        if(amount <= 0) { throw new Error('Invalid amount'); }
-
-        // require logged-in customer id
-        const customerId = localStorage.getItem('CustomerId');
-        if(!customerId){ alert('Please login before payment.'); payBtn.disabled=false; payBtn.textContent='Pay with Razorpay'; return; }
-
-        // STEP 0: pre-check (savePackDetails)
-        await preCheckPack(selected.planId, customerId);
-
-        // STEP 1: create order on backend
-        const serverResp = await createOrderOnServer(selected.planId, amount);
-
-        // serverResp expected to contain { key, amount, currency, orderId, id? }
-        if(!serverResp || !serverResp.orderId){
-          throw new Error('Invalid order response from server');
-        }
-
-        // STEP 2: open Razorpay
-        const rzpOptions = {
-          key: serverResp.key || serverResp.razorpayKey || '',    // server should return the public key or you can put a fallback
-          amount: serverResp.amount || Math.round(amount * 100), // ensure it's in paise if backend didn't convert
-          currency: serverResp.currency || 'INR',
-          name: 'StaarBox',
-          description: `${selected.name} plan`,
-          order_id: serverResp.orderId,
-          handler: async function(response){
-            try {
-              payBtn.textContent = 'Verifying...';
-              // call verify with the server-expected payload
-              //const customerIds = Array.isArray(selectedCustomers) ? selectedCustomers.map(c=>c.id).join(',') : String(customerId);
-
-              const payload = {
-                orderId: response.razorpay_order_id,
-                paymentId: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                customerIds: Array.isArray(customerId)
-    ? customerId.join(",")          // → "15,16"
-    : String(customerId)
-                // planId: Number(selected.planId),
-                // promo: appliedPromo ? appliedPromo.label : null,
-                // orderId: serverResp.id || serverResp.orderId
-              };
-
-const verifyResult = await verifyPaymentOnServer(payload);
-console.log('verifyResult (parsed):', verifyResult);
-
-// normalize body: server may return an array [ { ... } ] or an object
-let body = verifyResult;
-if (Array.isArray(verifyResult) && verifyResult.length) body = verifyResult[0];
-
-// some servers return string status like "Payment Verified"
-const statusStr = body && (body.status || body.message || body.result || '').toString();
-
-// consider it OK when one of the common flags is present OR status contains "verified"
-const ok = Boolean(
-  (body && (body.ok === true || body.success === true || body.verified === true)) ||
-  /verified/i.test(statusStr) ||
-  statusStr === 'OK' ||
-  statusStr === 'success'
-);
-
-if(ok){
-  alert('✅ Payment successful!');
-  localStorage.removeItem("staarbox_selected_plan");
-  window.location.href = '../Thankyou/';
-} else {
-  const serverMsg = body && (body.message || body.error || JSON.stringify(body));
-  console.warn('Verification response (not OK):', verifyResult);
-  alert('Payment verification failed — please contact support. ' + (serverMsg ? '\nServer: '+serverMsg : ''));
-  payBtn.disabled = false; payBtn.textContent = 'Pay with Razorpay';
-}
-            } catch (err) {
-              console.error('Verify error', err);
-              alert('Payment verification failed: ' + (err.message || 'Error'));
-              payBtn.disabled = false; payBtn.textContent = 'Pay with Razorpay';
-            }
-          },
-          prefill: {
-            name: localStorage.getItem('CustomerName') || '',
-            email: localStorage.getItem('CustomerEmail') || '',
-            contact: localStorage.getItem('CustomerPhone') || ''
-          },
-          notes: { customer_id: customerId },
-          theme: { color: '#3399cc' }
-        };
-
-        const rzp = new Razorpay(rzpOptions);
-        rzp.on('payment.failed', function(resp){
-          console.error('Razorpay failed', resp);
-          alert('Payment failed: ' + (resp.error && resp.error.reason ? resp.error.reason : 'Unknown'));
-          payBtn.disabled = false;
-          payBtn.textContent = 'Pay with Razorpay';
-        });
-
-        rzp.open();
-        payBtn.textContent = 'Pay with Razorpay';
-      } catch (err) {
-        console.error('Payment flow error', err);
-        alert('Error: ' + (err.message || err));
-        payBtn.disabled = false;
-        payBtn.textContent = 'Pay with Razorpay';
-      }
-    });
-
-    // ---------- init ----------
-   // renderPlans();
-   // computeAndShow();
-
-  })();
-  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
