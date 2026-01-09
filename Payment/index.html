@@ -59,7 +59,6 @@
         </div>
       </nav>
     </header>
-    </header>
 <!-- <!-- <div class="container"> -->
     <h1>Payment</h1>
 
@@ -111,12 +110,25 @@
     const selected = JSON.parse(
   localStorage.getItem("staarbox_selected_packages")
 );
-
-if (!selected) {
+if (!Array.isArray(selected) || selected.length === 0) {
   alert("No plan selected. Redirecting...");
   window.location.href = "../Menu/";
   return;
 }
+
+/* 🔑 NORMALIZE MULTIPLE PLANS */
+const normalizedPlan = {
+  name: selected.map(p => p.planName).join(", "),
+  price: selected.reduce((sum, p) => sum + Number(p.price || 0), 0),
+  planId: selected[0].planId // keep first for backend compatibility
+};
+
+
+// if (!selected) {
+//   alert("No plan selected. Redirecting...");
+//   window.location.href = "../Menu/";
+//   return;
+// }
     // ------------ CONFIG ----------
     const API_BASE = "https://api.staarbox.in"; // change if needed
     // const PLANS = [
@@ -191,8 +203,8 @@ if (!selected) {
 
     // ---------- compute totals ----------
     function computeAndShow(){
-      if(!selected){ basePriceEl.textContent='—'; cgstEl.textContent='—'; sgstEl.textContent='—'; totalPriceEl.textContent='—'; payBtn.disabled=true; return; }
-      const base = Number(selected.price) || 0;
+      if(!normalizedPlan || !normalizedPlan.price){ basePriceEl.textContent='—'; cgstEl.textContent='—'; sgstEl.textContent='—'; totalPriceEl.textContent='—'; payBtn.disabled=true; return; }
+      const base = Number(normalizedPlan.price) || 0;
       const cgst = +(base * 0.025).toFixed(2);
       const sgst = +(base * 0.025).toFixed(2);
       let discount = 0;
@@ -214,8 +226,9 @@ if (!selected) {
       return { base, cgst, sgst, discount, total };
     }
   // ✅ Populate order summary from selected plan
-planNameEl.textContent = selected.name;
-basePriceEl.textContent = formatINR(selected.price);
+planNameEl.textContent = normalizedPlan.name;
+basePriceEl.textContent = formatINR(normalizedPlan.price);
+
 computeAndShow();
 payBtn.disabled = false;
     // ---------- promo UI ----------
@@ -326,10 +339,10 @@ payBtn.disabled = false;
         if(!customerId){ alert('Please login before payment.'); payBtn.disabled=false; payBtn.textContent='Pay with Razorpay'; return; }
 
         // STEP 0: pre-check (savePackDetails)
-        await preCheckPack(selected.planId, customerId);
+        await preCheckPack(normalizedPlan.planId, customerId);
 
         // STEP 1: create order on backend
-        const serverResp = await createOrderOnServer(selected.planId, amount);
+        const serverResp = await createOrderOnServer(normalizedPlan.planId, amount);
 
         // serverResp expected to contain { key, amount, currency, orderId, id? }
         if(!serverResp || !serverResp.orderId){
@@ -342,7 +355,7 @@ payBtn.disabled = false;
           amount: serverResp.amount || Math.round(amount * 100), // ensure it's in paise if backend didn't convert
           currency: serverResp.currency || 'INR',
           name: 'StaarBox',
-          description: `${selected.name} plan`,
+          description: `${normalizedPlan.name} plan`,
           order_id: serverResp.orderId,
           handler: async function(response){
             try {
@@ -357,7 +370,7 @@ payBtn.disabled = false;
                 customerIds: Array.isArray(customerId)
     ? customerId.join(",")          // → "15,16"
     : String(customerId)
-                // planId: Number(selected.planId),
+                // planId: Number(normalizedPlan.planId),
                 // promo: appliedPromo ? appliedPromo.label : null,
                 // orderId: serverResp.id || serverResp.orderId
               };
