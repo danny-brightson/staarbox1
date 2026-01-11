@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Select Product – UI Only</title>
+<title>Select Product</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="../Css/bootstrap.min.css">
@@ -10,118 +10,134 @@
 
 <style>
 /* ============================= */
-/* CUSTOMER NAME PILLS */
+/* STICKY HEADER */
 /* ============================= */
-.customer-pill-bar {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin: 24px 0 16px;
-}
-
-.customer-pill {
-  padding: 10px 22px;
-  border-radius: 999px;
-  border: 1px solid #d0d5dd;
-  background: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.customer-pill.active {
-  background: #02614e;
-  color: #fff;
-  border-color: #02614e;
+.sticky-header{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #f6f8fa;
+  padding: 12px 0 8px;
 }
 
 /* ============================= */
-/* PROGRESS BAR (UI ONLY) */
+/* CUSTOMER PILLS */
 /* ============================= */
-.progress-wrapper {
-  max-width: 520px;
-  margin: 0 auto 28px;
-  text-align: center;
+.customer-pill-bar{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
 }
 
-.progress-bar-container {
-  width: 100%;
-  height: 10px;
-  background: #e6eaf0;
-  border-radius: 999px;
-  overflow: hidden;
+.customer-pill{
+  padding:10px 22px;
+  border-radius:999px;
+  border:1px solid #d0d5dd;
+  background:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
 }
 
-.progress-bar-fill {
-  height: 100%;
-  width: 25%; /* UI default */
-  background: linear-gradient(90deg, #02614e, #04a777);
-  transition: width 0.4s ease;
+.customer-pill.active{
+  background:#02614e;
+  color:#fff;
+  border-color:#02614e;
+  box-shadow:0 0 0 4px rgba(2,97,78,.15);
 }
 
-.progress-label {
-  margin-top: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #02614e;
+.customer-pill.disabled{
+  opacity:.4;
+  pointer-events:none;
 }
-.customer-pill.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
+
+/* ============================= */
+/* PROGRESS BAR */
+/* ============================= */
+.progress-wrapper{
+  max-width:520px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.progress-bar-container{
+  height:10px;
+  background:#e6eaf0;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-bar-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#02614e,#04a777);
+  transition:width .4s ease;
+}
+
+.progress-label{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:600;
+  color:#02614e;
 }
 
 /* ============================= */
 /* PRODUCT CARDS */
 /* ============================= */
-.category-card {
-  cursor: pointer;
-  transition: 0.3s ease;
+.category-card{
+  cursor:pointer;
+  transition:.3s ease;
 }
 
-.category-card.selected {
-  outline: 3px solid #02614e;
-  transform: translateY(-6px);
-  box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+.category-card.selected{
+  outline:3px solid #02614e;
+  transform:translateY(-6px);
+  box-shadow:0 18px 35px rgba(0,0,0,.18);
 }
 
-/* ============================= */
-/* NON-VEG UI INDICATOR */
-/* ============================= */
-.nonveg-ui {
-  opacity: 0.45;
-  filter: grayscale(100%) blur(1px);
-  position: relative;
+/* NON-VEG UI */
+.nonveg-ui{
+  opacity:.45;
+  filter:grayscale(100%);
+  position:relative;
 }
 
-.nonveg-ui::after {
-  content: "Contains Non-Veg";
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: #c0392b;
-  border-radius: 12px;
+.nonveg-ui::after{
+  content:"Contains Non-Veg";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#c0392b;
+  border-radius:12px;
 }
 
-/* Continue Button */
-.continue-btn {
-  display: none; /* hidden by default */
-  margin: 50px auto 20px;
-  padding: 16px 50px;
-  font-size: 18px;
-  font-weight: 600;
-  background: #02614e;
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
+/* PRICE */
+.menu-price{
+  display:block;
+  color:#02614e;
+  font-weight:700;
+  margin-top:6px;
 }
 
+/* CONTINUE */
+.continue-btn{
+  display:none;
+  margin:50px auto 20px;
+  padding:16px 50px;
+  font-size:18px;
+  font-weight:600;
+  background:#02614e;
+  color:#fff;
+  border:0;
+  border-radius:14px;
+  cursor:pointer;
+}
 </style>
 </head>
 
@@ -130,279 +146,122 @@
 
 <h1 class="text-center fw-bold mt-4">Select Product</h1>
 
-<!-- CUSTOMER NAME PILLS (UI ONLY) -->
-<!-- <div class="customer-pill-bar">
-  <div class="customer-pill active">Rahul</div>
-  <div class="customer-pill">Ananya</div>
-  <div class="customer-pill">Ramesh</div>
-  <div class="customer-pill">Sita</div>
-</div> -->
-<div class="customer-pill-bar" id="customerPillBar"></div>
+<!-- STICKY -->
+<div class="sticky-header">
+  <div class="customer-pill-bar" id="customerPillBar"></div>
 
-
-<!-- PROGRESS BAR (UI ONLY) -->
-<div class="progress-wrapper">
-  <div class="progress-bar-container">
-    <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-wrapper">
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel"></div>
   </div>
-  <div class="progress-label" id="progressLabel">1 of 4 completed</div>
 </div>
 
-<!-- FULL PRODUCT LIST (UNCHANGED) -->
-<!-- <section class="category-section">
-  <div class="category-grid">
-
-    <div class="category-card">
-      <img src="../Menu/Basic fruit bowl.png">
-      <h3>Elite Bowl</h3>
-      <span class="price">₹1699</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/Basic fruit bowl.png">
-      <h3>Essential Bowl</h3>
-      <span class="price">₹1199</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/kid box.png">
-      <h3>Kid Box</h3>
-      <span class="price">₹2299</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/standard box.png">
-      <h3>Standard Box</h3>
-      <span class="price">₹2829</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/premium box.png">
-      <h3>Premium Box</h3>
-      <span class="price">₹3499</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/kid veg box.png">
-      <h3>Kid Veg Box</h3>
-      <span class="price">₹2299</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/standard veg box.png">
-      <h3>Standard Veg Box</h3>
-      <span class="price">₹2829</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/premium veg box.png">
-      <h3>Premium Veg Box</h3>
-      <span class="price">₹3499</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/kids veg sandwich.png">
-      <h3>Kids Veg Sandwich</h3>
-      <span class="price">₹2899</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/Standard veg sandwich.png">
-      <h3>Standard Veg Sandwich Box</h3>
-      <span class="price">₹3739</span>
-    </div>
-
-    <div class="category-card">
-      <img src="../Menu/preium veg sandwich.png">
-      <h3>Premium Veg Sandwich Box</h3>
-      <span class="price">₹4589</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/Kids non veg sandwich .png">
-      <h3>Kids Non-Veg Sandwich</h3>
-      <span class="price">₹3549</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/Standard nonveg sandwich.png">
-      <h3>Standard Non-Veg Sandwich</h3>
-      <span class="price">₹4069</span>
-    </div>
-
-    <div class="category-card nonveg-ui">
-      <img src="../Menu/Premium nonveg sandwich.png">
-      <h3>Premium Non-Veg Sandwich</h3>
-      <span class="price">₹4849</span>
-    </div>
-
-  </div>
-</section> -->
- <section class="category-section">
+<!-- PRODUCTS -->
+<section class="category-section">
     <div class="category-grid">
 
       <div class="category-card" data-plan-id="basicfruitbowl" data-price="1699">
         <img src="../Menu/Basic fruit bowl.png">
         <h3>Elite Bowl</h3>
-        <span class="price">₹1699</span>
+        <span class="menu-price">₹1699</span>
       </div>
 
       <div class="category-card" data-plan-id="standardfruitbowl" data-price="1199">
         <img src="../Menu/Basic fruit bowl.png">
         <h3>Essential Bowl</h3>
-        <span class="price">₹1199</span>
+        <span class="menu-price">₹1199</span>
       </div>
 
       <div class="category-card" data-plan-id="kidbox" data-nonveg="true" data-price="2299">
         <img src="../Menu/kid box.png">
         <h3>Kid Box</h3>
-        <span class="price">₹2299</span>
+        <span class="menu-price">₹2299</span>
       </div>
       
        <div class="category-card" data-nonveg="true" data-plan-id="standardbox" data-price="2829">
         <img src="../Menu/standard box.png">
         <h3>Standard Box</h3>
-        <span class="price">₹2829</span>
+        <span class="menu-price">₹2829</span>
       </div>
 
         <div class="category-card" data-nonveg="true" data-plan-id="premiumbox" data-price="3499">
         <img src="../Menu/premium box.png">
         <h3>Premium Box</h3>
-        <span class="price">₹3499</span>
+        <span class="menu-price">₹3499</span>
       </div>
       
       <div class="category-card" data-plan-id="kidvegbox" data-price="2299">
         <img src="../Menu/kid veg box.png">
         <h3>Kid Veg Box</h3>
-        <span class="price">₹2299</span>
+        <span class="menu-price">₹2299</span>
       </div>
 
       <div class="category-card" data-plan-id="standardvegbox" data-price="2829">
         <img src="../Menu/standard veg box.png">
         <h3>Standard Veg Box</h3>
-        <span class="price">₹2829</span>
+        <span class="menu-price">₹2829</span>
       </div>  
 
        <div class="category-card" data-plan-id="premiumvegbox" data-price="3499">
         <img src="../Menu/premium veg box.png">
         <h3>Premium Veg Box</h3>
-        <span class="price">₹3499</span>
+        <span class="menu-price">₹3499</span>
       </div>
 
        <div class="category-card" data-plan-id="kidvegsandwichbox" data-price="2899">
         <img src="../Menu/kids veg sandwich.png">
         <h3>Kids Veg Sandwich</h3>
-        <span class="price">₹2899</span>
+        <span class="menu-price">₹2899</span>
       </div>
 
         <div class="category-card" data-plan-id="standardvegsandwichbox" data-price="3739">
         <img src="../Menu/Standard veg sandwich.png">
         <h3>Standard Veg Sandwich Box</h3>
-        <span class="price">₹3739</span>
+        <span class="menu-price">₹3739</span>
       </div>
 
       <div class="category-card" data-plan-id="premiumvegsandwichbox" data-price="4589">
         <img src="../Menu/preium veg sandwich.png">
         <h3>Premium Veg Sandwich Box</h3>
-        <span class="price">₹4589</span>
+        <span class="menu-price">₹4589</span>
       </div>
 
         <div class="category-card" data-nonveg="true" data-plan-id="kidnonvegsandwichbox" data-price="3549">
         <img src="../Menu/Kids non veg sandwich .png">
         <h3>Kids Non-Veg Sandwich</h3>
-        <span class="price">₹3549</span>
+        <span class="menu-price">₹3549</span>
       </div>
 
       <div class="category-card" data-nonveg="true" data-plan-id="standardnonvegsandwichbox" data-price="4069">
         <img src="../Menu/Standard nonveg sandwich.png">
         <h3>Standard Non-Veg Sandwich Box</h3>
-        <span class="price">₹4069</span>
+        <span class="menu-price">₹4069</span>
       </div>
 
         <div class="category-card" data-nonveg="true" data-plan-id="premiumnonvegsandwichbox" data-price="4849">
         <img src="../Menu/Premium nonveg sandwich.png">
         <h3>Premium Non-Veg Sandwich Box</h3>
-        <span class="price">₹4849</span>
+        <span class="menu-price">₹4849</span>
       </div>
 
     
 
     </div>
   </section>
-<button class="continue-btn">Continue</button>
+
+<button class="continue-btn" id="continueBtn">Continue</button>
 
 </div>
 
-<!-- UI-ONLY INTERACTION (SAFE TO DELETE LATER) -->
-<!-- <script>
-  
-const pills = Array.from(document.querySelectorAll('.customer-pill'));
-const cards = document.querySelectorAll('.category-card:not(.nonveg-ui)');
-const progressFill = document.getElementById('progressFill');
-const progressLabel = document.getElementById('progressLabel');
-
-let activeIndex = 0;
-const completed = [false, false, false, false];
-
-/* INITIAL STATE */
-pills.forEach((pill, i) => {
-  if (i !== 0) pill.classList.add('disabled');
-});
-
-/* PILL CLICK (BLOCK FUTURE) */
-pills.forEach((pill, index) => {
-  pill.addEventListener('click', () => {
-    if (pill.classList.contains('disabled')) return;
-
-    pills.forEach(p => p.classList.remove('active'));
-    pill.classList.add('active');
-    activeIndex = index;
-
-    updateProgress();
-    clearSelection();
-  });
-});
-
-/* PRODUCT SELECTION */
-cards.forEach(card => {
-  card.addEventListener('click', () => {
-    cards.forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-
-    completed[activeIndex] = true;
-
-    // enable next pill
-    if (activeIndex + 1 < pills.length) {
-      pills[activeIndex + 1].classList.remove('disabled');
-    }
-
-    updateProgress();
-  });
-});
-
-/* HELPERS */
-function updateProgress() {
-  const doneCount = completed.filter(Boolean).length;
-  const percent = (doneCount / 4) * 100;
-
-  progressFill.style.width = percent + '%';
-  progressLabel.textContent = `${doneCount} of 4 completed`;
-
-  // 🔒 Show Continue ONLY when all customers are done
-  const continueBtn = document.querySelector('.continue-btn');
-  if (doneCount === 4) {
-    continueBtn.style.display = 'block';
-  } else {
-    continueBtn.style.display = 'none';
-  }
-}
-</script> -->
 <script>
-/* ================================
-   LOAD CUSTOMERS
-================================ */
-const customers =
-  JSON.parse(localStorage.getItem("staarbox_customers") || "[]");
+/* ============================= */
+/* LOAD CUSTOMERS */
+/* ============================= */
+const customers = JSON.parse(
+  localStorage.getItem("staarbox_customers") || "[]"
+);
 
 if (!customers.length) {
   alert("No customers found. Please enroll first.");
@@ -413,24 +272,24 @@ const pillBar = document.getElementById("customerPillBar");
 const cards = document.querySelectorAll(".category-card");
 const progressFill = document.getElementById("progressFill");
 const progressLabel = document.getElementById("progressLabel");
-const continueBtn = document.querySelector(".continue-btn");
+const continueBtn = document.getElementById("continueBtn");
 
 let activeIndex = 0;
 const selections = Array(customers.length).fill(null);
 
-/* ================================
-   CREATE CUSTOMER PILLS
-================================ */
+/* ============================= */
+/* CREATE PILLS */
+/* ============================= */
 customers.forEach((c, i) => {
   const pill = document.createElement("div");
   pill.className = "customer-pill";
-  if (i === 0) pill.classList.add("active");
-  if (i !== 0) pill.classList.add("disabled");
-
   pill.textContent = c.name;
   pill.dataset.index = i;
 
-  pill.addEventListener("click", () => {
+  if (i === 0) pill.classList.add("active");
+  else pill.classList.add("disabled");
+
+  pill.onclick = () => {
     if (pill.classList.contains("disabled")) return;
 
     document.querySelectorAll(".customer-pill")
@@ -442,111 +301,100 @@ customers.forEach((c, i) => {
     applyVegRule();
     restoreSelection();
     updateProgress();
-  });
+  };
 
   pillBar.appendChild(pill);
 });
 
-/* ================================
-   APPLY VEG / NON-VEG RULE
-================================ */
-function applyVegRule() {
-  const isEggAllowed = customers[activeIndex].isEggAllowed;
+/* ============================= */
+/* VEG RULE */
+/* ============================= */
+function applyVegRule(){
+  const allowEgg = customers[activeIndex].isEggAllowed;
 
-  cards.forEach(card => {
+  cards.forEach(card=>{
     const isNonVeg = card.dataset.nonveg === "true";
-
-    if (!isEggAllowed && isNonVeg) {
-      card.classList.add("nonveg-ui");
-    } else {
-      card.classList.remove("nonveg-ui");
-    }
+    card.classList.toggle("nonveg-ui", !allowEgg && isNonVeg);
   });
 }
 
-/* ================================
-   PRODUCT SELECTION
-================================ */
-cards.forEach(card => {
-  card.addEventListener("click", () => {
+/* ============================= */
+/* PRODUCT SELECT */
+/* ============================= */
+cards.forEach(card=>{
+  card.onclick = () => {
     if (card.classList.contains("nonveg-ui")) return;
 
-    cards.forEach(c => c.classList.remove("selected"));
+    cards.forEach(c=>c.classList.remove("selected"));
     card.classList.add("selected");
 
-    const planName =
-  card.querySelector("h3")?.innerText.trim() || "";
+    selections[activeIndex] = {
+      customerId: customers[activeIndex].customerId,
+      planId: card.dataset.planId,
+      planName: card.querySelector("h3").innerText,
+      price: Number(card.dataset.price)
+    };
 
-selections[activeIndex] = {
-  customerId: customers[activeIndex].customerId,
-
-  planId: card.dataset.planId,     // backend-safe
-  planName: planName,              // UI/payment-safe
-  price: Number(card.dataset.price)
-};
-
-    // unlock next pill
+    const nextIndex = activeIndex + 1;
     const nextPill = document.querySelector(
-      `.customer-pill[data-index="${activeIndex + 1}"]`
+      `.customer-pill[data-index="${nextIndex}"]`
     );
-    if (nextPill) nextPill.classList.remove("disabled");
 
     updateProgress();
-  });
+
+    if (nextPill) {
+      nextPill.classList.remove("disabled");
+      setTimeout(()=>{
+        document.querySelectorAll(".customer-pill")
+          .forEach(p=>p.classList.remove("active"));
+        nextPill.classList.add("active");
+        activeIndex = nextIndex;
+        applyVegRule();
+        restoreSelection();
+        updateProgress();
+      },250);
+    }
+  };
 });
 
-/* ================================
-   RESTORE SELECTION ON TAB SWITCH
-================================ */
-function restoreSelection() {
-  cards.forEach(c => c.classList.remove("selected"));
-
-  const selected = selections[activeIndex];
-  if (!selected) return;
-
-  const card = [...cards].find(
-    c => c.dataset.plan === selected.plan
-  );
+/* ============================= */
+function restoreSelection(){
+  cards.forEach(c=>c.classList.remove("selected"));
+  const sel = selections[activeIndex];
+  if (!sel) return;
+  const card = [...cards].find(c=>c.dataset.planId === sel.planId);
   if (card) card.classList.add("selected");
 }
 
-/* ================================
-   PROGRESS BAR
-================================ */
-function updateProgress() {
+/* ============================= */
+function updateProgress(){
   const done = selections.filter(Boolean).length;
   const percent = (done / customers.length) * 100;
 
   progressFill.style.width = percent + "%";
-  progressLabel.textContent =
-    `${done} of ${customers.length} completed`;
+  progressLabel.textContent = `${done} of ${customers.length} completed`;
 
-  continueBtn.style.display =
-    done === customers.length ? "block" : "none";
+  if (done === customers.length) {
+    continueBtn.style.display = "block";
+    setTimeout(()=>continueBtn.scrollIntoView({behavior:"smooth"}),300);
+  } else {
+    continueBtn.style.display = "none";
+  }
 }
 
-/* ================================
-   CONTINUE → SAVE & PAYMENT
-================================ */
-continueBtn.addEventListener("click", () => {
+/* ============================= */
+continueBtn.onclick = () => {
   localStorage.setItem(
     "staarbox_selected_packages",
     JSON.stringify(selections)
   );
-
-  console.log("Final selection:", selections);
-
-  // NEXT STEP → CALL SAVE PACKAGE API HERE
-  // THEN REDIRECT TO PAYMENT PAGE
   window.location.href = "../Payment/";
-});
+};
 
 /* INIT */
 applyVegRule();
 updateProgress();
 </script>
 
-
 </body>
 </html>
-
