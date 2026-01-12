@@ -196,6 +196,7 @@
     });
   </script>
   <script>
+
     (function () {
 
       const selected = JSON.parse(
@@ -364,31 +365,56 @@
         }
       });
 
+      
+      
+      const enrolledCustomers = JSON.parse(
+  localStorage.getItem("staarbox_customers") || "[]"
+);
+
+if (!Array.isArray(enrolledCustomers) || enrolledCustomers.length === 0) {
+  alert("No customers found. Please enroll again.");
+  window.location.href = "../Form/";
+  return;
+}
+
+const customerIds = enrolledCustomers.map(c => Number(c.customerId));
+      
       // ---------- helper: pre-check (savePackDetails) ----------
-      async function preCheckPack(selectedPackages) {
-        const accessToken = localStorage.getItem('accessToken') || '';
+async function preCheckPack(selectedPackages) {
+  const accessToken = localStorage.getItem('accessToken') || '';
 
-        const payload = selectedPackages.map(p => ({
-          packDetailsId: Number(p.planId),   // ✅ numeric planId
-          customerId: Number(p.customerId)   // ✅ each customer
-        }));
+  const customers = JSON.parse(
+    localStorage.getItem("staarbox_customers") || "[]"
+  );
 
-        const res = await fetch(`${API_BASE}/api/savePackDetails`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': accessToken ? `Bearer ${accessToken}` : ''
-          },
-          body: JSON.stringify(payload)
-        });
+  const payload = [];
 
-        if (!res.ok) {
-          const txt = await res.text().catch(() => res.statusText);
-          throw new Error(txt || 'Pre-check failed');
-        }
+  customers.forEach(customer => {
+    selectedPackages.forEach(pkg => {
+      payload.push({
+        packDetailsId: Number(pkg.planId),
+        customerId: Number(customer.customerId)
+      });
+    });
+  });
 
-        return res.json();
-      }
+  const res = await fetch(`${API_BASE}/api/savePackDetails`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': accessToken ? `Bearer ${accessToken}` : ''
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const txt = await res.text().catch(() => res.statusText);
+    throw new Error(txt || 'Pre-check failed');
+  }
+
+  return res.json();
+}
+
 
 
       // ---------- helper: create-order on server ----------
@@ -472,17 +498,15 @@
                 // call verify with the server-expected payload
                 //const customerIds = Array.isArray(selectedCustomers) ? selectedCustomers.map(c=>c.id).join(',') : String(customerId);
 
-                const payload = {
-                  orderId: response.razorpay_order_id,
-                  paymentId: response.razorpay_payment_id,
-                  signature: response.razorpay_signature,
-                  customerIds: Array.isArray(customerId)
-                    ? customerId.join(",")          // → "15,16"
-                    : String(customerId)
-                  // planId: Number(normalizedPlan.planId),
-                  // promo: appliedPromo ? appliedPromo.label : null,
-                  // orderId: serverResp.id || serverResp.orderId
-                };
+               const customerIdsCsv = customerIds.join(",");
+
+const payload = {
+  orderId: response.razorpay_order_id,
+  paymentId: response.razorpay_payment_id,
+  signature: response.razorpay_signature,
+  customerIds: customerIdsCsv   // "15,16"
+};
+
 
                 const verifyResult = await verifyPaymentOnServer(payload);
                 console.log('verifyResult (parsed):', verifyResult);
