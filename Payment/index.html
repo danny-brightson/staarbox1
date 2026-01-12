@@ -380,23 +380,21 @@ if (!Array.isArray(enrolledCustomers) || enrolledCustomers.length === 0) {
 const customerIds = enrolledCustomers.map(c => Number(c.customerId));
       
       // ---------- helper: pre-check (savePackDetails) ----------
-async function preCheckPack(selectedPackages) {
+async function preCheckPack() {
   const accessToken = localStorage.getItem('accessToken') || '';
 
-  const customers = JSON.parse(
-    localStorage.getItem("staarbox_customers") || "[]"
+  const selectedPackages = JSON.parse(
+    localStorage.getItem("staarbox_selected_packages") || "[]"
   );
 
-  const payload = [];
+  if (!Array.isArray(selectedPackages) || selectedPackages.length === 0) {
+    throw new Error("No selected packages found");
+  }
 
-  customers.forEach(customer => {
-    selectedPackages.forEach(pkg => {
-      payload.push({
-        packDetailsId: Number(pkg.planId),
-        customerId: Number(customer.customerId)
-      });
-    });
-  });
+  const payload = selectedPackages.map(p => ({
+    packDetailsId: Number(p.planId),
+    customerId: Number(p.customerId)
+  }));
 
   const res = await fetch(`${API_BASE}/api/savePackDetails`, {
     method: 'POST',
@@ -409,11 +407,12 @@ async function preCheckPack(selectedPackages) {
 
   if (!res.ok) {
     const txt = await res.text().catch(() => res.statusText);
-    throw new Error(txt || 'Pre-check failed');
+    throw new Error(txt || 'savePackDetails failed');
   }
 
   return res.json();
 }
+
 
 
 
