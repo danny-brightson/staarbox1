@@ -260,11 +260,11 @@
       /* ============================= */
       /* INITIAL BINDING FROM STORAGE */
       /* ============================= */
-      planNameEl.textContent = normalizedPlan.name;
-      basePriceEl.textContent = formatINR(normalizedPlan.price);
+      // planNameEl.textContent = normalizedPlan.name;
+      // basePriceEl.textContent = formatINR(normalizedPlan.price);
 
-      computeAndShow();
-      payBtn.disabled = false;
+      // computeAndShow();
+      // payBtn.disabled = false;
 
 
       // let selected = null;
@@ -328,11 +328,11 @@
         return { base, cgst, sgst, discount, total };
       }
       // ✅ Populate order summary from selected plan
-      planNameEl.textContent = normalizedPlan.name;
-      basePriceEl.textContent = formatINR(normalizedPlan.price);
+      // planNameEl.textContent = normalizedPlan.name;
+      // basePriceEl.textContent = formatINR(normalizedPlan.price);
 
-      computeAndShow();
-      payBtn.disabled = false;
+      // computeAndShow();
+      // payBtn.disabled = false;
       // ---------- promo UI ----------
       promoCheck.addEventListener('change', function () { promoSection.style.display = this.checked ? 'block' : 'none'; if (!this.checked) { appliedPromo = null; promoCodeInput.value = ''; computeAndShow(); } });
 
@@ -457,6 +457,12 @@ async function preCheckPack(selectedPackages) {
         }
         return res.json();
       }
+// ✅ FINAL, SINGLE INITIAL RENDER
+
+   planNameEl.textContent = normalizedPlan.name;
+      basePriceEl.textContent = formatINR(normalizedPlan.price);
+computeAndShow();
+payBtn.disabled = false;
 
       // ---------- pay button flow ----------
       payBtn.addEventListener('click', async function () {
