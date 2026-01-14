@@ -352,12 +352,12 @@ body {
 .easter-egg-gif-6,
 .easter-egg-gif-7,
 .easter-egg-gif-8 {
-  height: 16vw;
-  width: 16vw;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+  height: clamp(140px, 14vw, 260px);
+  width: clamp(140px, 14vw, 260px);
   opacity: 0.25;
+  transition: transform 0.3s ease;
 }
+
 /* Positioning for Easter Egg GIFs */
 .easter-egg-gif { position: absolute; right: 0vw; }
 .easter-egg-gif-2 { position: absolute; top: 1vh; }
@@ -407,6 +407,37 @@ body {
     height: 25vw;
     width: 25vw;
     opacity: 0.3; /* More visible on mobile */
+  }
+}
+/* =========================
+   Ultra-Wide Screen Fix (2K+)
+   ========================= */
+@media (min-width: 2000px) {
+  .easter-egg-gif-3 {
+    left: auto;
+    right: 12%;
+    top: 12%;
+  }
+
+  .easter-egg-gif-4 {
+    right: auto;
+    left: 12%;
+    top: 35%;
+  }
+
+  .easter-egg-gif-5 {
+    left: 55%;
+    bottom: 25%;
+  }
+
+  .easter-egg-gif-6 {
+    left: 15%;
+    bottom: 12%;
+  }
+
+  .easter-egg-gif-7 {
+    right: 12%;
+    bottom: 10%;
   }
 }
 
@@ -718,6 +749,20 @@ body {
     font-size: 1rem;
   }
 }
+@media (min-width: 992px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Center the last row when only 2 items exist */
+  .category-grid > .category-card:nth-last-child(2) {
+    grid-column: 2;
+  }
+
+  .category-grid > .category-card:last-child {
+    grid-column: 3;
+  }
+}
 
 /* =========================
    MENU EASTER EGGS
@@ -916,7 +961,6 @@ body {
     flex-direction: column;
     gap: 4px;
   }
-
   .note {
     position: static;
     display: block;
@@ -924,7 +968,11 @@ body {
     text-align: center;
   }
 }
-
+@media (max-width: 325px){
+.product-card {
+    margin-right: 40px;
+  }
+}
 /* ================================ */
 /* INTERNAL 2-COLUMN VARIANT GRID */
 /* ================================ */
