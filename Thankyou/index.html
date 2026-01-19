@@ -1,81 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CJM0SLEFQZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-CJM0SLEFQZ');
-</script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <meta name="google-site-verification" content="U4WrpzFDmaHcuK-NfsTwmPedGPnYUGSSiPciP5e0z18" />
-  <meta name="facebook-domain-verification" content="61sleqq2sotq6rqysbiv9mide254nk" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex, nofollow">
 
   <title>Thank You - StaarBox</title>
+
   <style>
+    :root {
+      --brand-green: #02614e;
+      --brand-yellow: #eccfa1;
+      --success: #22c55e;
+      --text-light: #ffffff;
+      --text-muted: rgba(255,255,255,0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* BACKGROUND */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(2,97,78,0.85),
+          rgba(236,207,161,0.85)
+        ),
+        url("../Image/staarbox.png") center/420px no-repeat;
+      filter: blur(22px);
+      transform: scale(1.15);
+      z-index: -1;
+    }
+
+    /* CONTENT */
+    .wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
       text-align: center;
-      padding: 50px;
-      background: #f9f9f9;
+      color: var(--text-light);
     }
-    .thank-box {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    .content {
+      max-width: 760px;
+      width: 100%;
+      padding: 48px 32px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.25);
     }
+
+    /* SUCCESS ICON */
+    .check {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(34,197,94,0.6);
+    }
+
     h1 {
-      color: #4CAF50;
+      font-size: 40px;
+      margin: 0 0 10px;
     }
-    .timer {
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    /* APP SECTION */
+    .app-title {
       font-size: 20px;
-      font-weight: bold;
-      margin-top: 10px;
-      color: #333;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
-    a {
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: bold;
+
+    .app-grid {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .app-card {
+      width: 110px;
+      height: 110px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .app-card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    }
+
+    .app-card img {
+      width: 56px;
+      height: 56px;
+    }
+
+    /* TIMER */
+    .timer {
+      margin-top: 32px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .timer span {
+      color: #fff;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .content {
+        padding: 36px 22px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .app-card {
+        width: 96px;
+        height: 96px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="thank-box">
-    <h1><img src="../Image/staarbox.png" alt="Staarbox" height="80px" width="120px"></h1>
-    <h1>🎉 Thank You for Your Order!</h1>
-    <p>Your payment was successful. We’ll start processing your order soon.</p>
-    <p class="timer">Redirecting to Home in <span id="countdown">8</span> seconds...</p>
-    <p>If not redirected, <a href="../">click here</a>.</p>
+
+  <!-- Blurred Background -->
+  <div class="bg"></div>
+
+  <!-- Content -->
+  <div class="wrapper">
+    <div class="content">
+
+      <div class="check">✓</div>
+
+      <h1>Thank You!</h1>
+      <div class="subtitle">
+        Your order has been successfully placed.  
+        We’re getting things ready for you.
+      </div>
+
+      <div class="app-title">Get the StaarBox App</div>
+
+      <div class="app-grid">
+  <!-- ANDROID -->
+  <a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox"
+     target="_blank" aria-label="Download Android App">
+    <div class="app-card">
+      <img src="../Image/android.png" alt="Android App">
+    </div>
+  </a>
+
+  <!-- IOS -->
+  <a href="https://apps.apple.com/app/id6755515436"
+     target="_blank" aria-label="Download iOS App">
+    <div class="app-card">
+      <img src="../Image/ios.png" alt="iOS App">
+    </div>
+  </a>
+</div>
+
+
+      <div class="timer">
+        Redirecting to Home in <span id="countdown">8</span> seconds…
+      </div>
+
+    </div>
   </div>
 
   <script>
-    let seconds = 8;
+    let seconds = 10;
     const countdownEl = document.getElementById("countdown");
 
     const timer = setInterval(() => {
       seconds--;
       countdownEl.textContent = seconds;
-
       if (seconds <= 0) {
         clearInterval(timer);
-        window.location.href = "../"; // ✅ Redirect to homepage
+        window.location.href = "../";
       }
     }, 1000);
   </script>
+
 </body>
 </html>
-
-
-
-
-
