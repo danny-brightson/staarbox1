@@ -534,6 +534,8 @@ const payload = {
                 if (ok) {
                   alert('✅ Payment successful!');
                   localStorage.removeItem("staarbox_selected_packages");
+                  localStorage.removeItem("CustomerId");
+                  localStorage.removeItem("staarbox_customers");
                   window.location.href = '../Thankyou/';
                 } else {
                   const serverMsg = body && (body.message || body.error || JSON.stringify(body));
@@ -583,3 +585,4 @@ const payload = {
 </body>
 
 </html>
+
