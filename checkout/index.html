@@ -5,22 +5,68 @@
   <title>Add Another Box – Staarbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- Project CSS -->
+  <link rel="stylesheet" href="../Css/index.css" />
+  <link rel="stylesheet" href="../Css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../Css/swiper.css" />
+  <link rel="stylesheet" href="../Css/fontawesome.css" />
+  <link rel="stylesheet" href="../Css/googlefonts.css" />
+  <link rel="stylesheet" href="../Css/AOS.css" />
+  <link rel="stylesheet" href="../Css/Mdb.css" />
+
+  <!-- External -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
+    /* =======================
+       Base Layout
+    ======================= */
     body {
       margin: 0;
       font-family: "Inter", system-ui, -apple-system, sans-serif;
       background: #f6f8fb;
       color: #1f2937;
+    }
+
+    /* =======================
+       Navbar Fix
+    ======================= */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    /* =======================
+       Page Wrapper
+    ======================= */
+    .page-wrapper {
+      min-height: calc(100vh - 80px);
+      margin-top: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      padding: 24px;
     }
 
+    /* =======================
+       Card
+    ======================= */
     .card {
       background: #ffffff;
       max-width: 520px;
-      width: 90%;
+      width: 100%;
       padding: 36px 32px;
       border-radius: 16px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
@@ -30,6 +76,7 @@
     .card h1 {
       font-size: 24px;
       margin-bottom: 16px;
+      font-weight: 600;
     }
 
     .card p {
@@ -48,11 +95,15 @@
       color: #374151;
     }
 
+    /* =======================
+       Store Buttons
+    ======================= */
     .store-buttons {
       display: flex;
       justify-content: center;
       gap: 16px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
 
     .store-buttons a img {
@@ -69,42 +120,103 @@
       font-size: 13px;
       color: #6b7280;
     }
+
+    /* =======================
+       Mobile Menu Fix (if needed)
+    ======================= */
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Thank You for Choosing Another Box! 🎉</h1>
 
-    <p>
-      We appreciate your continued trust in Staarbox.  
-      To add an additional box to your subscription, please download and log in to
-      the <strong>Staarbox mobile application</strong>.
-    </p>
+  <!-- =======================
+       Header / Navbar
+  ======================= -->
+  <header>
+    <nav class="navbar container-fluid" id="home">
+      <div class="logo">
+        <a href="../">
+          <img src="../Image/staarbox.png" height="60" width="100" alt="StaarBox">
+        </a>
+      </div>
 
-    <div class="steps">
-      <strong>Steps:</strong><br />
-      Settings → Profile → Add Box
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <div class="nav-links" id="navLinks">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../Aboutus/">About Us</a></li>
+          <li><a href="../Contactus/">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =======================
+       Main Content
+  ======================= -->
+  <main class="page-wrapper">
+    <div class="card">
+      <h1>Thank You for Choosing Another Box!</h1>
+
+      <p>
+        We appreciate your continued trust in Staarbox.
+        To add an additional box to your subscription, please download and log in to
+        the <strong>Staarbox mobile application</strong>.
+      </p>
+
+      <div class="steps">
+        <strong>Steps:</strong><br />
+        Settings → Profile → Add Box
+      </div>
+
+      <p>
+        Choose your preferred box and proceed as guided.
+        If you need any assistance, our team is always here to help.
+      </p>
+
+      <div class="store-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox" target="_blank" aria-label="Android App">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+        </a>
+
+        <a href="https://apps.apple.com/app/id6755515436" target="_blank" aria-label="iOS App">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+        </a>
+      </div>
+
+      <div class="footer-note">
+        Thank you for making Staarbox a part of your daily nutrition journey.
+      </div>
     </div>
+  </main>
 
-    <p>
-      Choose your preferred box and proceed as guided.  
-      If you need any assistance, our team is always here to help.
-    </p>
+  <!-- =======================
+       JS
+  ======================= -->
+  <script>
+    const toggle = document.getElementById("menuToggle");
+    const links = document.getElementById("navLinks");
 
-    <div class="store-buttons">
-      <a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox" target="_blank" aria-label="Android App">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
-      </a>
+    if (toggle && links) {
+      toggle.addEventListener("click", () => {
+        links.classList.toggle("active");
+      });
+    }
+    
+  </script>
 
-      <a href="https://apps.apple.com/app/id6755515436" target="_blank" aria-label="iOS App">
-        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
-      </a>
-    </div>
-
-    <div class="footer-note">
-      Thank you for making Staarbox a part of your daily nutrition journey.
-    </div>
-  </div>
 </body>
 </html>
