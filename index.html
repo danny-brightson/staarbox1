@@ -1071,8 +1071,8 @@ document.getElementById('subscribeBtn').addEventListener('click', function () {
   const customerId = localStorage.getItem('CustomerId');
   const customerIds = JSON.parse(localStorage.getItem('customerIds') || '[]');
 
-  // ✅ Existing customer with active profiles
-  if (customerIds.length > 0) {
+ // ✅ Existing customer with active profiles
+  if (customerIds.length > 0 || localStorage.getItem('newCustomerEnrolled') === 'true') {
     window.location.href = './checkout/';
     return;
   }
@@ -1148,6 +1148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html> 
+
 
 
 
