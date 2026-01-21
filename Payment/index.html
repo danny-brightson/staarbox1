@@ -533,6 +533,7 @@ const payload = {
 
                 if (ok) {
                   alert('✅ Payment successful!');
+                  localStorage.setItem('newCustomerEnrolled', 'true');
                   localStorage.removeItem("staarbox_selected_packages");
                   localStorage.removeItem("CustomerId");
                   localStorage.removeItem("staarbox_customers");
@@ -585,4 +586,5 @@ const payload = {
 </body>
 
 </html>
+
 
