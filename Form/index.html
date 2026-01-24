@@ -1150,6 +1150,8 @@ if (phoneInput && primaryPhone) {
         const stateId = (() => { const v = read('state'); return v === '' ? null : Number(v); })();
         const delivaryTimingId = (() => { const v = read('deliveryTiming'); return v === '' ? null : Number(v); })();
         const genderId = (() => { const v = read('gender'); return v === '' ? null : Number(v); })();
+        const diabetic =(read('diabetic') || '').toString().toLowerCase() === 'yes';
+
 
         const customerIndex =
           Number(card.getAttribute("data-customer-index")) - 1;
@@ -1175,6 +1177,7 @@ if (phoneInput && primaryPhone) {
           latitude: lat,
           longtitude: lon,
           isEggPreferd: !!eggPref,
+          IsDiabetic: !!diabetic
           B_firstName: '',
           B_lastName: '',
           B_email: '',
@@ -1378,3 +1381,4 @@ if (phoneInput && primaryPhone) {
 </body>
 
 </html>
+
