@@ -530,11 +530,9 @@ const payload = {
 
                 // consider it OK when one of the common flags is present OR status contains "verified"
                 const ok = Boolean(
-                  (body && (body.ok === true || body.success === true || body.verified === true)) ||
-                  /verified/i.test(statusStr) ||
-                  statusStr === 'OK' ||
-                  statusStr === 'success'
-                );
+  (body && (body.ok === true || body.success === true || body.verified === true)) ||
+  /verified|activated|success/i.test(statusStr)
+);
 
                 if (ok) {
                   alert('✅ Payment successful!');
@@ -591,6 +589,7 @@ const payload = {
 </body>
 
 </html>
+
 
 
 
