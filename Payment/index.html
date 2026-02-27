@@ -442,7 +442,8 @@ async function preCheckPack() {
           orderId,
           paymentId,
           signature,
-          customerIds, // "15,16"
+          customerIds,
+          promoCode,amount,isRenewed,isFromWallet
         }).toString();
         const res = await fetch(`${API_BASE}/api/payment/verify?${qs}`, {
           method: 'POST',
@@ -590,5 +591,6 @@ const payload = {
 </body>
 
 </html>
+
 
 
