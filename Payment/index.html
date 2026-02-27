@@ -436,7 +436,7 @@ async function preCheckPack() {
       }
 
       // ---------- helper: verify payment on server ----------
-      async function verifyPaymentOnServer({ orderId, paymentId, signature, customerIds }) {
+      async function verifyPaymentOnServer({ orderId, paymentId, signature, customerIds,promoCode,amount,isRenewed,isFromWallet }) {
         const accessToken = localStorage.getItem('accessToken') || '';
         const qs = new URLSearchParams({
           orderId,
@@ -509,7 +509,11 @@ const payload = {
   orderId: response.razorpay_order_id,
   paymentId: response.razorpay_payment_id,
   signature: response.razorpay_signature,
-  customerIds: customerIdsCsv   // "15,16"
+  customerIds: customerIdsCsv,// "15,16"
+  promoCode: promoCodeInput.value.trim(),
+  amount: serverResp.amount,
+  isRenewed: false,
+  isFromWallet: false
 };
 
 
@@ -586,6 +590,5 @@ const payload = {
 </body>
 
 </html>
-
 
 
