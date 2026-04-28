@@ -1,4 +1,11 @@
-User-agent: * 
-Disallow: /
-Disallow: /cgi-bin/
-Sitemap: https://www.staarbox.in/
+User-agent: *
+Allow: /
+
+# Disallow admin or private paths (add if you create later)
+Disallow: /admin/
+Disallow: /login/
+Disallow: /checkout/
+Disallow: /cart/
+
+# Sitemap location
+Sitemap: https://www.staarbox.in/sitemap.xml
