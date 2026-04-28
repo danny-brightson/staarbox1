@@ -1,109 +1,144 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-		<!--	created with www.mysitemapgenerator.com	-->
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-<url>
-	<loc>https://www.staarbox.in/</loc>
-	<lastmod>2026-04-28T12:22:03+01:00</lastmod>
-	<priority>1.0</priority>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/staarbox.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/8.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/1.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/healtbites.jpg</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/gymfreak.jpg</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/Diabetes.jpg</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/PregnantWoman.jpg</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/mens.jpg</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/zone%201.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/zone%202.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/zone%203.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/zone%204.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/3.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/5.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/6.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/7.gif</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/Basic%20fruit%20bowl.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/kid%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/standard%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/premium%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/kid%20veg%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/standard%20veg%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/premium%20veg%20box.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/kids%20veg%20sandwich.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/Standard%20veg%20sandwich.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/preium%20veg%20sandwich.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/Kids%20non%20veg%20sandwich%20.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/Standard%20nonveg%20sandwich.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Menu/Premium%20nonveg%20sandwich.png</image:loc>
-	</image:image>
-	<image:image>
-			<image:loc>https://www.staarbox.in/Image/2.gif</image:loc>
-	</image:image>
-</url>
-<url>
-	<loc>https://www.staarbox.in/Aboutus/</loc>
-	<lastmod>2026-04-28T12:22:03+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://www.staarbox.in/Contactus/</loc>
-	<lastmod>2026-04-28T12:22:03+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Optimized Image Sitemap for Google -->
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://www.staarbox.in/</loc>
+        <lastmod>2026-04-28T12:22:03+05:30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/staarbox.png</image:loc>
+            <image:title>Staarbox Logo</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/8.gif</image:loc>
+            <image:title>Healthy Nutrition Banner</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/1.gif</image:loc>
+            <image:title>Breakfast Delivery</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/healthbites.jpg</image:loc>
+            <image:title>Health Bites</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/gymfreak.jpg</image:loc>
+            <image:title>Gym Freak Meal</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/diabetes.jpg</image:loc>
+            <image:title>Diabetes Diet Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/pregnantwoman.jpg</image:loc>
+            <image:title>Pregnancy Nutrition</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/image/mens.jpg</image:loc>
+            <image:title>Men Nutrition Plan</image:title>
+        </image:image>
+    </url>
+
+    <!-- Menu Page -->
+    <url>
+        <loc>https://www.staarbox.in/menu/</loc>
+        <lastmod>2026-04-28T12:22:03+05:30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/basic-fruit-bowl.png</image:loc>
+            <image:title>Basic Fruit Bowl</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/kid-box.png</image:loc>
+            <image:title>Kid Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/standard-box.png</image:loc>
+            <image:title>Standard Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/premium-box.png</image:loc>
+            <image:title>Premium Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/kid-veg-box.png</image:loc>
+            <image:title>Kid Veg Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/standard-veg-box.png</image:loc>
+            <image:title>Standard Veg Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/premium-veg-box.png</image:loc>
+            <image:title>Premium Veg Box</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/kids-veg-sandwich.png</image:loc>
+            <image:title>Kids Veg Sandwich</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/standard-veg-sandwich.png</image:loc>
+            <image:title>Standard Veg Sandwich</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/premium-veg-sandwich.png</image:loc>
+            <image:title>Premium Veg Sandwich</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/kids-non-veg-sandwich.png</image:loc>
+            <image:title>Kids Non Veg Sandwich</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/standard-nonveg-sandwich.png</image:loc>
+            <image:title>Standard Non Veg Sandwich</image:title>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://www.staarbox.in/menu/premium-nonveg-sandwich.png</image:loc>
+            <image:title>Premium Non Veg Sandwich</image:title>
+        </image:image>
+    </url>
+
+    <!-- About Us -->
+    <url>
+        <loc>https://www.staarbox.in/aboutus/</loc>
+        <lastmod>2026-04-28T12:22:03+05:30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Contact Us -->
+    <url>
+        <loc>https://www.staarbox.in/contactus/</loc>
+        <lastmod>2026-04-28T12:22:03+05:30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
 </urlset>
