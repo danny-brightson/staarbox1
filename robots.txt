@@ -9,3 +9,4 @@ Disallow: /cart/
 
 # Sitemap location
 Sitemap: https://www.staarbox.in/sitemap.xml
+Sitemap: https://www.staarbox.in/image-map.xml
