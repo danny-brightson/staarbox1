@@ -818,200 +818,338 @@ body {
 /* ================================ */
 /* VARIANT DETAIL POSTER STYLE */
 /* ================================ */
-.product-details {
-  padding: 60px 20px;
-  max-width: 1200px;
-  margin: auto;
-  position: relative;
+/* =========================
+   RESET
+========================= */
+.pd-section *,
+.pd-section *::before,
+.pd-section *::after {
+  box-sizing: border-box;
 }
 
-/* Notes (Top Left & Right) */
-.section-notes {
-  position: relative;
+/* =========================
+   SECTION
+========================= */
+.pd-section {
+  padding: 24px 14px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #f5f7f6;
+  border-radius: 16px;
+}
+
+/* =========================
+   HEADER (CENTERED)
+========================= */
+.pd-header {
+  background: #02614e;
+  border-radius: 12px;
+  padding: 18px 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.pd-header-text h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.pd-header-text p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  margin-top: 4px;
+}
+
+/* =========================
+   PILLS (BIG + BOLD + FIXED)
+========================= */
+.pd-pills {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pd-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  line-height: 1;
+
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  padding: 8px 16px;
+  border-radius: 999px;
+
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* =========================
+   TABS
+========================= */
+.pd-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.pd-tab {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  transition: 0.2s;
+}
+
+.pd-tab.active {
+  background: #02614e;
+  color: #fff;
+  border-color: #02614e;
+}
+
+.pd-tab:hover:not(.active) {
+  border-color: #02614e;
+  color: #02614e;
+}
+
+/* =========================
+   FILTERS
+========================= */
+.pd-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-bottom: 12px;
 }
 
-.note {
-  position: absolute;
-  top: -28px;
-  font-size: 20px;
-  background: linear-gradient(135deg, #eccfa1, #02614e);
-  color: #ffffff;
-  padding: 6px 14px;
+.pd-filt {
+  padding: 5px 12px;
   border-radius: 20px;
-  font-weight: 600;
-  box-shadow: 0 6px 18px rgba(2, 97, 78, 0.4);
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  transition: 0.2s;
 }
 
-.note.left { left: 0; }
-.note.right { right: 0; }
+.pd-filt.on {
+  background: #02614e;
+  color: #fff;
+  border-color: #02614e;
+}
 
-/* Section Headings */
-.section-title {
-  text-align: center;
-  font-size: 28px;
-  font-weight: 700;
+.pd-filt:hover:not(.on) {
+  border-color: #02614e;
   color: #02614e;
 }
 
-.section-subtitle {
-  text-align: center;
-  color: #02614e;
-  opacity: 0.7;
-  margin-bottom: 40px;
-}
-
-/* Product Layout */
-.product-grid {
+/* =========================
+   GRID
+========================= */
+.pd-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
 }
 
-.product-card {
-  border-radius: 16px;
-  padding: 24px;
-  background: #ffffff;
-  box-shadow: 0 8px 25px rgba(2, 97, 78, 0.5);
-  
-}
-
-/* Product Title */
-.product-title {
-  font-size: 22px;
-  margin-bottom: 16px;
-  color: #02614e;
-}
-
-/* Variants */
-.variant-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-
-.variant {
-  position: relative;
-  background: linear-gradient(135deg, #eccfa1, #02614e);
-  padding: 16px;
+/* =========================
+   CARD
+========================= */
+.pd-card {
+  background: #fff;
   border-radius: 12px;
-  border: 1px solid rgba(2, 97, 78, 0.4);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
-}
-
-.variant h4 {
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
   display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-  margin-bottom: 10px;
-  color: #ffffff;
+  flex-direction: column;
+  transition: all 0.2s ease;
 }
 
-/* Price */
-.price {
-  color: #ffffff;
+.pd-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+/* STRIPE */
+.pd-stripe {
+  height: 3px;
+  width: 100%;
+}
+
+/* Tier Colors */
+.pd-card.tier-bowls   .pd-stripe { background: linear-gradient(90deg,#02614e,#ff6f00); }
+.pd-card.tier-monthly .pd-stripe { background: #02614e; }
+.pd-card.tier-premium .pd-stripe { background: linear-gradient(90deg,#ffd700,#ff8c00); }
+
+/* =========================
+   CARD BODY
+========================= */
+.pd-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* BADGE */
+.pd-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  width: fit-content;
+}
+/* Bowls (merged Essential + Exotic) */
+.pd-card.tier-bowls .pd-stripe {
+  background: linear-gradient(90deg, #02614e, #ff6f00);
+}
+
+.b-bowls {
+  background: linear-gradient(90deg, #e6f4f1, #fff3e0);
+  color: #02614e;
+}
+/* Bowls (Merged Essential + Exotic) */
+.pd-card.tier-bowls .pd-stripe {
+  background: linear-gradient(90deg, #02614e, #ff6f00);
+}
+
+.b-bowls {
+  background: linear-gradient(90deg, #e6f4f1, #fff3e0);
+  color: #02614e;
+}
+/* Badge Colors */
+.b-bowls   { background: linear-gradient(90deg,#e6f4f1,#fff3e0); color:#02614e; }
+.b-monthly { background: #e6f4f1; color:#02614e; }
+.b-premium { background: #fff8e1; color:#f57f17; }
+
+/* NAME */
+.pd-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  line-height: 1.3;
+}
+
+/* PRICE */
+.pd-price {
+  font-size: 16px;
   font-weight: 700;
-  font-size: 14px;
+  color: #02614e;
 }
 
-/* List */
-.variant ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.pd-price sup {
+  font-size: 10px;
 }
 
-.variant ul li {
-  font-size: 14px;
-  color: #ffffff;
-  opacity: 0.9;
-  padding: 4px 0;
+.pd-mo {
+  font-size: 10px;
+  color: #777;
 }
 
-/* Badges */
-.badge {
-  position: absolute;
-  top: -10px;
-  left: -10px;
+/* PROTEIN */
+.pd-protein {
+  font-size: 10px;
+  font-weight: 600;
+  color: #02614e;
+  background: #e6f4f1;
+  padding: 3px 8px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+/* OPTIONS */
+.pd-opt {
   font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 14px;
-  font-weight: 700;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(2, 97, 78, 0.5);
+  color: #777;
+  font-style: italic;
 }
 
-.badge.sub {
+/* FEATURES */
+.pd-feats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pd-feat {
+  font-size: 12px;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pd-dot {
+  width: 4px;
+  height: 4px;
   background: #02614e;
+  border-radius: 50%;
 }
 
-.badge.exotic {
-  background: linear-gradient(135deg, #ff6f00, #eccfa1);
-  color: #222;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
-.badge.premium {
-  background: #02614e;
+/* Tablet */
+@media (max-width: 900px) {
+  .pd-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Mobile */
-@media (max-width: 600px) {
-  .variant h4 {
-    flex-direction: column;
-    gap: 4px;
+@media (max-width: 480px) {
+  .pd-section {
+    padding: 16px 10px 24px;
   }
-  .note {
-    position: static;
-    display: block;
-    margin: 6px auto;
-    text-align: center;
+
+  .pd-name {
+    font-size: 13px;
+  }
+
+  .pd-price {
+    font-size: 14px;
+  }
+
+  .pd-feat {
+    font-size: 11px;
+  }
+
+  .pd-pill {
+    font-size: 12px;
+    padding: 6px 12px;
   }
 }
-@media (max-width: 325px){
-.product-card {
-    margin-right: 40px;
+
+/* Extra Small */
+@media (max-width: 360px) {
+  .pd-tab {
+    font-size: 12px;
+    padding: 7px;
   }
-}
-/* ================================ */
-/* INTERNAL 2-COLUMN VARIANT GRID */
-/* ================================ */
 
-.variant-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-}
-
-.variant {
-  padding-bottom: 14px;
-  border-bottom: 1px dashed rgba(255,255,255,0.3);
-}
-
-.variant:last-child {
-  border-bottom: none;
-}
-
-.variant h4 {
-  font-size: 1.05rem;
-  margin-bottom: 6px;
-}
-
-.variant ul {
-  padding-left: 18px;
-  margin: 0;
-}
-
-.variant ul li {
-  font-size: 0.95rem;
-  margin-bottom: 5px;
-  opacity: 0.95;
-}
-
-/* Mobile: single column inside card */
-@media (max-width: 700px) {
-  .variant-grid {
-    grid-template-columns: 1fr;
+  .pd-price {
+    font-size: 13px;
   }
 }
 
