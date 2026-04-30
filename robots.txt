@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 
+
 # Disallow admin or private paths (add if you create later)
 Disallow: /admin/
 Disallow: /login/
