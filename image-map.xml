@@ -61,7 +61,7 @@
 
         <image:image>
             <image:loc>https://www.staarbox.in/menu/basic-fruit-bowl.png</image:loc>
-            <image:title>Basic Fruit Bowl</image:title>
+            <image:title>basic-fruit-bowl</image:title>
         </image:image>
 
         <image:image>
