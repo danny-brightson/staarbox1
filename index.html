@@ -1043,54 +1043,88 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 (function(){
   var REVIEWS=[
-    {
-      name:'Priya Ramesh', prof:'Working Mother, 2 kids',
-      initials:'PR', color:'#e1f5ee', textColor:'#085041',
-      stars:5, tag:'family',
-      text:'Mornings at home are always super busy. Between getting my kids ready and leaving for work, I barely have time to think about breakfast. Staarbox has made my life so much easier. The fruits and nuts are fresh, ready to eat, and delivered right to my doorstep. Now my whole family starts the day healthy without stress.'
-    },
-    {
-      name:'Kavitha Sundar', prof:'Stay-at-home Mom',
-      initials:'KS', color:'#fdf4ff', textColor:'#7e22ce',
-      stars:5, tag:'family',
-      text:'I always wanted my kids to eat more fruits, but washing, cutting, and packing them every day was tiring. I now look forward to their Staarbox deliveries. The packaging, the freshness, and the variety are all excellent. My kids are snacking on fruits instead of junk food—as a parent, that makes me so happy.'
-    },
-    {
-      name:'Deepa Nair', prof:'Software Engineer & Mom',
-      initials:'DN', color:'#eff6ff', textColor:'#1d4ed8',
-      stars:5, tag:'family',
-      text:'Managing work, home, and making sure my kids eat healthy was challenging. Staarbox has been a blessing. The fresh fruits and nuts are perfectly portioned and save me so much time. My kids enjoy the different varieties each week, and I feel better knowing they are getting proper nutrition.'
-    },
-    {
-      name:'Meena Krishnan', prof:'Expecting Mother, 6 months',
-      initials:'MK', color:'#fdf4ff', textColor:'#7e22ce',
-      stars:5, tag:'pregnancy',
-      text:'When I got pregnant, my doctor kept reminding me to eat more fruits for vitamins and fiber. Cutting fruits every day was tiring. Then I came across Staarbox—the pregnancy-friendly boxes are fresh, clean, and perfectly safe. Now I don\'t worry about my nutrition at all. It\'s so reassuring knowing I\'m eating healthy every day, for me and my baby.'
-    },
-    {
-      name:'Anitha Mohan', prof:'Mom-to-be, 7 months',
-      initials:'AM', color:'#fdf4ff', textColor:'#7e22ce',
-      stars:5, tag:'pregnancy',
-      text:'Pregnancy cravings are no joke! Some days I just wanted a quick snack but also wanted to keep it healthy. Staarbox has been perfect. I get a variety of fresh fruits and nuts without stepping out or preparing anything. Every box feels curated with care. I feel confident eating what\'s good for my baby. I tell all moms-to-be about this!'
-    },
-    {
-      name:'Arjun Selvam', prof:'Gym Trainer, CrossFit',
-      initials:'AS', color:'#eff6ff', textColor:'#1d4ed8',
-      stars:5, tag:'fitness',
-      text:'As someone who works out daily, I\'m always looking for clean, natural food. Staarbox fits my fitness lifestyle perfectly. The boxes are packed with protein, fiber, and healthy fats that keep my energy levels high throughout the day. I love how consistent the quality is—my nutrition just shows up at my doorstep.'
-    },
-    {
-      name:'Vikram Rajan', prof:'Marathon Runner',
-      initials:'VR', color:'#eff6ff', textColor:'#1d4ed8',
-      stars:5, tag:'fitness',
-      text:'Nutrition is such a big part of my training and honestly it takes a lot of planning. Staarbox has made that process so much easier. I can match my box to my goals—more protein, lower sugar, specific fruits and nuts. Everything is fresh, high quality, and perfectly portioned. I save time and stay focused on my workouts.'
-    },
-    {
-      name:'Subramanian K.', prof:'Retired, Age 68',
-      initials:'SK', color:'#fff7ed', textColor:'#c2410c',
-      stars:5, tag:'senior',
-      text:'At my age, health is everything. Eating fresh fruits regularly was a challenge—I couldn\'t always go to the market or prepare everything myself. Staarbox changed that completely. Now I get fresh fruits and nuts delivered to my home, all ready to eat. I feel better, more energetic, and it\'s a small change that has made a big difference.'
-    }
+  const reviews = [
+  {
+    name: 'Prakashraj',
+    initials: 'PR',
+    color: '#e1f5ee',
+    textColor: '#085041',
+    stars: 5,
+    text: 'Fresh fruits, neat packaging, and on-time delivery every day. Really satisfied with the quality and service. Highly recommended in Madurai.'
+  },
+  {
+    name: 'Sarrah',
+    initials: 'S',
+    color: '#fdf4ff',
+    textColor: '#7e22ce',
+    stars: 5,
+    text: 'Perfect for busy mornings. Ready-to-eat healthy boxes save a lot of time and make healthy eating effortless.'
+  },
+  {
+    name: 'Bharu Kutty',
+    initials: 'BK',
+    color: '#eff6ff',
+    textColor: '#1d4ed8',
+    stars: 5,
+    text: 'One of the best healthy food services in Madurai. Consistent quality, fresh products, and professional service.'
+  },
+  {
+    name: 'Arnikashree A',
+    initials: 'AA',
+    color: '#fff7ed',
+    textColor: '#c2410c',
+    stars: 5,
+    text: 'Premium-quality food with professional packaging. Everything was fresh, well-presented, and delivered in excellent condition.'
+  },
+  {
+    name: 'Saratha Kasirajan',
+    initials: 'SK',
+    color: '#fdf4ff',
+    textColor: '#7e22ce',
+    stars: 5,
+    text: 'Fresh fruits, excellent packaging, and great service. Overall, it was a wonderful experience with Staarbox.'
+  },
+  {
+    name: 'Elayavel Anitha',
+    initials: 'EA',
+    color: '#e1f5ee',
+    textColor: '#085041',
+    stars: 5,
+    text: 'I started with Staarbox just to try it out, but now I cannot imagine my mornings without it. Fresh fruits arrive on time with great variety and excellent quality. It feels like a healthy surprise every day.'
+  },
+  {
+    name: 'Mohammed Siraj',
+    initials: 'MS',
+    color: '#eff6ff',
+    textColor: '#1d4ed8',
+    stars: 5,
+    text: 'Very convenient and reliable service. Great packaging, fresh products, and friendly customer support.'
+  },
+  {
+    name: 'Mounish',
+    initials: 'M',
+    color: '#fff7ed',
+    textColor: '#c2410c',
+    stars: 5,
+    text: 'The fruit variety is impressive and the freshness is noticeable. Definitely worth the subscription.'
+  },
+  {
+    name: 'Ashwini Murugan',
+    initials: 'AM',
+    color: '#fdf4ff',
+    textColor: '#7e22ce',
+    stars: 5,
+    text: 'Loved the premium fruit box. Fresh, tasty, and delivered early every morning without delay.'
+  },
+  {
+    name: 'Inoshel Revani',
+    initials: 'IR',
+    color: '#e1f5ee',
+    textColor: '#085041',
+    stars: 5,
+    text: 'Healthy breakfast made easy with Staarbox. The fruits and nuts are always fresh, delicious, and perfectly packed.'
+  }
+];
   ];
 
   function stars(n){
