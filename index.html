@@ -1127,39 +1127,31 @@ document.addEventListener("DOMContentLoaded", () => {
 ];
   ];
 
-  function stars(n){
-    var s='';
-    for(var i=1;i<=5;i++){
-      s+='<span class="rv-star '+(i<=n?'filled':'empty')+'">'+(i<=n?'★':'☆')+'</span>';
-    }
-    return s;
+function stars(n){
+  var s='';
+  for(var i=1;i<=5;i++){
+    s += '<span class="rv-star '+(i<=n?'filled':'empty')+'">'+(i<=n?'★':'☆')+'</span>';
   }
+  return s;
+}
 
-  function tagLabel(t){
-    var map={family:'👨‍👩‍👧 Family',fitness:'💪 Fitness',pregnancy:'🤰 Pregnancy',senior:'🌿 Senior'};
-    return map[t]||t;
-  }
+function cardHTML(d){
+  return '<div class="rv-card">'
+    + '<div class="rv-top">'
+      + '<div class="rv-initials" style="background:'+d.color+';color:'+d.textColor+';">'+d.initials+'</div>'
+      + '<div class="rv-meta">'
+        + '<div class="rv-name">'+d.name+'</div>'
+      + '</div>'
+      + '<div class="rv-stars">'+stars(d.stars)+'</div>'
+    + '</div>'
+    + '<div class="rv-quote-mark">"</div>'
+    + '<p class="rv-text">'+d.text+'</p>'
+  + '</div>';
+}
 
-  function cardHTML(d){
-    return '<div class="rv-card">'
-      +'<div class="rv-top">'
-        +'<div class="rv-initials" style="background:'+d.color+';color:'+d.textColor+';">'+d.initials+'</div>'
-        +'<div class="rv-meta">'
-          +'<div class="rv-name">'+d.name+'</div>'
-          +'<div class="rv-prof">'+d.prof+'</div>'
-        +'</div>'
-        +'<div class="rv-stars">'+stars(d.stars)+'</div>'
-      +'</div>'
-      +'<div class="rv-quote-mark">"</div>'
-      +'<p class="rv-text">'+d.text+'</p>'
-      +'<span class="rv-tag '+d.tag+'">'+tagLabel(d.tag)+'</span>'
-    +'</div>';
-  }
-
-  /* duplicate for seamless loop */
-  var all=REVIEWS.concat(REVIEWS);
-  document.getElementById('rv-track').innerHTML=all.map(cardHTML).join('');
-})();
+/* duplicate for seamless loop */
+var all = REVIEWS.concat(REVIEWS);
+document.getElementById('rv-track').innerHTML = all.map(cardHTML).join('');
 </script>
 </body>
 </html> 
