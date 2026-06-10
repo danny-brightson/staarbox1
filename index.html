@@ -881,7 +881,30 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+const buttons = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.menu-card');
+const noItems = document.getElementById('noItems');
 
+function filterMenu(cat) {
+  let visible = 0;
+  cards.forEach(card => {
+    if (card.dataset.cat === cat) { card.classList.remove('hidden'); visible++; }
+    else { card.classList.add('hidden'); }
+  });
+  noItems.classList.toggle('visible', visible === 0);
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterMenu(btn.dataset.cat);
+  });
+});
+
+filterMenu('veg');
+</script>
 
 <!--//--Script section--// -->
   <script>
