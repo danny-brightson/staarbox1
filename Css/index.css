@@ -726,6 +726,18 @@ body {
 .filter-btn:not(.active):hover {
   opacity: 0.75;
 }
+.filter-btn[data-cat="jar"]{
+    border-color:#7B3F00;
+    color:#7B3F00;
+}
+
+.filter-btn[data-cat="jar"] .dot{
+    background:#FF9800;
+}
+
+.filter-btn.active[data-cat="jar"]{
+    background:#FFF3E0;
+}
 
 /* ===== DESKTOP GRID (PERFECT CENTER) ===== */
 .menu-grid {
@@ -1095,6 +1107,14 @@ body {
 .pd-card.tier-bowls   .pd-stripe { background: linear-gradient(90deg,#02614e,#ff6f00); }
 .pd-card.tier-monthly .pd-stripe { background: #02614e; }
 .pd-card.tier-premium .pd-stripe { background: linear-gradient(90deg,#ffd700,#ff8c00); }
+.pd-card.tier-jar .pd-stripe{
+    background:linear-gradient(90deg,#ff9800,#ff5722);
+}
+
+.b-jar{
+    background:#FFF3E0;
+    color:#E65100;
+}
 
 /* =========================
    CARD BODY
