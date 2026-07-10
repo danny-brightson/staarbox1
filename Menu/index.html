@@ -279,7 +279,17 @@
     <!-- PRODUCTS -->
     <section class="category-section">
       <div class="category-grid">
+        <div class="category-card"
+     data-plan-id="fruitjar"
+     data-price="1999">
 
+    <img src="../Menu/fruit-jar.jpeg" alt="Fruit Jar">
+
+    <h3>Fruit Jar</h3>
+
+    <span class="menu-price">₹2288</span>
+
+</div>
         <div class="category-card" data-plan-id="basicfruitbowl" data-price="1699">
           <img src="../Menu/Basic-fruit-bowl.png">
           <h3>Elite Bowl</h3>
@@ -384,6 +394,17 @@
       localStorage.getItem("staarbox_customers") || "[]"
     );
     const PLANS = [
+      {
+    id: 'fruitjar',
+    planId: 15,
+    name: 'Fruit Jar',
+    price: 2288,
+    features: [
+        '2 Seasonal Fruits',
+        '200-300g',
+        'Milk,Yogurt,Coconut-Milk'
+    ]
+},
       { id: 'kidbox', planId: 1, name: 'Kids Box', price: 2299, features: ['250g–300g'] },
       { id: 'standardbox', planId: 2, name: 'Standard Box', price: 2829, features: ['300g–350g'] },
       { id: 'premiumbox', planId: 3, name: 'Premium Box', price: 3499, features: ['400g–450g'] },
