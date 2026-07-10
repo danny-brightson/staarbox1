@@ -225,6 +225,9 @@ rel="stylesheet"
   </div>
 
   <div class="pd-filters">
+    <button class="pd-filt" id="pf-jar" onclick="pdFilt('jar',this)">
+    Fruit Jar
+</button>
     <button class="pd-filt on" onclick="pdFilt('all',this)">All</button>
     <button class="pd-filt" id="pf-bowls" onclick="pdFilt('bowls',this)">Bowls</button>
     <button class="pd-filt" onclick="pdFilt('kids',this)">Kids</button>
@@ -259,6 +262,9 @@ rel="stylesheet"
     <button class="filter-btn" data-cat="nonvegsandwich">
       <span class="dot"></span> Non-Veg Sandwich
     </button>
+    <button class="filter-btn" data-cat="jar">
+    <span class="dot"></span> Fruit Jar
+    </button>
   </div>
  <div class="position-relative">
   <!-- Easter Egg GIF -->
@@ -269,7 +275,19 @@ rel="stylesheet"
 </div>
   <div class="menu-grid" id="menuGrid">
     
+    <div class="menu-card" data-cat="jar">
+    <div class="card-img-wrap">
+        <div class="card-img-placeholder">
+            <span class="icon">
+                <img src="./Menu/fruit-jar.jpeg" alt="Fruit Jar">
+            </span>
+        </div>
+    </div>
 
+    <div class="card-body">
+        <p class="card-name">Fruit Jar</p>
+    </div>
+</div>
     <div class="menu-card" data-cat="veg">
       <div class="card-img-wrap"><div class="card-img-placeholder"><span class="icon"><img src="./Menu/Basic-fruit-bowl.png" alt="healthy breakfast delivery Madurai"></span><span class="label"></span></div></div>
       <div class="card-body">
@@ -939,6 +957,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const DATA = {
 
     fruit: [
+    {
+    tier:'jar',
+    tc:'tier-jar',
+    bc:'b-jar',
+    lb:'Ready To Eat',
+    nm:'Fruit Jar',
+    pr:'2288',
+    ft:[
+        '2 Seasonal Fruits',
+        '200-250 g',
+        'Milk,Yogurt,Coconut-Milk',
+         'Fresh Daily'
+    ]
+},
       {tier:'bowls', tc:'tier-bowls', bc:'b-bowls', lb:'Bowls', nm:'Essential Bowl', pr:'1,199', ft:['4 Fruits','1 Vegetable','200–240 g']},
       {tier:'bowls', tc:'tier-bowls', bc:'b-bowls', lb:'Bowls', nm:'Elite Bowl', pr:'1,699', ft:['5 Fruits','1 Vegetable','230–260 g']},
 
