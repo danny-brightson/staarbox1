@@ -373,33 +373,74 @@
       promoCheck.addEventListener('change', function () { promoSection.style.display = this.checked ? 'block' : 'none'; if (!this.checked) { appliedPromo = null; promoCodeInput.value = ''; computeAndShow(); } });
 
       applyPromoBtn.addEventListener('click', async function () {
-        const code = (promoCodeInput.value || '').trim();
-        if (!code) { alert('Enter promo code'); return; }
-        if (!selected) { alert('Select a plan first'); return; }
 
-        const accessToken = localStorage.getItem('accessToken') || '';
-        try {
-          const res = await fetch(`${API_BASE}/api/checkPromoCode?promoCode=${encodeURIComponent(code)}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': accessToken ? `Bearer ${accessToken}` : '',
-              'Content-Type': 'application/json'
+    const code = promoCodeInput.value.trim();
+
+    if (!code) {
+        alert("Enter Promo Code");
+        return;
+    }
+
+    const customerId = localStorage.getItem("CustomerId");
+
+    if (!customerId) {
+        alert("Customer not found.");
+        return;
+    }
+
+    const accessToken = localStorage.getItem("accessToken") || "";
+
+    try {
+
+        const res = await fetch(
+            `${API_BASE}/api/checkPromoCode?promoCode=${encodeURIComponent(code)}&customerId=${encodeURIComponent(customerId)}`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": accessToken ? `Bearer ${accessToken}` : ""
+                }
             }
-          });
-          if (!res.ok) { const t = await res.text().catch(() => res.statusText); alert('Promo check failed: ' + t); return; }
-          const data = await res.json();
-          if (data && data.valid && data.discountPercentage) {
-            appliedPromo = { type: 'percent', value: Number(data.discountPercentage), label: code };
-            computeAndShow();
-            alert('Promo applied: ' + code);
-          } else {
-            alert('Invalid promo code');
-          }
-        } catch (err) {
-          console.error('Promo error', err);
-          alert('Server error while applying promo');
+        );
+
+        if (!res.ok) {
+            const txt = await res.text();
+            alert(txt || "Promo check failed");
+            return;
         }
-      });
+
+        const data = await res.json();
+
+        console.log("Promo Response :", data);
+
+        if (data.success === true) {
+
+    appliedPromo = {
+        type: "percent",
+        value: Number(data.discount),
+        label: code,
+        promoCodeId: data.promoCodeId
+    };
+
+    computeAndShow();
+
+    alert("Promo Applied Successfully");
+
+} else {
+
+    appliedPromo = null;
+    computeAndShow();
+
+    alert("Invalid Promo Code");
+}
+
+    } catch (err) {
+
+        console.error(err);
+        alert("Server Error");
+
+    }
+
+});
 
       
       
@@ -547,7 +588,7 @@ const payload = {
   paymentId: response.razorpay_payment_id,
   signature: response.razorpay_signature,
   customerIds: customerIdsCsv,// "15,16"
-  promoCode: promoCodeInput.value.trim(),
+  promoCode: appliedPromo ? appliedPromo.label : "",
   amount: serverResp.amount,
   isRenewed: false,
   isFromWallet: false
