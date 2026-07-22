@@ -412,11 +412,11 @@
 
         console.log("Promo Response :", data);
 
-        if (data.success === true) {
+       if (data.valid === true) {
 
     appliedPromo = {
         type: "percent",
-        value: Number(data.discount),
+        value: Number(data.discountPercentage),
         label: code,
         promoCodeId: data.promoCodeId
     };
@@ -430,7 +430,7 @@
     appliedPromo = null;
     computeAndShow();
 
-    alert("Invalid Promo Code");
+    alert(data.message || "Invalid Promo Code");
 }
 
     } catch (err) {
