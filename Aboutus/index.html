@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <link rel="canonical" href="https://www.staarbox.in/Aboutus/" /> 
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJM0SLEFQZ"></script>
   
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-CJM0SLEFQZ');
-</script>
+<script src="../JS/ga.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <meta name="google-site-verification" content="U4WrpzFDmaHcuK-NfsTwmPedGPnYUGSSiPciP5e0z18" />
@@ -27,7 +22,7 @@
   <link rel="stylesheet" href="../Css/bootstrap.min.css" />
   <link rel="stylesheet" href="../Css/swiper.css" />
   <link rel="stylesheet" href="../Css/fontawesome.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../Css/googlefonts.css" />
   <link rel="stylesheet" href="../Css/AOS.css" />
   <link rel="stylesheet" href="../Css/Mdb.css" />
@@ -266,7 +261,7 @@
       <h2>Why Choose Us?</h2>
       <ul class="features">
      <li>Your health is personal — and your mornings should be powerful with the best healthy food items in Madurai from Staarbox.</li>
-    <li>Supports pregnancy, menstrual health, and diabetes management with carefully selected fruits and nuts from our dry fruit shop in Madurai.</li>
+    <li>Carefully selected fruits and nuts for every stage of life, from our dry fruit shop in Madurai.</li>
     <li>Delivers nutrient-rich fruits and nuts for daily wellness needs through trusted best food delivery in Madurai and nuts & legumes delivery Madurai.</li>
     <li>Powers your workouts and lifestyle — one sunrise at a time, with fresh produce from your local Madurai fruit shop and fruit shop near me.</li>
       </ul>
@@ -332,6 +327,8 @@
           <p>
             <a href="../" class="text-reset">HOME</a>
           </p>
+          <p><a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox" class="text-reset" target="_blank" rel="noopener"><i class="fab fa-google-play"></i> Google Play</a></p>
+          <p><a href="https://apps.apple.com/app/id6755515436" class="text-reset" target="_blank" rel="noopener"><i class="fab fa-apple"></i> App Store</a></p>
         </div>
         <!-- Grid column -->
 
@@ -382,14 +379,7 @@
   <script src="../JS/bootstrap.bundle.js"></script>
   <script src="../JS/Mdb.js"></script>
   <script src="../JS/aos.js"></script>
-  <script>AOS.init();</script>
-  <script>
-    const toggle = document.getElementById("menuToggle");
-    const links = document.getElementById("navLinks");
-    toggle.addEventListener("click", () => {
-      links.classList.toggle("active");
-    });
-  </script>
+  <script type="module" src="../JS/site.js"></script>
 </body>
 </html>
 

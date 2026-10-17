@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://www.google.com; connect-src 'self' https://app.staarbox.in https://staging-api.200-97-162-248.sslip.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://www.google.com https://recaptcha.google.com https://staarbox-91945.firebaseapp.com; img-src 'self' data: https://www.gstatic.com; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow">
 
   <title>OTP Login | STAARBOX</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../Css/bootstrap.min.css">
+  <link rel="stylesheet" href="../Css/shop.css">
 
   <style>
     :root {
@@ -15,7 +17,7 @@
       --muted: #4a7365;
     }
 
-    body{ margin:0; padding:0; min-height:100vh;
+    body{ margin:0; padding:16px; min-height:100vh;
       background: url('../Image/staarbox.png') center center/contain no-repeat,
                   linear-gradient(135deg,var(--brand), #eccfa1);
       background-blend-mode: overlay;
@@ -30,16 +32,14 @@
     }
 
     .brand { font-size:28px; font-weight:800; margin-bottom:6px; }
-    h3 { margin-top:0; margin-bottom:6px; }
+    h1 { margin-top:0; margin-bottom:6px; }
 
     .form-control { border-radius:12px; padding:12px; border:1px solid rgba(0,0,0,0.08);
       background: #fff; color:var(--brand);
     }
     .form-control::placeholder { color: #8aa79a; }
 
-    button { border-radius:12px; padding:12px; font-size:16px; width:100%; }
-
-    #otp-section { display:none; margin-top:12px; }
+    .otp-card .btn { border-radius:12px; padding:12px; font-size:16px; width:100%; }
 
     #status { margin-top:12px; min-height:22px; font-weight:600; color:var(--muted); }
 
@@ -48,389 +48,78 @@
     /* ---------- recaptcha animated wrapper ---------- */
     #recaptcha-wrapper { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(.2,.9,.2,1); margin-top: 10px; }
     #recaptcha-wrapper.show { max-height: 210px; opacity: 1; margin-bottom: 12px; }
-    #recaptcha-wrapper.hide { max-height: 0; opacity: 0; margin: 0; padding: 0; }
-    #recaptcha-container { width:100%; }
+    #recaptcha-container { width:100%; display:flex; justify-content:center; }
 
     /* inline country code + phone */
     .phone-row { display:flex; gap:8px; align-items:center; }
-    .country-select { width:110px; border-radius:12px; padding:10px; border:1px solid rgba(0,0,0,0.08); background:#fff; }
-    .local-phone { flex:1; }
+    .country-code { max-width:72px; text-align:center; font-weight:600; }
+    .local-phone { flex:1; min-width:0; }
 
-    .muted-link { color:var(--brand); font-weight:600; text-decoration:none; }
-    .muted-link:hover { text-decoration:underline; }
+    .field-error { color:#b42318; font-size:0.85rem; min-height:1.1em; margin-top:4px; }
+    .agree { margin-top:16px; margin-bottom:0; }
+    .agree a { color:var(--brand); font-weight:600; }
+
+    #consent { text-align:start; max-height:60vh; overflow:auto; }
+    .legal-doc { margin-top:12px; }
+    .legal-doc details { border-bottom:1px solid rgba(0,0,0,0.08); padding:6px 0; }
+    .legal-doc summary { cursor:pointer; font-weight:600; }
+    .legal-notice { font-weight:600; }
   </style>
+
+  <script type="module" src="../JS/site.js"></script>
+  <script type="module" src="../JS/login.js"></script>
 </head>
 <body>
-  <div class="otp-card" role="main" aria-labelledby="loginTitle">
+  <main class="otp-card" id="main" aria-labelledby="loginTitle">
     <div class="brand">⭐ STAARBOX</div>
-    <h3 id="loginTitle">Login with OTP</h3>
-    <p class="small-muted">Enter your name and mobile number</p>
+    <h1 class="h3" id="loginTitle">Welcome Back!</h1>
+    <p class="small-muted" id="tagline">Fresh nutrition, delivered every morning.</p>
 
-    <!-- Name field -->
-    <div id="name-section" class="mb-3 text-start">
-      <label for="userName" class="small-muted">Full name</label>
-      <input id="userName" class="form-control mt-1" type="text" placeholder="Your name" autocomplete="name" />
-    </div>
-
-    <!-- Phone section: country code select + local number -->
-    <div id="phone-section" class="text-start">
-      <label for="localPhone" class="small-muted">Mobile number</label>
-      <div class="phone-row mt-1">
-        <input id="countryCode" class="form-control" type="text" value="+91" readonly style="max-width:90px; text-align:center; font-weight:600;" />
-        <input id="localPhone" class="form-control local-phone" type="tel" inputmode="tel" placeholder="9876543210" autocomplete="tel" />
+    <form id="phoneForm" novalidate>
+      <div id="nameRow" class="mb-3 text-start" hidden>
+        <label for="userName" class="small-muted">Full Name</label>
+        <input id="userName" class="form-control mt-1" type="text" placeholder="Enter your full name" autocomplete="name" maxlength="50" />
+        <div class="field-error" id="nameError" aria-live="polite"></div>
       </div>
 
-      <!-- recaptcha wrapper: initially hidden; will slide in when Send OTP clicked -->
-      <div id="recaptcha-wrapper" aria-hidden="true">
+      <div class="text-start">
+        <label for="localPhone" class="small-muted">Mobile Number</label>
+        <div class="phone-row mt-1">
+          <span class="form-control country-code" aria-hidden="true">+91</span>
+          <input id="localPhone" class="form-control local-phone" type="tel" inputmode="numeric" placeholder="e.g. 98765 43210" autocomplete="tel-national" maxlength="10" />
+        </div>
+        <div class="field-error" id="phoneError" aria-live="polite"></div>
+      </div>
+
+      <div id="referralRow" class="mt-2 text-start" hidden>
+        <label for="referral" class="small-muted">Referral Code (Optional)</label>
+        <input id="referral" class="form-control mt-1" type="text" placeholder="E.g. SBX7K2QPM" maxlength="9" autocomplete="off" />
+        <div class="field-error" id="referralError" aria-live="polite"></div>
+      </div>
+
+      <!-- The reCAPTCHA box (live sign-in only) slides in when Get OTP is pressed. -->
+      <div id="recaptcha-wrapper">
         <div id="recaptcha-container"></div>
       </div>
 
-      <button id="sendOtpBtn" class="btn btn-warning mt-3 mb-2">Send OTP</button>
-    </div>
+      <button id="sendOtpBtn" class="btn btn-warning mt-3 mb-2" type="submit">Get OTP</button>
+      <p class="small-muted mb-0"><span id="switchText">New to STAARBOX?</span> <button type="button" id="switchMode" class="link-btn">Register Now</button></p>
+    </form>
 
-    <!-- OTP section -->
-    <div id="otp-section">
-      <input id="otpInput" class="form-control mb-3" type="text" placeholder="Enter 6-digit OTP" inputmode="numeric" autocomplete="one-time-code" />
-      <button id="verifyOtpBtn" class="btn btn-success mb-2">Verify OTP</button>
-      <p class="mt-2"><a href="#" id="resendOtp" class="small-muted text-decoration-none">Resend OTP</a></p>
-    </div>
+    <form id="otpForm" novalidate hidden>
+      <h2 class="h5">Verify Your Number</h2>
+      <p class="small-muted">We’ve sent a 6-digit OTP to <strong id="maskedPhone"></strong> <button type="button" id="editPhone" class="link-btn" aria-label="Edit mobile number" title="Edit mobile number">✎</button></p>
+      <label for="otpInput" class="small-muted">Enter the 6-digit OTP</label>
+      <input id="otpInput" class="form-control mb-3 mt-1" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
+      <button id="verifyOtpBtn" class="btn btn-success mb-2" type="submit">Verify</button>
+      <p class="small-muted mt-2 mb-0">Didn’t receive the OTP? <button type="button" id="resendOtp" class="link-btn">Resend OTP</button></p>
+    </form>
+
+    <section id="consent" aria-live="polite" hidden></section>
 
     <div id="status" class="small-muted" aria-live="polite"></div>
-  </div>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
-
-  <script>
-    // ---------- firebase config ----------
-    const firebaseConfig = {
-      apiKey: "AIzaSyD78WXxyUeHl_rIlnRSQydj9WN0Ss4jqMs",
-      authDomain: "staarbox-91945.firebaseapp.com",
-      projectId: "staarbox-91945",
-      storageBucket: "staarbox-91945.firebasestorage.app",
-      messagingSenderId: "591533689732",
-      appId: "1:591533689732:web:45f6abb7dbe9e42508ebd1"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // ---------- dom ----------
-    const nameInput = document.getElementById('userName');
-    const countrySelect = document.getElementById('countryCode');
-    const localPhoneInput = document.getElementById('localPhone');
-    const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const otpSection = document.getElementById('otp-section');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-    const otpInput = document.getElementById('otpInput');
-    const statusText = document.getElementById('status');
-    const recaptchaWrapper = document.getElementById('recaptcha-wrapper');
-    const recaptchaContainer = document.getElementById('recaptcha-container');
-    const resendLink = document.getElementById('resendOtp');
-
-    // Pre-fill local phone (optional) - keep empty so user types only local part
-    // localPhoneInput.value = '';
-
-    // ---------- helpers ----------
-    function showStatus(msg, isError=false) {
-      statusText.textContent = msg;
-      statusText.style.color = isError ? 'crimson' : 'var(--brand)';
-      console.log(msg);
-    }
-
-    // Validate name
-    function validateName(val) {
-      const t = String(val || '').trim();
-      if (!t) return { ok:false, msg: 'Please enter your name.' };
-      if (t.length < 2) return { ok:false, msg: 'Name too short.' };
-      return { ok:true, name: t };
-    }
-
-    // Validate local phone and combine with country code
-    function validatePhoneInput(country, local) {
-      const rawLocal = String(local || '').trim();
-      if (!rawLocal) return { ok:false, msg: 'Please enter your mobile number.' };
-      const digits = rawLocal.replace(/\D/g,'');
-      if (digits.length < 6) return { ok:false, msg: 'Phone number too short.' };
-
-      // simple country-specific rules (improve as needed)
-      if (country === '+91' && digits.length !== 10) return { ok:false, msg: 'Indian number must be 10 digits.' };
-      // combine
-      return { ok:true, phone: country + digits };
-    }
-
-    // ---------- reCAPTCHA management (manual checkbox mode) ----------
-    async function initRecaptchaManual() {
-      if (window.recaptchaVerifier && typeof window.recaptchaVerifier.clear === 'function') {
-        try { window.recaptchaVerifier.clear(); } catch(e){ console.warn('clear recaptcha failed', e); }
-      }
-
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'normal',
-        callback: () => {
-          console.log('reCAPTCHA solved by user');
-          setTimeout(() => { recaptchaWrapper.classList.add('hide'); recaptchaWrapper.classList.remove('show'); recaptchaWrapper.setAttribute('aria-hidden', 'true'); }, 500);
-        },
-        'expired-callback': () => { console.warn('reCAPTCHA expired'); recaptchaWrapper.classList.remove('hide'); }
-      });
-
-      try {
-        const widgetId = await window.recaptchaVerifier.render();
-        console.log('reCAPTCHA rendered (widgetId):', widgetId);
-        recaptchaWrapper.setAttribute('aria-hidden', 'false');
-        return true;
-      } catch (err) {
-        console.error('reCAPTCHA render failed:', err);
-        return false;
-      }
-    }
-
-    // ---------- Send OTP flow ----------
-    sendOtpBtn.addEventListener('click', async () => {
-      showStatus('', false);
-      sendOtpBtn.disabled = true;
-
-      // validate name
-      const nameValid = validateName(nameInput.value);
-      if (!nameValid.ok) { showStatus('⚠️ ' + nameValid.msg, true); sendOtpBtn.disabled = false; return; }
-
-      // validate phone
-      const validated = validatePhoneInput(countrySelect.value, localPhoneInput.value);
-      if (!validated.ok) { showStatus('⚠️ ' + validated.msg, true); sendOtpBtn.disabled = false; return; }
-      const phone = validated.phone;
-
-      // reveal recaptcha area with animation
-      recaptchaWrapper.classList.remove('hide');
-      recaptchaWrapper.classList.add('show');
-      recaptchaWrapper.setAttribute('aria-hidden', 'false');
-      showStatus('Please solve the reCAPTCHA to continue...');
-
-      const recOk = await initRecaptchaManual();
-      if (!recOk) {
-        showStatus('reCAPTCHA failed to load. Try disabling browser shields or use a different browser.', true);
-        sendOtpBtn.disabled = false;
-        return;
-      }
-
-      showStatus('Waiting for you to solve reCAPTCHA and send OTP...');
-      try {
-        const confirmationResult = await auth.signInWithPhoneNumber(phone, window.recaptchaVerifier);
-        window.confirmationResult = confirmationResult;
-        otpSection.style.display = 'block';
-        otpInput.focus();
-        showStatus('OTP sent successfully — enter the code below.');
-        // persist name locally so you can use it after verification
-        window._pendingUser = { name: nameValid.name, phone };
-      } catch (err) {
-        console.error('sendOtp error', err);
-        if (err && err.code === 'auth/invalid-phone-number') {
-          showStatus('❌ Invalid phone number. Check digits and country code.', true);
-        } else if (err && err.code === 'auth/too-many-requests') {
-          showStatus('❌ Too many requests. Please wait a while and try again.', true);
-        } else {
-          showStatus('❌ Failed to send OTP: ' + (err && err.message ? err.message : String(err)), true);
-        }
-        sendOtpBtn.disabled = false;
-      }
-    });
-
-    
-
-    // ---------- Verify OTP flow ----------
-    verifyOtpBtn.addEventListener('click', async () => {
-      let isExistingCustomer = false;
-
-      showStatus('', false);
-      const code = otpInput.value.trim();
-      if (!code) { showStatus('⚠️ Enter the OTP code.', true); return; }
-      if (!window.confirmationResult) { showStatus('⚠️ No OTP request found. Request OTP first.', true); return; }
-
-      verifyOtpBtn.disabled = true;
-      showStatus('Verifying OTP...');
-      try {
-        const result = await window.confirmationResult.confirm(code);
-        console.log('verify result', result);
-        showStatus('✅ Login successful! Redirecting...', false);
-        
-
-        // save the user's name (from when they requested OTP)
-        const savedName = (window._pendingUser && 
-        window._pendingUser.name) ? window._pendingUser.name : nameInput.value.trim();
-        try { localStorage.setItem('staarbox_user_name', savedName);
-         localStorage.setItem('staarbox_user_phone', 
-         (window._pendingUser && window._pendingUser.phone) || ''); } 
-         catch (e) { /* ignore storage errors */ }
-
-        // optional: call backend to create/update user profile here (fetch POST)
-
-        // ------------ call server verify-otp API (replaces previous try block) ------------
-// Put this inside your try block where you currently call verify-otp
-// try {
-//   // Normalize phone (same as you had)
-//   let savedPhoneNormalized = (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '').replace(/\D/g, '');
-//   savedPhoneNormalized = savedPhoneNormalized.replace(/^0+/, '').replace(/^\+?91/, '').replace(/^91/, '');
-
-//   const payload = { phoneNumber: savedPhoneNormalized, IsRegistered: true };
-
-//   // Use the HTTPS hostname if your page is HTTPS. IMPORTANT: change to your HTTPS API origin
-//   const apiUrl = 'https://api.staarbox.in/api/verify-otp'; // <- use HTTPS and your domain, not raw IP
-
-//   console.log('[verify-otp] Sending request to:', apiUrl, 'payload:', payload);
-
-//   const res = await fetch(apiUrl, {
-//     method: 'POST',
-//     mode: 'cors',                // ensure we intend cross-origin request
-//     cache: 'no-cache',
-//     credentials: 'omit',         // change to 'include' if you need cookies
-//     headers: {
-//       'Content-Type': 'application/json'
-//       // add Authorization here only if required by your API
-//       // 'Authorization': 'Bearer ...'
-//     },
-//     body: JSON.stringify(payload)
-//   });
-
-//   console.log('[verify-otp] fetch completed. status:', res.status, res.statusText);
-
-//   // read text / json
-//   const text = await res.text().catch(() => '');
-//   let json = null;
-//   try { json = text ? JSON.parse(text) : null; } catch(e) { json = null; }
-
-//   if (!res.ok) {
-//     console.warn('[verify-otp] server returned not-ok:', res.status, text);
-//     // Common browser console message for CORS: check console for an error before this line
-//     showStatus('⚠️ Login succeeded but server verify returned an error. See console.', false);
-//   } else {
-//     console.log('[verify-otp] success payload:', json ?? text);
-//     showStatus('✅ Login synced with server.', false);
-
-//     if (json) {
-//       if (json.accessToken) localStorage.setItem('accessToken', json.accessToken);
-//       if (json.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
-//       if (json.id) localStorage.setItem('CustomerId', json.id);
-//     }
-//   }
-
-// } 
-// catch (err) {
-  // This block will catch network / blocked-by-CORS / mixed-content errors
-//   console.error('[verify-otp] fetch error:', err);
-
-//   // Helpful hint for you / QA
-//   if (typeof err === 'object' && err.message && err.message.indexOf('Failed to fetch') !== -1) {
-//     console.error('Possible causes: CORS failure, mixed-content (HTTPS page calling HTTP API), network error, or blocked by browser/extension.');
-//   }
-
-//   showStatus('⚠️ Logged in but server sync failed. Continuing...', false);
-// }try {
-  // Normalize phone number
-  let savedPhoneNormalized =
-    (window._pendingUser && window._pendingUser.phone ? window._pendingUser.phone : '')
-      .replace(/\D/g, '')
-      .replace(/^0+/, '')
-      .replace(/^91/, '');
-
-  const payload = {
-    phoneNumber: savedPhoneNormalized,
-    IsRegistered: true
-  };
-
-  const apiUrl = 'https://api.staarbox.in/api/verify-otp';
-
-  const res = await fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  const text = await res.text();
-  let json = null;
-  try { json = text ? JSON.parse(text) : null; } catch(e) {}
-
-  if (!res.ok) {
-    console.warn('[verify-otp] server error:', res.status, text);
-    showStatus('⚠️ Login succeeded but server verification failed.', false);
-  } else {
-    // ✅ TOKENS
-    if (json?.accessToken) localStorage.setItem('accessToken', json.accessToken);
-    if (json?.refreshToken) localStorage.setItem('refreshToken', json.refreshToken);
-
-    // ✅ EXISTING CUSTOMER CHECK (THIS IS THE KEY)
-    // ---- EXISTING CUSTOMER CHECK (ARRAY SAFE) ----
-let customerIds = [];
-
-// Normalize all possible API responses into an array
-if (Array.isArray(json?.customerIds)) {
-  customerIds = json.customerIds;
-} else if (json?.customerId) {
-  customerIds = [json.customerId];
-} else if (json?.id) {
-  customerIds = [json.id];
-}
-
-// Persist for later use
-localStorage.setItem('customerIds', JSON.stringify(customerIds));
-
-// ✅ Correct condition
-if (customerIds.length > 0) {
-  isExistingCustomer = true;
-} else {
-  isExistingCustomer = false;
-}
-  }
-    if (isExistingCustomer) {
-      alert('✅ You are an existing customer. Welcome back!');
-      window.location.href = '../';        // HOME
-    } else {
-      window.location.href = '../Form/';   // NEW CUSTOMER
-    }
-
-} catch (err) {
-  console.error('[verify-otp] network error:', err);
-  showStatus('⚠️ Logged in but server sync failed. Continuing...', false);
-}
-
-
-
-        /**********************************/
-
-      //   setTimeout(() => { window.location.href = '../Form/'; }, 900);
-      // } catch (err) {
-      //   console.error('verify error', err);
-      //   showStatus('❌ Incorrect OTP or verification failed. Try again.', true);
-      //   verifyOtpBtn.disabled = false;
-      // }
-    });
-//     setTimeout(() => {
-//   if (isExistingCustomer) {
-//     alert('✅ You are an existing customer. Welcome back!');
-//     window.location.href = '../'; // HOME
-//   } else {
-//     window.location.href = '../Form/'; // NEW CUSTOMER
-//   }
-// }, 700);
-
-
-    // ---------- Resend / reinit ----------
-    resendLink.addEventListener('click', async (e) => {
-      e.preventDefault();
-      recaptchaWrapper.classList.remove('hide');
-      recaptchaWrapper.classList.add('show');
-      sendOtpBtn.disabled = false;
-      otpSection.style.display = 'none';
-      otpInput.value = '';
-      showStatus('You can request a new OTP — solve reCAPTCHA and Send again.');
-    });
-
-    window.addEventListener('error', (ev) => { console.error('Global error', ev.error || ev.message); });
-  </script>
+    <p class="small-muted agree" id="agree">By continuing you agree to our <a id="termsLink" href="#">Terms &amp; Conditions</a> and <a id="privacyLink" href="#">Privacy Policy</a></p>
+  </main>
 </body>
 </html>
-
-
-
-
-
-
-

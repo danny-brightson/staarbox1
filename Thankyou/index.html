@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://app.staarbox.in https://staging-api.200-97-162-248.sslip.io; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex, nofollow">
-
   <title>Thank You - StaarBox</title>
-
   <style>
     :root {
       --brand-green: #02614e;
@@ -16,150 +15,51 @@
       --text-muted: rgba(255,255,255,0.85);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Poppins", Arial, sans-serif;
-      overflow: hidden;
-    }
+    body { margin: 0; min-height: 100vh; font-family: "Poppins", Arial, sans-serif; overflow-x: hidden; }
 
     /* BACKGROUND */
     .bg {
-      position: fixed;
-      inset: 0;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(2,97,78,0.85),
-          rgba(236,207,161,0.85)
-        ),
-        url("../Image/staarbox.png") center/420px no-repeat;
-      filter: blur(22px);
-      transform: scale(1.15);
-      z-index: -1;
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, rgba(2,97,78,0.85), rgba(236,207,161,0.85)), url("../Image/staarbox.png") center/420px no-repeat;
+      filter: blur(22px); transform: scale(1.15); z-index: -1;
     }
 
     /* CONTENT */
-    .wrapper {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-      color: var(--text-light);
-    }
-
-    .content {
-      max-width: 760px;
-      width: 100%;
-      padding: 48px 32px;
-      border-radius: 28px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-    }
+    .wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--text-light); }
+    .content { max-width: 760px; width: 100%; padding: 48px 32px; border-radius: 28px; background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); box-shadow: 0 30px 60px rgba(0,0,0,0.25); }
 
     /* SUCCESS ICON */
-    .check {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 20px;
-      background: var(--success);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      font-weight: bold;
-      color: #fff;
-      box-shadow: 0 12px 30px rgba(34,197,94,0.6);
-    }
+    .check { width: 90px; height: 90px; margin: 0 auto 20px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: #fff; box-shadow: 0 12px 30px rgba(34,197,94,0.6); }
+    .check.wait { background: #f79009; box-shadow: 0 12px 30px rgba(247,144,9,0.5); }
 
-    h1 {
-      font-size: 40px;
-      margin: 0 0 10px;
-    }
+    h1 { font-size: 40px; margin: 0 0 10px; }
+    .subtitle { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
 
-    .subtitle {
-      font-size: 18px;
-      color: var(--text-muted);
-      margin-bottom: 30px;
-    }
+    /* THE PLAN */
+    .plan-rows { max-width: 420px; margin: 0 auto 28px; text-align: start; background: rgba(255,255,255,0.12); border-radius: 16px; padding: 8px 16px; }
+    .plan-rows div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .plan-rows div:last-child { border-bottom: 0; }
 
     /* APP SECTION */
-    .app-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .app-grid {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-
-    .app-card {
-      width: 110px;
-      height: 110px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-
-    .app-card:hover {
-      transform: translateY(-8px) scale(1.05);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
-    }
-
-    .app-card img {
-      width: 56px;
-      height: 56px;
-    }
-
-    /* TIMER */
-    .timer {
-      margin-top: 32px;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .timer span {
-      color: #fff;
-    }
+    .app-title { font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+    .app-grid { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+    .app-card { width: 110px; height: 110px; border-radius: 22px; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(0,0,0,0.25); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .app-card:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 30px 60px rgba(0,0,0,0.35); }
+    .app-card img { width: 56px; height: 56px; }
+    .home-link { display: inline-block; margin-top: 28px; color: #fff; font-weight: 600; }
 
     /* MOBILE */
     @media (max-width: 768px) {
-      .content {
-        padding: 36px 22px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .subtitle {
-        font-size: 16px;
-      }
-
-      .app-card {
-        width: 96px;
-        height: 96px;
-      }
+      .content { padding: 36px 22px; }
+      h1 { font-size: 28px; }
+      .subtitle { font-size: 16px; }
+      .app-card { width: 96px; height: 96px; }
     }
   </style>
+  <script type="module" src="../JS/site.js"></script>
+  <script type="module" src="../JS/thanks.js"></script>
 </head>
 <body>
 
@@ -168,57 +68,36 @@
 
   <!-- Content -->
   <div class="wrapper">
-    <div class="content">
+    <main class="content shop-page" id="main" aria-live="polite">
 
-      <div class="check">✓</div>
+      <div class="check" id="check">✓</div>
 
-      <h1>Thank You!</h1>
-      <div class="subtitle">
-        Your order has been successfully placed.  
-        We’re getting things ready for you.
-      </div>
+      <h1 id="title">Thank You!</h1>
+      <div class="subtitle" id="subtitle">Get the app to customise your boxes and see your calendar and wallet</div>
 
-      <div class="app-title">Get the StaarBox App</div>
+      <div id="plan"></div>
+
+      <div class="app-title">Get the Staarbox app</div>
 
       <div class="app-grid">
-  <!-- ANDROID -->
-  <a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox"
-     target="_blank" aria-label="Download Android App">
-    <div class="app-card">
-      <img src="../Image/android.png" alt="Android App">
-    </div>
-  </a>
+        <!-- ANDROID -->
+        <a href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox" target="_blank" rel="noopener" aria-label="Get it on Google Play">
+          <div class="app-card">
+            <img src="../Image/android.png" alt="">
+          </div>
+        </a>
 
-  <!-- IOS -->
-  <a href="https://apps.apple.com/app/id6755515436"
-     target="_blank" aria-label="Download iOS App">
-    <div class="app-card">
-      <img src="../Image/ios.png" alt="iOS App">
-    </div>
-  </a>
-</div>
-
-
-      <div class="timer">
-        Redirecting to Home in <span id="countdown">8</span> seconds…
+        <!-- IOS -->
+        <a href="https://apps.apple.com/app/id6755515436" target="_blank" rel="noopener" aria-label="Download on the App Store">
+          <div class="app-card">
+            <img src="../Image/ios.png" alt="">
+          </div>
+        </a>
       </div>
 
-    </div>
+      <a class="home-link" href="../">Home</a>
+    </main>
   </div>
-
-  <script>
-    let seconds = 10;
-    const countdownEl = document.getElementById("countdown");
-
-    const timer = setInterval(() => {
-      seconds--;
-      countdownEl.textContent = seconds;
-      if (seconds <= 0) {
-        clearInterval(timer);
-        window.location.href = "../";
-      }
-    }, 1000);
-  </script>
 
 </body>
 </html>
