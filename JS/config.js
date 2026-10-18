@@ -10,7 +10,7 @@ const LIVE = {
   signIn: 'firebase',
   terms: 'https://app.staarbox.in/terms',
   privacy: 'https://app.staarbox.in/privacy',
-  shopOpen: false,
+  shopOpen: true,
 };
 
 // The builder's local tests: the test server serves the site and passes
