@@ -105,3 +105,31 @@ export function nameProblem(raw) {
   if (name.length > 50) return W.nameLong;
   return '';
 }
+
+
+import { STORES } from './config.js';
+export const rupees = (n) => new Intl.NumberFormat('en-IN', {
+  style: 'currency', currency: 'INR', maximumFractionDigits: 0,
+}).format(Number(n) || 0);
+export function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs || {})) {
+    if (value == null) continue;
+    if (key.startsWith('on') && typeof value === 'function') node.addEventListener(key.slice(2), value);
+    else if (key === 'class') node.className = value;
+    else if (key === 'text') node.textContent = value;
+    else node.setAttribute(key, String(value));
+  }
+  for (const child of children.flat(Infinity)) {
+    if (child == null || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+export function appPanel(message) {
+  const box = el('div', { class: 'sbx-api-fallback', role: 'status' });
+  box.append(el('p', {}, message));
+  box.append(el('a', { href: STORES.play, target: '_blank', rel: 'noopener noreferrer' }, 'Get it on Google Play'));
+  box.append(el('a', { href: STORES.apple, target: '_blank', rel: 'noopener noreferrer' }, 'Download on the App Store'));
+  return box;
+}
