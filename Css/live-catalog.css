@@ -1,0 +1,4 @@
+.api-product-unavailable { opacity: .72; }
+.sbx-api-fallback { display:flex; gap:12px; flex-wrap:wrap; align-items:center; padding:16px; }
+.sbx-api-fallback p { flex-basis:100%; margin:0; }
+.sbx-api-fallback a { text-decoration:underline; }
