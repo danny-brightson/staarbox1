@@ -547,12 +547,28 @@
   <button class="btn btn-primary" id="mobileCtaBtn">Choose This Plan</button>
 </div>
 
+<script>
+function choosePlan() {
+  try {
+    const session = JSON.parse(sessionStorage.getItem("staarbox.session") || "null");
+    if (session && typeof session.accessToken === "string") {
+      window.location.assign("/Menu/");
+      return;
+    }
+  } catch {
+    // Treat unavailable session storage as signed out.
+  }
+  window.location.assign("/login/?next=%2FMenu%2F");
+}
+["ctaBtn", "mobileCtaBtn"].forEach((id) => {
+  document.getElementById(id)?.addEventListener("click", choosePlan);
+});
+</script>
 <script type="module">
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
-import { connectPlanButtons } from "../JS/product-cta.js";
 
 /* =========================================================
    ACTIVE PRODUCT VARIANT
@@ -637,8 +653,6 @@ document.getElementById("priceValue").textContent = priceFormatted;
 document.getElementById("priceCadence").textContent = product.cadence;
 document.getElementById("mobilePriceValue").textContent = priceFormatted;
 document.getElementById("mobilePriceCadence").textContent = product.cadence;
-
-connectPlanButtons();
 
 document.getElementById("backBtn").addEventListener("click", (e) => {
   e.preventDefault();
