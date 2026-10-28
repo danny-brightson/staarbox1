@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Premium Non-Veg Sandwich — Staarbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<style>
+  :root{
+    --green-950:#0e2a20;
+    --green-900:#123626;
+    --green-800:#1a4a34;
+    --green-700:#20573d;
+    --beige-200:#eee1c8;
+    --sand:#faf6ee;
+    --paper:#fdfbf6;
+    --ink:#1c211d;
+    --ink-soft:#5b6259;
+    --line:#e6ddc9;
+    --gold:#b98a3e;
+
+    --header-h:72px;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:10px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--sand);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    color:var(--green-950);
+    margin:0;
+    font-weight:600;
+  }
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;}
+  a{color:inherit;text-decoration:none;}
+
+  /* focus visibility */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    height:var(--header-h);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 clamp(16px,4vw,40px);
+    background:rgba(250,246,238,0.82);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .back-link{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--green-900);
+    padding:8px 6px;
+    border-radius:8px;
+  }
+  .back-link:hover{ color:var(--gold); }
+  .brand{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    letter-spacing:0.08em;
+    font-weight:700;
+    color:var(--green-950);
+  }
+  .fav-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .fav-btn:hover{ transform:scale(1.06); }
+  .fav-btn svg{ width:20px; height:20px; }
+  .fav-btn svg path{
+    stroke:var(--green-900);
+    fill:none;
+    transition:fill .18s ease, stroke .18s ease;
+  }
+  .fav-btn.active{ background:var(--beige-200); border-color:var(--gold); }
+  .fav-btn.active svg path{ fill:var(--gold); stroke:var(--gold); }
+
+  /* ---------- LAYOUT ---------- */
+  main.product-layout{
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:clamp(24px,3vw,56px);
+    max-width:1320px;
+    margin:0 auto;
+    padding:clamp(20px,3vw,48px) clamp(16px,4vw,40px) 120px;
+    align-items:start;
+  }
+
+  /* ---------- VIEWER ---------- */
+  .viewer-col{
+    position:sticky;
+    top:calc(var(--header-h) + 20px);
+  }
+  .viewer-card{
+    background:linear-gradient(180deg, var(--paper) 0%, var(--sand) 100%);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:14px;
+  }
+  #viewer{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    background:radial-gradient(circle at 50% 35%, #fffdf8 0%, #f1ead9 65%, #ebe2cd 100%);
+  }
+  #viewer canvas{ display:block; width:100% !important; height:100% !important; }
+
+  .viewer-hint{
+    position:absolute;
+    bottom:14px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:rgba(253,251,246,0.85);
+    padding:6px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .viewer-hint.hidden{ opacity:0; }
+
+  .viewer-error{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px;
+    color:var(--ink-soft);
+    font-size:14px;
+    display:none;
+  }
+  .viewer-error.show{ display:flex; }
+
+  .viewer-controls{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    border-radius:999px;
+    padding:11px 20px;
+    font-size:14px;
+    font-weight:600;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--green-950);
+    cursor:pointer;
+    transition:transform .16s ease, background .16s ease, border-color .16s ease, opacity .16s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn:hover{ transform:translateY(-1px); border-color:var(--gold); }
+  .btn:active{ transform:translateY(0); }
+  .btn:disabled{ opacity:0.45; cursor:not-allowed; transform:none; }
+  .btn-primary{
+    background:var(--green-900);
+    border-color:var(--green-900);
+    color:var(--sand);
+  }
+  .btn-primary:hover{ background:var(--green-800); border-color:var(--green-800); }
+
+  /* ---------- PRODUCT INFO ---------- */
+  .badge{
+    display:inline-block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--green-800);
+    background:var(--beige-200);
+    padding:6px 14px;
+    border-radius:999px;
+  }
+  .product-title{
+    font-size:clamp(28px,3vw,38px);
+    margin-top:14px;
+    line-height:1.15;
+  }
+  .rating-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .stars{ color:var(--gold); letter-spacing:1px; font-size:15px; }
+  .rating-num{ color:var(--ink); font-weight:600; }
+
+  .description{
+    margin-top:18px;
+    font-size:15.5px;
+    color:var(--ink-soft);
+    max-width:52ch;
+  }
+
+  .stats-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:26px;
+  }
+  .stat{
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 10px;
+    text-align:center;
+    background:var(--paper);
+  }
+  .stat-value{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    color:var(--green-950);
+    font-weight:600;
+  }
+  .stat-label{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+
+  section.info-section{
+    margin-top:40px;
+  }
+  .section-title{
+    font-size:20px;
+    margin-bottom:14px;
+  }
+  .section-sub{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-top:-8px;
+    margin-bottom:16px;
+  }
+
+  /* ingredients */
+  .ingredient-scroll{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    padding:6px 2px 14px;
+    scrollbar-width:thin;
+  }
+  .ingredient-scroll::-webkit-scrollbar{ height:6px; }
+  .ingredient-scroll::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+
+  .ingredient-item{
+    flex:0 0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:4px;
+    width:78px;
+  }
+  .ingredient-circle{
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    border:2px solid transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:18px;
+    color:#fff;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .ingredient-item:hover .ingredient-circle{ transform:translateY(-3px) scale(1.05); }
+  .ingredient-item.active .ingredient-circle{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(185,138,62,0.18);
+  }
+  .ingredient-name{
+    font-size:12.5px;
+    text-align:center;
+    color:var(--ink);
+    font-weight:500;
+  }
+
+  .ingredient-info{
+    margin-top:4px;
+    padding:14px 16px;
+    background:var(--beige-200);
+    border-radius:var(--radius-md);
+    font-size:13.5px;
+    color:var(--green-950);
+    display:none;
+    animation:fadeSlide .25s ease;
+  }
+  .ingredient-info.show{ display:block; }
+
+  /* What's Inside — same card treatment as the Kids product pages */
+  .contents-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .content-card{ display:flex; align-items:center; gap:12px; border:1px solid var(--line); border-radius:var(--radius-md); padding:14px 16px; background:var(--paper); transition:transform .16s ease, box-shadow .16s ease; }
+  .content-card:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(20,30,20,0.06); }
+  .content-card:nth-child(1){ border-top:3px solid #d0793f; }
+  .content-card:nth-child(2){ border-top:3px solid #8fb8bf; }
+  .content-card:nth-child(3){ border-top:3px solid #e0b93f; }
+  .content-card:nth-child(4){ border-top:3px solid var(--green-700); }
+  .content-emoji{ font-size:22px; line-height:1; flex:0 0 auto; }
+  .content-label{ font-size:13.5px; font-weight:600; color:var(--green-950); }
+  .ingredient-info strong{ font-family:'Fraunces',serif; font-size:15px; }
+  @keyframes fadeSlide{
+    from{ opacity:0; transform:translateY(-4px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* nutrition */
+  .nutrition-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:center;
+  }
+  .nutrition-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .nutrition-row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 12px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    font-size:13.5px;
+  }
+  .nutrition-row span:first-child{ color:var(--ink-soft); }
+  .nutrition-row span:last-child{ font-weight:600; color:var(--green-950); }
+
+  .donut-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .donut-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    justify-content:center;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .legend-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+  }
+
+  /* essentials */
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 16px;
+    border-radius:999px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    font-size:13.5px;
+    font-weight:500;
+  }
+  .essentials-note{
+    margin-top:14px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+
+  /* price */
+  .price-card{
+    margin-top:40px;
+    padding:22px;
+    border-radius:var(--radius-lg);
+    background:var(--green-950);
+    color:var(--sand);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .price-value{
+    font-family:'Fraunces',serif;
+    font-size:30px;
+    font-weight:600;
+  }
+  .price-cadence{
+    font-size:13px;
+    color:#cfe0d5;
+    margin-top:2px;
+  }
+  .price-card .btn-primary{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:var(--green-950);
+  }
+  .price-card .btn-primary:hover{ background:#c8994c; }
+
+  /* mobile bottom bar */
+  .mobile-bar{
+    display:none;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:60;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    padding:12px 16px;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    box-shadow:0 -6px 20px rgba(20,30,20,0.06);
+  }
+  .mobile-bar .price-value{ font-size:20px; color:var(--green-950); }
+  .mobile-bar .price-cadence{ color:var(--ink-soft); font-size:11.5px; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    main.product-layout{
+      grid-template-columns:1fr;
+      padding-bottom:110px;
+    }
+    .viewer-col{ position:static; }
+    .price-card{ display:none; }
+    .mobile-bar{ display:flex; }
+    .stats-row{ grid-template-columns:repeat(2,1fr); }
+    .nutrition-grid{ grid-template-columns:1fr; }
+  }
+
+  @media (max-width:520px){
+    .brand{ font-size:16px; letter-spacing:0.06em; }
+    .back-link span.back-text{ display:none; }
+    .contents-grid{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="back-link" id="backBtn" href="../index.html#plans">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="back-text">Back to Products</span>
+  </a>
+  <div class="brand">STAARBOX</div>
+  <button class="fav-btn" id="favBtn" aria-label="Add to favourites" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 21s-7.5-4.6-10-9.2C.4 8.2 2.1 4.5 5.7 4.1c2-.2 3.9.8 5 2.5 1.1-1.7 3-2.7 5-2.5 3.6.4 5.3 4.1 3.7 7.7C19.5 16.4 12 21 12 21z" stroke-width="1.8"/>
+    </svg>
+  </button>
+</header>
+
+<main class="product-layout">
+
+  <!-- VIEWER COLUMN -->
+  <section class="viewer-col" aria-label="3D product viewer">
+    <div class="viewer-card">
+      <div id="viewer" role="img" aria-label="Interactive 3D model of the Premium Non-Veg Sandwich">
+        <div class="viewer-hint" id="viewerHint">Drag to explore</div>
+        <div class="viewer-error" id="viewerError">Unable to load product model.</div>
+      </div>
+      <div class="viewer-controls">
+        <button class="btn" id="resetBtn" aria-label="Reset view">↺ Reset</button>
+        <span id="toggleLidBtn" hidden aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT INFO COLUMN -->
+  <section class="info-col" aria-label="Product information">
+    <span class="badge" id="categoryBadge">Premium Sandwich Collection</span>
+    <h1 class="product-title" id="productName">Premium Non-Veg Sandwich</h1>
+
+    <div class="rating-row">
+      <span class="stars" aria-hidden="true">★★★★★</span>
+      <span class="rating-num" id="ratingNum">4.9</span>
+    </div>
+
+    <p class="description" id="productDescription"></p>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <section class="info-section" aria-labelledby="ingredientsTitle">
+      <h2 class="section-title" id="ingredientsTitle">What's Inside</h2>
+      <p class="section-sub">Seasonal variety, selected for balanced daily nutrition.</p>
+      <div class="contents-grid" id="contentsGrid"></div>
+    </section>
+
+    <section class="info-section" aria-labelledby="nutritionTitle">
+      <h2 class="section-title" id="nutritionTitle">Nutrition Per Box</h2>
+      <div class="nutrition-grid">
+        <div class="nutrition-list" id="nutritionList"></div>
+        <div class="donut-wrap">
+          <svg id="donutChart" viewBox="0 0 200 200" width="200" height="200" aria-hidden="true"></svg>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section" aria-labelledby="essentialsTitle">
+      <h2 class="section-title" id="essentialsTitle">Included Every Day</h2>
+      <div class="chip-row" id="chipRow"></div>
+      <p class="essentials-note" id="essentialsNote"></p>
+    </section>
+
+    <div class="price-card">
+      <div>
+        <div class="price-value" id="priceValue">₹4,849</div>
+        <div class="price-cadence" id="priceCadence">per month</div>
+      </div>
+      <button class="btn btn-primary" id="ctaBtn">Choose This Plan</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="mobile-bar" id="mobileBar">
+  <div>
+    <div class="price-value" id="mobilePriceValue">₹4,849</div>
+    <div class="price-cadence" id="mobilePriceCadence">per month</div>
+  </div>
+  <button class="btn btn-primary" id="mobileCtaBtn">Choose This Plan</button>
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+/* =========================================================
+   CHANGE THIS PATH TO YOUR LOCAL GLB FILE
+========================================================= */
+const MODEL_PATH = "../Image/Premium Non veg sandwhich.glb";
+
+/* Configure lid detection + animation behavior here */
+const MODEL_CONFIG = {
+  lidNames: ["Lid", "lid", "BoxLid", "box_lid", "Cap", "cap", "Top", "top"],
+  openRotationX: -Math.PI * 0.65,
+  animationDuration: 1000
+};
+
+/* =========================================================
+   PRODUCT DATA
+========================================================= */
+const product = {
+  id: "premium-nonveg-sandwich",
+  name: "Premium Non-Veg Sandwich",
+  category: "Premium Sandwich Collection",
+  price: 4849,
+  cadence: "per month",
+  description: "A premium non-veg sandwich meal with one sandwich, seasonal fruits, fresh vegetables, egg, nuts, seeds and legumes or sprouts.",
+  rating: 4.9,
+  itemCount: 9,
+  weight: "600–650g",
+  protein: "30–35 g",
+  delivery: "Mon – Sat",
+  ingredients: [
+    { id:"sandwich", name:"1 Sandwich", quantity:"1 sandwich", color:"#c27a40", info:"Freshly prepared premium sandwich" },
+    { id:"seasonal-fruits", name:"3 Seasonal Fruits", quantity:"3 portions", color:"#c0392b", info:"Seasonal variety" },
+    { id:"fresh-vegetable", name:"1 Fresh Vegetable", quantity:"1 portion", color:"#7f9b3d", info:"Fresh seasonal produce" },
+    { id:"nut", name:"1 Nut", quantity:"1 portion", color:"#a9784f", info:"Healthy fats and protein" },
+    { id:"seed", name:"1 Seed", quantity:"1 portion", color:"#3a2a4d", info:"Healthy fats and fiber" },
+    { id:"legume-sprout", name:"1 Legume / Sprout", quantity:"1 portion", color:"#8faa5c", info:"Plant-based protein and fiber" },
+    { id:"egg", name:"1 Egg", quantity:"1 portion", color:"#e9e2c9", info:"Egg-based protein" }
+  ],
+  nutrition: {
+    calories: "500 kcal", protein: "30–35 g", carbohydrates: "58 g", fiber: "10–12 g",
+    fats: "12–15 g", vitaminC: "60% RDA", iron: "20% RDA", calcium: "15% RDA"
+  },
+  nutritionDistribution: [
+    { label:"Carbohydrates", value:35, color:"#20573d" },
+    { label:"Protein", value:25, color:"#d0793f" },
+    { label:"Fats", value:20, color:"#e0b93f" },
+    { label:"Fiber", value:10, color:"#8fb8bf" },
+    { label:"Other", value:10, color:"#b6a4c9" }
+  ],
+  dailyEssentials: [
+    { name:"Tissue", emoji:"🧻" },
+    { name:"Cutlery Pouch", emoji:"🥄" },
+    { name:"Chat Masala", emoji:"🌶" }
+  ]
+};
+
+/* =========================================================
+   POPULATE STATIC DOM FROM PRODUCT DATA
+========================================================= */
+document.getElementById("categoryBadge").textContent = product.category;
+document.getElementById("productName").textContent = product.name;
+document.getElementById("ratingNum").textContent = product.rating.toFixed(1);
+document.getElementById("productDescription").textContent = product.description;
+
+document.getElementById("statsRow").innerHTML = `
+  <div class="stat"><div class="stat-value">${product.itemCount}</div><div class="stat-label">Items</div></div>
+  <div class="stat"><div class="stat-value">${product.weight}</div><div class="stat-label">Weight</div></div>
+  <div class="stat"><div class="stat-value">${product.protein}</div><div class="stat-label">Protein</div></div>
+  <div class="stat"><div class="stat-value">${product.delivery}</div><div class="stat-label">Delivery</div></div>
+`;
+
+const priceFormatted = `₹${product.price.toLocaleString("en-IN")}`;
+document.getElementById("priceValue").textContent = priceFormatted;
+document.getElementById("priceCadence").textContent = product.cadence;
+document.getElementById("mobilePriceValue").textContent = priceFormatted;
+document.getElementById("mobilePriceCadence").textContent = product.cadence;
+
+function goToMenu(){
+  window.location.href = `/menu?product=${encodeURIComponent(product.id)}`;
+}
+document.getElementById("ctaBtn").addEventListener("click", goToMenu);
+document.getElementById("mobileCtaBtn").addEventListener("click", goToMenu);
+
+document.getElementById("backBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "../index.html#plans";
+});
+
+const favBtn = document.getElementById("favBtn");
+favBtn.addEventListener("click", () => {
+  const active = favBtn.classList.toggle("active");
+  favBtn.setAttribute("aria-pressed", String(active));
+  favBtn.setAttribute("aria-label", active ? "Remove from favourites" : "Add to favourites");
+});
+
+/* ---- What's Inside cards ---- */
+const contentsGrid = document.getElementById("contentsGrid");
+const contentIcons = ["🥪", "🍎", "🥕", "🥜", "🌱", "🫘", "🥚"];
+contentsGrid.innerHTML = product.ingredients.map((item, index) =>
+  `<div class="content-card"><span class="content-emoji" aria-hidden="true">${contentIcons[index]}</span><span class="content-label">${item.name}</span></div>`
+).join("");
+
+/* ---- Nutrition list ---- */
+const nutritionLabels = {
+  calories:"Calories", protein:"Protein", carbohydrates:"Carbohydrates",
+  fiber:"Fiber", fats:"Fats", vitaminC:"Vitamin C", iron:"Iron", calcium:"Calcium"
+};
+const nutritionList = document.getElementById("nutritionList");
+Object.keys(product.nutrition).forEach((key) => {
+  const row = document.createElement("div");
+  row.className = "nutrition-row";
+  row.innerHTML = `<span>${nutritionLabels[key] || key}</span><span>${product.nutrition[key]}</span>`;
+  nutritionList.appendChild(row);
+});
+
+/* ---- Donut chart (SVG, animated on view) ---- */
+const donutSvg = document.getElementById("donutChart");
+const donutLegend = document.getElementById("donutLegend");
+const cx = 100, cy = 100, r = 72, strokeWidth = 24;
+const circumference = 2 * Math.PI * r;
+
+let cumulative = 0;
+const arcs = [];
+product.nutritionDistribution.forEach((seg) => {
+  const dash = (seg.value / 100) * circumference;
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", cx);
+  circle.setAttribute("cy", cy);
+  circle.setAttribute("r", r);
+  circle.setAttribute("fill", "none");
+  circle.setAttribute("stroke", seg.color);
+  circle.setAttribute("stroke-width", strokeWidth);
+  circle.setAttribute("stroke-dasharray", `0 ${circumference}`);
+  circle.setAttribute("stroke-dashoffset", -cumulative);
+  circle.setAttribute("transform", `rotate(-90 ${cx} ${cy})`);
+  circle.style.transition = "stroke-dasharray 1s ease";
+  donutSvg.appendChild(circle);
+  arcs.push({ circle, dash });
+  cumulative += dash;
+
+  const legendItem = document.createElement("div");
+  legendItem.className = "legend-item";
+  legendItem.innerHTML = `<span class="legend-dot" style="background:${seg.color}"></span>${seg.label} ${seg.value}%`;
+  donutLegend.appendChild(legendItem);
+});
+
+const centerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+centerText.setAttribute("x", cx);
+centerText.setAttribute("y", cy + 6);
+centerText.setAttribute("text-anchor", "middle");
+centerText.setAttribute("font-family", "Fraunces, serif");
+centerText.setAttribute("font-size", "18");
+centerText.setAttribute("fill", "#0e2a20");
+centerText.textContent = product.nutrition.calories;
+donutSvg.appendChild(centerText);
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let donutAnimated = false;
+function animateDonut(){
+  if (donutAnimated) return;
+  donutAnimated = true;
+  if (prefersReducedMotion) {
+    arcs.forEach(a => a.circle.setAttribute("stroke-dasharray", `${a.dash} ${circumference}`));
+    return;
+  }
+  requestAnimationFrame(() => {
+    arcs.forEach(a => a.circle.setAttribute("stroke-dasharray", `${a.dash} ${circumference}`));
+  });
+}
+const donutObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) animateDonut(); });
+}, { threshold: 0.4 });
+donutObserver.observe(donutSvg);
+
+/* ---- Daily essentials chips ---- */
+const chipRow = document.getElementById("chipRow");
+product.dailyEssentials.forEach((item) => {
+  const chip = document.createElement("span");
+  chip.className = "chip";
+  chip.innerHTML = `<span aria-hidden="true">${item.emoji}</span>${item.name}`;
+  chipRow.appendChild(chip);
+});
+document.getElementById("essentialsNote").textContent =
+  `${product.itemCount} food items + ${product.dailyEssentials.length} daily essentials — everything you need for your morning.`;
+
+/* =========================================================
+   3D VIEWER
+========================================================= */
+const viewerEl = document.getElementById("viewer");
+const viewerHint = document.getElementById("viewerHint");
+const viewerError = document.getElementById("viewerError");
+const resetBtn = document.getElementById("resetBtn");
+const toggleLidBtn = document.getElementById("toggleLidBtn");
+
+let scene, camera, renderer, controls, mixer, clock;
+let modelRoot = null;
+let lidObject = null;
+let lidOriginalRotation = null;
+let lidOpen = false;
+let lidAnimating = false;
+let initialCameraPos = null;
+let initialTarget = null;
+
+let isUserInteracting = false;
+let idleTimer = null;
+const AUTO_ROTATE_RESUME_MS = 1500;
+const AUTO_ROTATE_SPEED = 0.15;
+
+function initViewer(){
+  scene = new THREE.Scene();
+  scene.background = null;
+
+  camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  camera.position.set(0, 1.4, 4.2);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  viewerEl.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0xfff4e0, 0.55);
+  scene.add(ambient);
+
+  const hemi = new THREE.HemisphereLight(0xfff8ea, 0x3a4a3a, 0.6);
+  scene.add(hemi);
+
+  const key = new THREE.DirectionalLight(0xffffff, 1.4);
+  key.position.set(3, 5, 4);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.near = 1;
+  key.shadow.camera.far = 15;
+  key.shadow.camera.left = -3;
+  key.shadow.camera.right = 3;
+  key.shadow.camera.top = 3;
+  key.shadow.camera.bottom = -3;
+  scene.add(key);
+
+  const fill = new THREE.DirectionalLight(0xdfe8ff, 0.45);
+  fill.position.set(-4, 2, -3);
+  scene.add(fill);
+
+  // Ground shadow catcher
+  const groundGeo = new THREE.CircleGeometry(2.4, 48);
+  const groundMat = new THREE.ShadowMaterial({ opacity: 0.18 });
+  const ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = 0;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 1.5;
+  controls.maxDistance = 8;
+  controls.maxPolarAngle = Math.PI * 0.92;
+  controls.target.set(0, 0.6, 0);
+  controls.update();
+
+  controls.addEventListener("start", () => {
+    isUserInteracting = true;
+    viewerHint.classList.add("hidden");
+    clearTimeout(idleTimer);
+  });
+  controls.addEventListener("end", () => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { isUserInteracting = false; }, AUTO_ROTATE_RESUME_MS);
+  });
+
+  clock = new THREE.Clock();
+  resizeRenderer();
+  window.addEventListener("resize", resizeRenderer);
+
+  loadModel();
+  animate();
+}
+
+function resizeRenderer(){
+  const width = viewerEl.clientWidth;
+  const height = viewerEl.clientHeight;
+  if (!width || !height) return;
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height, false);
+}
+
+function loadModel(){
+  const loader = new GLTFLoader();
+  loader.load(
+    MODEL_PATH,
+    (gltf) => {
+      modelRoot = gltf.scene;
+
+      // Auto center + scale
+      const box = new THREE.Box3().setFromObject(modelRoot);
+      const size = new THREE.Vector3();
+      const center = new THREE.Vector3();
+      box.getSize(size);
+      box.getCenter(center);
+
+      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      const targetSize = 2.0;
+      const scale = targetSize / maxDim;
+      modelRoot.scale.setScalar(scale);
+
+      // Recompute box after scaling to re-center accurately
+      const scaledBox = new THREE.Box3().setFromObject(modelRoot);
+      const scaledCenter = new THREE.Vector3();
+      scaledBox.getCenter(scaledCenter);
+      modelRoot.position.x -= scaledCenter.x;
+      modelRoot.position.z -= scaledCenter.z;
+      modelRoot.position.y -= scaledBox.min.y; // sit on ground
+
+      modelRoot.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+          if (child.material) {
+            child.material.needsUpdate = true;
+          }
+        }
+      });
+
+      scene.add(modelRoot);
+
+      // Position camera relative to final size
+      const finalBox = new THREE.Box3().setFromObject(modelRoot);
+      const finalSize = new THREE.Vector3();
+      finalBox.getSize(finalSize);
+      const finalCenter = new THREE.Vector3();
+      finalBox.getCenter(finalCenter);
+
+      controls.target.copy(finalCenter);
+      const dist = Math.max(finalSize.x, finalSize.y, finalSize.z) * 2.4;
+      camera.position.set(finalCenter.x + dist * 0.5, finalCenter.y + dist * 0.4, finalCenter.z + dist * 0.8);
+      controls.update();
+
+      initialCameraPos = camera.position.clone();
+      initialTarget = controls.target.clone();
+
+      // Find lid object by configured names
+      lidObject = findLidObject(modelRoot);
+      if (lidObject) {
+        lidOriginalRotation = lidObject.rotation.clone();
+        toggleLidBtn.disabled = false;
+      } else {
+        toggleLidBtn.disabled = true;
+        toggleLidBtn.setAttribute("aria-label", "Open box unavailable for this model");
+      }
+
+      // Built-in animations support
+      if (gltf.animations && gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(modelRoot);
+      }
+    },
+    undefined,
+    (error) => {
+      console.error("GLB loading error:", error);
+      viewerError.classList.add("show");
+      viewerHint.classList.add("hidden");
+      toggleLidBtn.disabled = true;
+      resetBtn.disabled = true;
+    }
+  );
+}
+
+function findLidObject(root){
+  let found = null;
+  root.traverse((child) => {
+    if (found) return;
+    if (MODEL_CONFIG.lidNames.some(name => child.name === name || child.name?.toLowerCase() === name.toLowerCase())) {
+      found = child;
+    }
+  });
+  return found;
+}
+
+function highlightIngredientMesh(ingredientId){
+  if (!modelRoot) return;
+  let mesh = null;
+  modelRoot.traverse((child) => {
+    if (mesh) return;
+    if (child.name && child.name.toLowerCase() === ingredientId.toLowerCase()) {
+      mesh = child;
+    }
+  });
+  if (!mesh) return; // no matching mesh — info label already shown, nothing more to do
+
+  const originalEmissive = mesh.material && mesh.material.emissive ? mesh.material.emissive.clone() : null;
+  if (mesh.material && mesh.material.emissive) {
+    mesh.material.emissive.setHex(0xb98a3e);
+    setTimeout(() => {
+      if (originalEmissive) mesh.material.emissive.copy(originalEmissive);
+    }, 900);
+  }
+}
+
+/* ---- Open/Close lid animation (manual tween, no external lib) ---- */
+function animateLid(open){
+  if (!lidObject || lidAnimating) return;
+  lidAnimating = true;
+
+  const startRot = lidObject.rotation.x;
+  const endRot = open ? lidOriginalRotation.x + MODEL_CONFIG.openRotationX : lidOriginalRotation.x;
+  const duration = prefersReducedMotion ? 1 : MODEL_CONFIG.animationDuration;
+  const startTime = performance.now();
+
+  function step(now){
+    const t = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    lidObject.rotation.x = startRot + (endRot - startRot) * eased;
+    if (t < 1) {
+      requestAnimationFrame(step);
+    } else {
+      lidAnimating = false;
+      lidOpen = open;
+      toggleLidBtn.textContent = lidOpen ? "Close Box" : "Open Box";
+      toggleLidBtn.setAttribute("aria-label", lidOpen ? "Close box" : "Open box");
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+toggleLidBtn.addEventListener("click", () => {
+  if (!lidObject) return;
+  animateLid(!lidOpen);
+});
+
+resetBtn.addEventListener("click", () => {
+  if (initialCameraPos && initialTarget) {
+    camera.position.copy(initialCameraPos);
+    controls.target.copy(initialTarget);
+    controls.update();
+  }
+  if (lidObject) {
+    lidObject.rotation.copy(lidOriginalRotation);
+    lidOpen = false;
+    lidAnimating = false;
+    toggleLidBtn.textContent = "Open Box";
+    toggleLidBtn.setAttribute("aria-label", "Open box");
+  }
+  viewerHint.classList.remove("hidden");
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+
+  if (mixer) mixer.update(delta);
+
+  if (!isUserInteracting && !prefersReducedMotion && modelRoot) {
+    modelRoot.rotation.y += AUTO_ROTATE_SPEED * delta;
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+/* Resize observer in case container size changes (e.g. layout shift) */
+new ResizeObserver(() => resizeRenderer()).observe(viewerEl);
+
+initViewer();
+</script>
+
+</body>
+</html>
