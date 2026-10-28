@@ -1,0 +1,8 @@
+/* Small states for live-catalog.js (loaded by index.html). */
+.btn-plan:disabled{opacity:.55;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.plan-price span{margin-left:2px}
+.zf-result div{min-width:0;text-align:left}
+.zf-result small{display:block}
+.zf-tab[aria-selected="true"]{outline:none}
+.faqx-item[hidden]{display:none}
+.nav-cta{display:inline-flex;align-items:center}
