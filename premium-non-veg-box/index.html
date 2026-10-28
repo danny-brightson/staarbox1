@@ -599,6 +599,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { connectPlanButtons } from "../JS/product-cta.js";
 
 /* =========================================================
    CHANGE THIS PATH TO YOUR LOCAL GLB FILE
@@ -674,11 +675,7 @@ document.getElementById("priceCadence").textContent = product.cadence;
 document.getElementById("mobilePriceValue").textContent = priceFormatted;
 document.getElementById("mobilePriceCadence").textContent = product.cadence;
 
-function goToMenu(){
-  window.location.href = `/menu?product=${encodeURIComponent(product.id)}`;
-}
-document.getElementById("ctaBtn").addEventListener("click", goToMenu);
-document.getElementById("mobileCtaBtn").addEventListener("click", goToMenu);
+connectPlanButtons();
 
 document.getElementById("backBtn").addEventListener("click", (e) => {
   e.preventDefault();
