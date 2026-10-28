@@ -1,386 +1,266 @@
-// The home page (8L): the live "Our Menu", the FAQ, the sliders and the
-// reviews. All of it was inline before; the page now has no inline script.
-import { SITE } from './config.js';
-import { loadMenu, specText } from './catalog.js';
-import { appPanel, el, rupees } from './ui.js';
-import { W } from './words.js';
+// The new home page (index.html): everything that is only page behaviour.
+// The live menu / prices / delivery-zone API calls are in live-catalog.js.
+// Load as: <script type="module" src="./JS/home.js"></script>
+import { signOut } from './site.js';
+import { getSession } from './session.js';
+import { el } from './ui.js';
 
-// ---- "Our Menu": the live menu, one tab per category; a card's button goes to /Menu/ ----
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const TIERS = ['tier-bowls', 'tier-monthly', 'tier-premium', 'tier-jar'];
-const BADGES = ['b-bowls', 'b-monthly', 'b-premium', 'b-jar'];
+// ---------------------------------------------------------------- reveal on scroll
+// The CSS hides .reveal-io only when <html> has .js-enabled, so the page is
+// never blank if this file fails to load.
+document.documentElement.classList.add('js-enabled');
 
-async function ourMenu() {
-  const tabs = document.getElementById('pd-tabs');
-  const grid = document.getElementById('pd-grid');
-  let menu = null;
-  try {
-    if (SITE) menu = await loadMenu();
-  } catch {
-    menu = null;
-  }
-  if (!menu?.length) {
-    // Never an empty grid and never old prices: one calm line and the app.
-    tabs.replaceChildren();
-    grid.replaceChildren(
-      el('div', { class: 'pd-fallback' }, appPanel(`${W.menuFailed} ${W.menuFallback}`)),
-    );
-    return;
-  }
-  const show = (i) => {
-    [...tabs.children].forEach((b, j) => {
-      b.classList.toggle('active', i === j);
-      b.setAttribute('aria-selected', String(i === j));
-    });
-    grid.replaceChildren(...menu[i].products.map((p) => card(p, i)));
-  };
-  tabs.replaceChildren(
-    ...menu.map((shelf, i) =>
-      el(
-        'button',
-        { type: 'button', class: 'pd-tab', role: 'tab', onclick: () => show(i) },
-        shelf.shortName ?? shelf.name,
-      ),
-    ),
-  );
-  show(0);
-}
-
-function card(p, i) {
-  const off = p.isAvailable === false;
-  return el(
-    'div',
-    { class: `pd-card ${TIERS[i % TIERS.length]}${off ? ' pd-off' : ''}` },
-    el('div', { class: 'pd-stripe' }),
-    p.imageUrl
-      ? el('img', { class: 'pd-img', src: p.imageUrl, alt: p.name, loading: 'lazy' })
-      : null,
-    el(
-      'div',
-      { class: 'pd-body' },
-      el(
-        'span',
-        { class: `pd-badge ${BADGES[i % BADGES.length]}` },
-        p.badge ?? p.categoryName ?? '',
-      ),
-      el('p', { class: 'pd-name' }, p.name),
-      el(
-        'div',
-        { class: 'pd-price' },
-        el('sup', {}, '₹'),
-        rupees(p.price).slice(1),
-        el('span', { class: 'pd-mo' }, `/${p.billingCycle?.shortLabel ?? '26d'}`),
-      ),
-      el(
-        'div',
-        { class: 'pd-feats' },
-        (p.specifications ?? [])
-          .slice(0, 4)
-          .map((s) => el('div', { class: 'pd-feat' }, el('div', { class: 'pd-dot' }), specText(s))),
-      ),
-      off
-        ? el('p', { class: 'pd-off-note' }, W.unavailable)
-        : el(
-            'a',
-            { class: 'pd-go', href: './Menu/', 'aria-label': `${W.subscribe}: ${p.name}` },
-            W.subscribe,
-          ),
-    ),
-  );
-}
-
-void ourMenu();
-
-// ---- The FAQ (as it was) ----
-
-document.addEventListener('DOMContentLoaded', () => {
-  const categoryTitles = document.querySelectorAll('.faq-category-title');
-  const faqItems = document.querySelectorAll('.faq-item');
-
-  // Toggle category sections (multiple allowed)
-  categoryTitles.forEach((title) => {
-    title.addEventListener('click', () => {
-      const category = title.parentElement;
-      category.classList.toggle('open');
-    });
-  });
-
-  function setupFAQ() {
-    if (window.innerWidth >= 1025) {
-      // Desktop hover behavior
-      faqItems.forEach((item) => {
-        item.onclick = null;
-        const mobileAnswer = item.querySelector('.answer');
-        if (mobileAnswer) mobileAnswer.remove();
-
-        item.onmouseenter = () => {
-          const category = item.closest('.faq-category');
-          const answerBox = category.querySelector('.faq-answer-box');
-          const isLeftCategory = category.classList.contains('left-side');
-
-          const offsetTop = item.offsetTop;
-          const itemHeight = item.offsetHeight;
-          const itemWidth = item.offsetWidth;
-
-          // Positioning answer box
-          answerBox.style.position = 'absolute';
-          answerBox.style.top = `${offsetTop}px`;
-          answerBox.style.height = `${itemHeight}px`;
-          answerBox.style.width = `${itemWidth}px`;
-
-          if (isLeftCategory) {
-            answerBox.style.left = `${itemWidth + 10}px`;
-            answerBox.style.right = 'auto';
-          } else {
-            answerBox.style.right = `${itemWidth + 10}px`;
-            answerBox.style.left = 'auto';
-          }
-
-          answerBox.textContent = item.dataset.answer;
-          answerBox.classList.add('active');
-        };
-
-        item.onmouseleave = () => {
-          const category = item.closest('.faq-category');
-          const answerBox = category.querySelector('.faq-answer-box');
-          answerBox.classList.remove('active');
-          answerBox.textContent = '';
-          answerBox.style.cssText = '';
-        };
-      });
-    } else {
-      // Mobile & Tablet behavior: click toggles inline answer
-      faqItems.forEach((item) => {
-        item.onmouseenter = null;
-        item.onmouseleave = null;
-
-        if (!item.querySelector('.answer')) {
-          const answerText = item.dataset.answer;
-          const answerDiv = document.createElement('div');
-          answerDiv.classList.add('answer');
-          answerDiv.textContent = answerText;
-          answerDiv.style.display = 'none';
-          item.appendChild(answerDiv);
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('visible');
+        // "How it works": fill the line after a step once the step shows.
+        if (e.target.classList.contains('step')) {
+          const next = e.target.nextElementSibling;
+          if (next?.classList.contains('connector')) next.classList.add('filled');
         }
-
-        item.onclick = () => {
-          const answerDiv = item.querySelector('.answer');
-          const isVisible = answerDiv.style.display === 'block';
-          answerDiv.style.display = isVisible ? 'none' : 'block';
-          item.classList.toggle('active');
-        };
-      });
-    }
-  }
-
-  setupFAQ();
-  window.addEventListener('resize', setupFAQ);
-});
-
-// ---- The sliders (as they were) ----
-
-// Each was its own inline script before, so one failing (the old "Why Us"
-// box has no direct .swiper-wrapper) never stopped the others: keep it so.
-function slider(selector, options) {
-  try {
-    new window.Swiper(selector, options);
-  } catch {
-    // as before: that slider stays still
-  }
+        io.unobserve(e.target);
+      }
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+  );
+  $$('.reveal-io').forEach((n) => io.observe(n));
+} else {
+  $$('.reveal-io').forEach((n) => n.classList.add('visible'));
+  $$('.connector').forEach((n) => n.classList.add('filled'));
 }
 
-slider('.swiper', {
-  slidesPerView: 1,
-  spaceBetween: 20,
-  loop: true,
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-  autoplay: {
-    delay: 4000,
-    disableOnInteraction: false,
-  },
-  breakpoints: {
-    768: {
-      slidesPerView: 2,
+// ---------------------------------------------------------------- stat counters
+function countUp(node) {
+  const end = Number(node.dataset.count);
+  const suffix = node.dataset.suffix ?? '';
+  if (!Number.isFinite(end) || reduceMotion) return;
+  const t0 = performance.now();
+  const ms = 1200;
+  const tick = (now) => {
+    const p = Math.min((now - t0) / ms, 1);
+    node.textContent = `${Math.round(end * (1 - Math.pow(1 - p, 3)))}${suffix}`;
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+if ('IntersectionObserver' in window) {
+  const cio = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        countUp(e.target);
+        cio.unobserve(e.target);
+      }
     },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
+    { threshold: 0.6 },
+  );
+  $$('.stat-num[data-count]').forEach((n) => cio.observe(n));
+}
+
+// ---------------------------------------------------------------- header: Login / Sign out
+// Signed out: the Login link (./login/) stays. Signed in: a Sign out button
+// that asks first, then ends the session on the server too (site.js).
+const profile = $('#nav-profile-section');
+const modal = $('#logoutConfirmModal');
+let backdrop = null;
+
+function openModal() {
+  if (!modal) return void signOut();
+  backdrop = el('div', { class: 'modal-backdrop fade' });
+  document.body.append(backdrop);
+  document.body.classList.add('modal-open');
+  modal.style.display = 'block';
+  modal.removeAttribute('aria-hidden');
+  void modal.offsetWidth; // let the fade start
+  modal.classList.add('show');
+  backdrop.classList.add('show');
+  $('#logoutCancelBtn')?.focus();
+}
+function closeModal() {
+  if (!modal) return;
+  modal.classList.remove('show');
+  backdrop?.classList.remove('show');
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    backdrop?.remove();
+    backdrop = null;
+    document.body.classList.remove('modal-open');
+  }, 220);
+}
+
+if (profile && getSession()) {
+  const link = $('a', profile);
+  if (link) {
+    link.lastChild.textContent = 'Sign out';
+    link.setAttribute('href', '#');
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
+  const title = $('#logoutConfirmLabel');
+  if (title) title.textContent = 'Confirm Sign out';
+  const body = $('#confirmModalBody');
+  if (body) body.textContent = 'Do you want to sign out?';
+  const yes = $('#logoutConfirmBtn');
+  if (yes) yes.textContent = 'Yes, sign out';
+}
+$('#logoutConfirmBtn')?.addEventListener('click', () => void signOut());
+$('#logoutCancelBtn')?.addEventListener('click', closeModal);
+$('#confirmModalCloseBtn')?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal?.classList.contains('show')) closeModal();
 });
 
-slider('.zone-swiper', {
-  slidesPerView: 1,
-  spaceBetween: 30,
-  loop: true,
-  autoplay: {
-    delay: 5000, // 5 seconds between slides
-    disableOnInteraction: false, // keeps autoplay after manual swipe
-  },
-  pagination: {
-    el: '.zone-swiper-pagination',
-    clickable: true,
-  },
-  navigation: {
-    nextEl: '.zone-swiper-button-next',
-    prevEl: '.zone-swiper-button-prev',
-  },
-});
-
-slider('.wrapper', {
-  loop: true,
-  spaceBetween: 30,
-
-  // Autoplay
-  autoplay: {
-    delay: 2500,
-    disableOnInteraction: false,
-    pauseOnMouseEnter: true,
-  },
-
-  // Pagination bullets
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-    dynamicBullets: true,
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-
-  // Responsive breakpoints
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    768: {
-      slidesPerView: 2,
-    },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
-});
-
-// ---- The reviews (as they were, drawn with textContent) ----
-
-const REVIEWS = [
-  {
-    name: 'Prakashraj',
-    initials: 'PR',
-    color: '#e1f5ee',
-    textColor: '#085041',
-    stars: 5,
-    text: 'Fresh fruits, neat packaging and on-time delivery every day. Really satisfied with the quality and service. Highly recommended in Madurai.',
-  },
-  {
-    name: 'Sarrah',
-    initials: 'S',
-    color: '#fdf4ff',
-    textColor: '#7e22ce',
-    stars: 5,
-    text: 'Perfect for busy mornings. Ready-to-eat healthy boxes save a lot of time and make healthy eating effortless.',
-  },
-  {
-    name: 'Bharu Kutty',
-    initials: 'BK',
-    color: '#eff6ff',
-    textColor: '#1d4ed8',
-    stars: 5,
-    text: 'One of the best healthy food services in Madurai. Consistent quality, fresh products, and professional service.',
-  },
-  {
-    name: 'Arnikashree A',
-    initials: 'AA',
-    color: '#fff7ed',
-    textColor: '#c2410c',
-    stars: 5,
-    text: 'Premium quality food and packaging was professional and impressive. Everything arrived fresh and well presented.',
-  },
-  {
-    name: 'Saratha Kasirajan',
-    initials: 'SK',
-    color: '#fdf4ff',
-    textColor: '#7e22ce',
-    stars: 5,
-    text: 'Fresh fruits and good packaging. Service was also great. Overall, it was a wonderful experience with Staarbox.',
-  },
-  {
-    name: 'Elayavel Anitha',
-    initials: 'EA',
-    color: '#e1f5ee',
-    textColor: '#085041',
-    stars: 5,
-    text: 'I started with Staarbox just to try it out, but now I cannot imagine my mornings without it. Fresh fruits arrive on time with great variety and excellent quality every day.',
-  },
-  {
-    name: 'Mohammed Siraj',
-    initials: 'MS',
-    color: '#eff6ff',
-    textColor: '#1d4ed8',
-    stars: 5,
-    text: 'Very convenient and reliable service. Great packaging, fresh products, and friendly customer support.',
-  },
-  {
-    name: 'Mounish',
-    initials: 'M',
-    color: '#fff7ed',
-    textColor: '#c2410c',
-    stars: 5,
-    text: 'The fruit variety is impressive and the freshness is noticeable. Definitely worth the subscription.',
-  },
-  {
-    name: 'Ashwini Murugan',
-    initials: 'AM',
-    color: '#fdf4ff',
-    textColor: '#7e22ce',
-    stars: 5,
-    text: 'Loved the premium fruit box. Fresh, tasty, and delivered early every morning without delay.',
-  },
-  {
-    name: 'Inoshel Revani',
-    initials: 'IR',
-    color: '#e1f5ee',
-    textColor: '#085041',
-    stars: 5,
-    text: 'Healthy breakfast made easy with Staarbox. The fruits and nuts are always fresh, delicious, and perfectly packed.',
-  },
+// ---------------------------------------------------------------- plans stage (slides)
+const STAGE_BG = [
+  ['#1F3D2E', '#3E6B4F', '#8BC53F'],
+  ['#6b3410', '#b5651d', '#F5C94E'],
+  ['#0f4c5c', '#2a8c82', '#8BC53F'],
+  ['#5a2a4a', '#8E3B78', '#F2994A'],
 ];
+const slides = $$('.stage .slide');
+let current = 0;
 
-function stars(n) {
-  return [1, 2, 3, 4, 5].map((i) =>
-    el('span', { class: `rv-star ${i <= n ? 'filled' : 'empty'}` }, i <= n ? '★' : '☆'),
-  );
+function paintStage(i) {
+  const stage = $('#stage');
+  const c = STAGE_BG[i % STAGE_BG.length];
+  if (stage) stage.style.background = `linear-gradient(135deg, ${c[0]}, ${c[1]})`;
+  const layer = $('#blobLayer');
+  if (layer) {
+    layer.replaceChildren(
+      el('div', {
+        class: 'stage-blob',
+        style: `width:320px;height:320px;top:-80px;right:-60px;background:${c[2]};opacity:.35`,
+      }),
+      el('div', {
+        class: 'stage-blob',
+        style: `width:260px;height:260px;bottom:-90px;left:-50px;background:${c[2]};opacity:.22`,
+      }),
+    );
+  }
 }
 
-function reviewCard(d) {
-  const initials = el('div', { class: 'rv-initials' }, d.initials);
-  initials.style.background = d.color;
-  initials.style.color = d.textColor;
-  return el(
-    'div',
-    { class: 'rv-card' },
-    el(
-      'div',
-      { class: 'rv-top' },
-      initials,
-      el(
-        'div',
-        { class: 'rv-meta' },
-        el('div', { class: 'rv-name' }, d.name),
-        d.prof ? el('div', { class: 'rv-prof' }, d.prof) : null,
-      ),
-      el('div', { class: 'rv-stars' }, stars(d.stars)),
-    ),
-    el('div', { class: 'rv-quote-mark' }, '"'),
-    el('p', { class: 'rv-text' }, d.text),
-  );
+// If the page's own classic script (JS/index.js) already defines the slider,
+// it stays in charge and nothing here touches the stage.
+if (typeof window.goToSlide !== 'function') {
+function goToSlide(i) {
+  if (!slides.length) return;
+  current = (i + slides.length) % slides.length;
+  slides.forEach((s, j) => s.classList.toggle('active', j === current));
+  $$('#planTabs .plan-tab').forEach((t, j) => t.classList.toggle('active', j === current));
+  paintStage(current);
+}
+const changeSlide = (d) => goToSlide(current + d);
+// The HTML calls these from onclick="…".
+window.goToSlide = goToSlide;
+window.changeSlide = changeSlide;
+paintStage(0);
 }
 
-// Twice over, for the endless scroll.
-document.getElementById('rv-track')?.replaceChildren(...[...REVIEWS, ...REVIEWS].map(reviewCard));
+// ---------------------------------------------------------------- the app phone
+const panes = $$('.pane');
+const tabIcons = $$('.tab-icon');
+const features = $$('.app-feature');
+const ORDER = ['menu', 'wallet', 'calendar'];
+let auto = null;
+
+function showPane(name) {
+  panes.forEach((p) => p.classList.toggle('active', p.dataset.pane === name));
+  tabIcons.forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
+  features.forEach((f) => f.classList.toggle('active', f.dataset.feature === name));
+}
+function stopAuto() {
+  clearInterval(auto);
+  auto = null;
+}
+tabIcons.forEach((t) =>
+  t.addEventListener('click', () => {
+    stopAuto();
+    showPane(t.dataset.tab);
+  }),
+);
+features.forEach((f) =>
+  f.addEventListener('click', () => {
+    stopAuto();
+    showPane(f.dataset.feature);
+  }),
+);
+if (panes.length && !reduceMotion) {
+  let i = 0;
+  auto = setInterval(() => {
+    i = (i + 1) % ORDER.length;
+    showPane(ORDER[i]);
+  }, 5000);
+}
+
+// The little calendar: this month, today marked, two upcoming days "skipped".
+const calGrid = $('#calGrid');
+if (calGrid) {
+  const now = new Date();
+  const label = $('.pane[data-pane="calendar"] > div:first-child');
+  if (label) label.textContent = now.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+  const first = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+  const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const cells = [];
+  for (let b = 0; b < first; b++) cells.push(el('div', { class: 'cal-day', style: 'visibility:hidden' }));
+  for (let d = 1; d <= days; d++) {
+    const cls = d === now.getDate() ? ' today' : d === now.getDate() + 3 || d === now.getDate() + 4 ? ' skip' : '';
+    cells.push(el('div', { class: `cal-day${cls}` }, d));
+  }
+  calGrid.replaceChildren(...cells);
+}
+
+// ---------------------------------------------------------------- FAQ
+const faqItems = $$('.faqx-item');
+faqItems.forEach((item) => {
+  const q = $('.faqx-question', item);
+  q?.addEventListener('click', () => {
+    const open = !item.classList.contains('open');
+    faqItems.forEach((o) => {
+      o.classList.remove('open');
+      $('.faqx-question', o)?.setAttribute('aria-expanded', 'false');
+    });
+    if (open) {
+      item.classList.add('open');
+      q.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+$$('.faqx-filter').forEach((btn) =>
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.faqxCategory;
+    $$('.faqx-filter').forEach((b) => b.classList.toggle('active', b === btn));
+    faqItems.forEach((item) => {
+      item.hidden = cat !== 'all' && item.dataset.faqxCategory !== cat;
+    });
+  }),
+);
+
+// ---------------------------------------------------------------- reviews: endless scroll
+// The CSS slides the track by -50%, so the cards must be there twice.
+const track = $('#rv-track');
+if (track && !track.dataset.cloned) {
+  track.dataset.cloned = '1';
+  [...track.children].forEach((card) => {
+    const copy = card.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    track.append(copy);
+  });
+}
+
+// ---------------------------------------------------------------- mobile sticky button
+$('#stickyCtaBtn')?.addEventListener('click', () => {
+  document.getElementById('plans')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+});
