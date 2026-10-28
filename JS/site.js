@@ -50,7 +50,7 @@ if (sign) {
 }
 
 // The session ends on the server too, as the app's sign-out (at most 5 s).
-async function signOut() {
+export async function signOut() {
   if (SITE) {
     await Promise.race([
       api('/api/auth/logout', { method: 'POST', auth: true, body: {}, redirect: false }).catch(
