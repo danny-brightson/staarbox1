@@ -5,8 +5,22 @@ import { rupees } from './ui.js';
 
 const byOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
-/** The categories that have products, in order, each with its products. */
-export async function loadMenu() {
+let menuOnce = null;
+
+/**
+ * The categories that have products, in order, each with its products.
+ * Asked once per page load: the home page's plan slides share one request.
+ * A failed request is not remembered, so a retry asks again.
+ */
+export function loadMenu() {
+  menuOnce ??= fetchMenu().catch((e) => {
+    menuOnce = null;
+    throw e;
+  });
+  return menuOnce;
+}
+
+async function fetchMenu() {
   const [{ categories = [] }, { products = [] }] = await Promise.all([
     api('/api/categories'),
     api('/api/products'),
