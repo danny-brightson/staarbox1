@@ -552,6 +552,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { connectPlanButtons } from "../JS/product-cta.js";
 
 /* =========================================================
    ACTIVE PRODUCT VARIANT
@@ -637,11 +638,7 @@ document.getElementById("priceCadence").textContent = product.cadence;
 document.getElementById("mobilePriceValue").textContent = priceFormatted;
 document.getElementById("mobilePriceCadence").textContent = product.cadence;
 
-function choosePlan(){
-  window.location.href = `/menu?product=${encodeURIComponent(product.id)}&type=${PRODUCT_TYPE}`;
-}
-document.getElementById("ctaBtn").addEventListener("click", choosePlan);
-document.getElementById("mobileCtaBtn").addEventListener("click", choosePlan);
+connectPlanButtons();
 
 document.getElementById("backBtn").addEventListener("click", (e) => {
   e.preventDefault();
