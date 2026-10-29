@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://app.staarbox.in https://staging-api.200-97-162-248.sslip.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJM0SLEFQZ"></script>
   <script src="../JS/ga.js"></script>
@@ -11,22 +11,17 @@
   <meta name="facebook-domain-verification" content="61sleqq2sotq6rqysbiv9mide254nk" />
   <title>Contact Us | Staarbox</title>
   <link rel="canonical" href="https://www.staarbox.in/Contactus/" />
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
-
   <style>
-/* ===================== TOKENS (same as index) ===================== */
+/* ===================== TOKENS (same as the home page) ===================== */
 :root{
-  --cream:#FBF8F2; --cream-2:#F3EEE3;
-  --forest:#02614E; --forest-light:#0A8A6E;
-  --bg:#FAF9F6; --ink:#20261F; --ink-soft:#5B6459;
+  --cream:#FBF8F2; --forest:#02614E; --forest-light:#0A8A6E; --bg:#FAF9F6;
+  --ink:#20261F; --ink-soft:#5B6459;
   --orange:#F2994A; --kiwi:#8BC53F; --berry:#8E3B78; --mango:#F5C94E;
-  --green-deep:#1F3D2E; --green-mid:#3E6B4F;
-  --gold:#C9A15A;
-  --shadow-soft:0 20px 60px rgba(31,61,46,0.10);
-  --shadow-lift:0 30px 80px rgba(31,61,46,0.18);
+  --green-deep:#1F3D2E; --gold:#C9A15A; --champagne:#eccfa1; --night:#04201a;
   --ease:cubic-bezier(.22,1,.36,1);
   --container:1240px;
 }
@@ -34,17 +29,16 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
-a{color:inherit}
 ::selection{background:var(--forest);color:#fff}
 .container{width:100%;max-width:var(--container);margin:0 auto;padding:0 20px}
 @media(min-width:640px){.container{padding:0 32px}}
 @keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
-@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 
-/* ===================== NAVBAR (same as index) ===================== */
-nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:1000;width:calc(100% - 28px);max-width:1180px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px 12px 18px;background:rgba(255,255,255,0.65);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,0.8);border-radius:100px;box-shadow:0 10px 34px -14px rgba(2,97,78,0.2)}
+/* ===================== NAVBAR (same as the home page) ===================== */
+nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:1000;width:calc(100% - 28px);max-width:1180px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px 12px 18px;background:rgba(255,255,255,.65);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.8);border-radius:100px;box-shadow:0 10px 34px -14px rgba(2,97,78,.2)}
 @media(min-width:640px){nav{top:20px;padding:13px 20px}}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--forest);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-logo{display:flex;align-items:center}
 .nav-logo img{height:38px;width:auto;object-fit:contain}
 .nav-links{display:none;list-style:none;gap:28px}
 .nav-links a{position:relative;text-decoration:none;color:var(--ink-soft);font-size:14.5px;font-weight:500;transition:color .3s}
@@ -64,107 +58,147 @@ nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:tra
   .nav-links.is-open a:hover{background:rgba(2,97,78,.08)}
   .nav-links.is-open a::after{display:none}
 }
-.nav-cta{background:linear-gradient(135deg,var(--forest),var(--forest-light));color:#fff;border:none;padding:10px 16px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px -8px rgba(2,97,78,0.55);transition:transform .3s var(--ease);white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-flex;align-items:center}
+.nav-cta{display:inline-flex;align-items:center;background:linear-gradient(135deg,var(--forest),var(--forest-light));color:#fff;border:none;padding:10px 16px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px -8px rgba(2,97,78,.55);transition:transform .3s var(--ease);white-space:nowrap;flex-shrink:0;text-decoration:none}
 .nav-cta:hover{transform:translateY(-2px)}
 @media(min-width:640px){.nav-cta{padding:12px 22px;font-size:14px}}
 
-/* ===================== CONTACT PAGE ===================== */
-.ct-page{position:relative;overflow:hidden;min-height:100vh;padding:140px 0 120px;background:
-  radial-gradient(ellipse 55% 40% at 92% 6%,rgba(139,197,63,0.14),transparent 60%),
-  radial-gradient(ellipse 55% 45% at 4% 96%,rgba(236,207,161,0.32),transparent 60%),var(--bg)}
-.ct-grid-bg{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(2,97,78,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(2,97,78,.06) 1px,transparent 1px);
-  background-size:56px 56px;
-  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%);
-  mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%)}
+/* ===================== LOGIN / SIGN-OUT CONFIRM BOX (same as the home page) ===================== */
+#logoutConfirmModal{position:fixed;inset:0;z-index:1055;display:none;overflow-x:hidden;overflow-y:auto;padding:1.25rem;outline:0}
+#logoutConfirmModal.fade{opacity:0;transition:opacity .22s ease}
+#logoutConfirmModal.show{opacity:1}
+#logoutConfirmModal .modal-dialog{display:flex;align-items:center;min-height:calc(100% - 2.5rem);max-width:430px;margin:0 auto;pointer-events:none}
+#logoutConfirmModal .modal-content{position:relative;display:flex;flex-direction:column;width:100%;overflow:hidden;pointer-events:auto;background:#fffdf8;border:1px solid rgba(2,97,78,.16);border-radius:22px;box-shadow:0 28px 90px rgba(6,34,27,.24);transform:translateY(12px) scale(.98);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+#logoutConfirmModal.show .modal-content{transform:translateY(0) scale(1)}
+#logoutConfirmModal .modal-header{position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 28px 19px;border:0;background:linear-gradient(135deg,#f8f2e6,#fffdf8)}
+#logoutConfirmModal .modal-header::after{position:absolute;right:28px;bottom:0;left:28px;height:1px;background:linear-gradient(90deg,rgba(2,97,78,.2),rgba(201,162,75,.34),transparent);content:""}
+#logoutConfirmModal .modal-title{margin:0;color:#123d32;font-family:'Fraunces',Georgia,serif;font-size:1.55rem;font-weight:500;letter-spacing:-.025em}
+#logoutConfirmModal .btn-close{display:grid;width:36px;height:36px;place-items:center;padding:0;border:1px solid rgba(2,97,78,.12);border-radius:50%;background:rgba(255,255,255,.7);color:#31594e;font-size:1.5rem;line-height:1;opacity:.8;cursor:pointer;transition:background .2s ease,transform .2s ease}
+#logoutConfirmModal .btn-close::before{content:"×"}
+#logoutConfirmModal .btn-close:hover{transform:rotate(90deg);background:#fff}
+#logoutConfirmModal .modal-body{position:relative;padding:25px 28px 21px;color:#56665e;font-size:1rem;line-height:1.65}
+#logoutConfirmModal .modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:0 28px 26px;border:0}
+#logoutConfirmModal .modal-footer .btn{min-height:43px;padding:10px 19px;border:1px solid transparent;border-radius:999px;font:600 .9rem 'Inter',sans-serif;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+#logoutConfirmModal .modal-footer .btn:hover{transform:translateY(-1px)}
+#logoutConfirmModal .btn-warning{border-color:rgba(2,97,78,.2);background:transparent;color:#31594e}
+#logoutConfirmModal .btn-warning:hover{background:#f2f5f1}
+#logoutConfirmModal .btn-success{background:linear-gradient(135deg,#02614e,#0a8066);color:#fff;box-shadow:0 7px 17px rgba(2,97,78,.2)}
+#logoutConfirmModal .btn:focus-visible,#logoutConfirmModal .btn-close:focus-visible{outline:3px solid rgba(201,162,75,.55);outline-offset:3px}
+.modal-backdrop{position:fixed;inset:0;z-index:1050;background:#0a211a}
+.modal-backdrop.fade{opacity:0;transition:opacity .22s ease}
+.modal-backdrop.show{opacity:.58}
+body.modal-open{overflow:hidden}
+@media(max-width:575px){#logoutConfirmModal{padding:1rem}#logoutConfirmModal .modal-dialog{min-height:calc(100% - 2rem)}#logoutConfirmModal .modal-header{padding:23px 22px 17px}#logoutConfirmModal .modal-header::after{right:22px;left:22px}#logoutConfirmModal .modal-title{font-size:1.4rem}#logoutConfirmModal .modal-body{padding:22px 22px 19px}#logoutConfirmModal .modal-footer{padding:0 22px 22px}}
+
+/* ===================== CONTACT ===================== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.js-enabled .rv{opacity:0}
+.js-enabled .rv.visible{opacity:1;animation:fadeUp .8s var(--ease) backwards;animation-delay:var(--d,0s)}
+.ct-page{position:relative;overflow:hidden;padding:140px 0 150px;background:radial-gradient(ellipse 55% 40% at 92% 6%,rgba(139,197,63,.14),transparent 60%),radial-gradient(ellipse 55% 45% at 4% 96%,rgba(236,207,161,.32),transparent 60%),var(--bg)}
+.ct-grid-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(2,97,78,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(2,97,78,.06) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%)}
 .ct-orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none;z-index:0;animation:orbFloat 14s ease-in-out infinite}
 .ct-orb.o1{width:420px;height:420px;top:-100px;right:-120px;background:radial-gradient(circle at 30% 30%,var(--kiwi),transparent 70%)}
 .ct-orb.o2{width:380px;height:380px;bottom:-120px;left:-100px;background:radial-gradient(circle at 60% 40%,var(--mango),transparent 70%);animation-delay:-6s}
 @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-22px) scale(1.07)}}
-.ct-spot{position:absolute;z-index:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle,rgba(2,97,78,.14),transparent 65%);left:50%;top:30%;transition:opacity .4s;opacity:0}
+.ct-spot{position:absolute;z-index:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;pointer-events:none;left:50%;top:30%;background:radial-gradient(circle,rgba(2,97,78,.15),transparent 65%);opacity:0;transition:opacity .4s}
 .ct-page.hot .ct-spot{opacity:1}
 .ct-inner{position:relative;z-index:2}
 
-.ct-header{max-width:720px;margin:0 auto 64px;text-align:center;display:flex;flex-direction:column;align-items:center}
-.ct-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 16px 7px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(2,97,78,0.15);border-radius:100px;font-size:12.5px;font-weight:600;color:var(--forest);margin-bottom:22px;backdrop-filter:blur(10px)}
-.ct-badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--kiwi);position:relative;flex-shrink:0}
+.ct-header{max-width:760px;margin:0 auto 60px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.ct-badge{display:inline-flex;align-items:center;gap:9px;margin-bottom:22px;padding:7px 16px 7px 10px;background:rgba(255,255,255,.7);border:1px solid rgba(2,97,78,.15);border-radius:100px;font-size:12.5px;font-weight:600;color:var(--forest);backdrop-filter:blur(10px)}
+.ct-badge .pulse{position:relative;width:7px;height:7px;border-radius:50%;background:var(--kiwi);flex-shrink:0}
 .ct-badge .pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--kiwi);animation:pulse 1.8s ease-out infinite}
-.ct-header h1{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.04;letter-spacing:-.03em;color:var(--green-deep)}
+.ct-header h1{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:clamp(2.5rem,6.4vw,4.8rem);line-height:1.04;letter-spacing:-.03em;color:var(--green-deep)}
 .ct-header h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--forest),var(--kiwi) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-.ct-header p{margin-top:18px;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.65;color:var(--ink-soft);max-width:520px}
+.ct-header p{margin-top:18px;max-width:520px;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.65;color:var(--ink-soft)}
 
-.ct-layout{display:grid;grid-template-columns:1fr;gap:22px}
-@media(min-width:960px){.ct-layout{grid-template-columns:1fr 1.15fr;gap:28px;align-items:stretch}}
-
-.ct-info{display:flex;flex-direction:column;gap:18px}
-.ct-card{position:relative;display:block;text-decoration:none;color:inherit;padding:26px 26px;border-radius:24px;background:rgba(255,255,255,0.6);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,0.9);box-shadow:0 18px 44px -26px rgba(2,97,78,0.35);transform-style:preserve-3d;transition:transform .25s var(--ease),box-shadow .4s var(--ease);overflow:hidden;will-change:transform}
-.ct-card::before{content:'';position:absolute;inset:0;border-radius:24px;padding:1.4px;background:linear-gradient(135deg,rgba(2,97,78,0.45),rgba(139,197,63,0.45),rgba(236,207,161,0.7));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+/* bento layout */
+.ct-bento{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:960px){
+  .ct-bento{grid-template-columns:1.05fr 1fr 1fr;grid-template-areas:"msg addr addr" "msg phone mail";gap:22px}
+  .ct-msg{grid-area:msg}.ct-addr{grid-area:addr}.ct-phone{grid-area:phone}.ct-mail{grid-area:mail}
+}
+.ct-card{position:relative;display:block;overflow:hidden;padding:28px 26px;border-radius:26px;color:inherit;text-decoration:none;background:rgba(255,255,255,.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.9);box-shadow:0 18px 44px -26px rgba(2,97,78,.35);transition:transform .25s var(--ease),box-shadow .4s var(--ease);will-change:transform}
+.ct-card::before{content:'';position:absolute;inset:0;border-radius:26px;padding:1.4px;background:linear-gradient(135deg,rgba(2,97,78,.45),rgba(139,197,63,.45),rgba(236,207,161,.7));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .ct-card::after{content:'';position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(139,197,63,.22),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
-.ct-card:hover{box-shadow:0 30px 60px -24px rgba(2,97,78,0.45)}
+.ct-card:hover{box-shadow:0 30px 60px -24px rgba(2,97,78,.45)}
 .ct-card:hover::after{opacity:1}
-.ct-card-row{display:flex;gap:18px;align-items:flex-start;position:relative;z-index:1}
-.ct-icon{width:52px;height:52px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;transition:transform .4s var(--ease)}
+.ct-row{position:relative;z-index:1;display:flex;gap:18px;align-items:flex-start}
+.ct-icon{display:grid;place-items:center;width:54px;height:54px;flex-shrink:0;border-radius:17px;color:#fff;font-size:19px;transition:transform .4s var(--ease)}
 .ct-card:hover .ct-icon{transform:scale(1.1) rotate(-6deg)}
 .ci-1{background:linear-gradient(135deg,#02614E,#0A8A6E)}
 .ci-2{background:linear-gradient(135deg,#F5C94E,#F2994A)}
 .ci-3{background:linear-gradient(135deg,#8BC53F,#02614E)}
-.ct-card h3{font-family:'Space Grotesk',sans-serif;font-size:1.08rem;font-weight:700;color:var(--ink);margin-bottom:6px}
-.ct-card p{font-size:14px;line-height:1.65;color:var(--ink-soft)}
+.ct-card h3{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:7px}
+.ct-card p{font-size:14.5px;line-height:1.7;color:var(--ink-soft)}
 .ct-card p.hl{color:var(--forest);font-weight:600}
 .ct-card p.hl a{text-decoration:none}
 .ct-card p.hl a:hover{text-decoration:underline}
+.ct-open{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:.82rem;font-weight:700;color:var(--forest)}
+.ct-open svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+.ct-addr:hover .ct-open svg{transform:translateX(5px)}
+/* little decorative map on the address card */
+.ct-map{position:absolute;right:-20px;bottom:-26px;width:min(52%,300px);opacity:.9;pointer-events:none;z-index:0;-webkit-mask-image:radial-gradient(circle at 60% 55%,#000 30%,transparent 72%);mask-image:radial-gradient(circle at 60% 55%,#000 30%,transparent 72%)}
+.ct-map svg{width:100%;height:auto}
+.ct-pin{position:absolute;right:62px;bottom:44px;width:14px;height:14px;border-radius:50%;background:var(--forest);box-shadow:0 0 0 4px rgba(255,255,255,.9);z-index:1;pointer-events:none}
+.ct-pin::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--forest);animation:pulse 1.8s ease-out infinite}
+@media(max-width:640px){.ct-map,.ct-pin{display:none}}
+.ct-addr .ct-row{position:relative;z-index:2}
+.ct-copy{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:7px 13px;border:1px solid rgba(2,97,78,.18);border-radius:99px;background:rgba(2,97,78,.06);color:var(--forest);font:700 .76rem 'Inter',sans-serif;cursor:pointer;transition:background .2s,transform .2s}
+.ct-copy:hover{background:rgba(2,97,78,.12);transform:translateY(-1px)}
+.ct-copy:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
 
-/* message panel */
-.ct-panel{position:relative;border-radius:32px;padding:48px 34px;display:flex;flex-direction:column;justify-content:center;text-align:center;color:#fff;overflow:hidden;
-  background:linear-gradient(160deg,#173a28,#0f2a1f);box-shadow:var(--shadow-lift)}
-@media(min-width:768px){.ct-panel{padding:60px 56px}}
-.ct-panel .photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1522205408450-add114ad53fe') center/cover no-repeat;opacity:.16;mix-blend-mode:luminosity}
-.ct-panel::before{content:"";position:absolute;width:20rem;height:20rem;right:-7rem;top:-9rem;border-radius:50%;background:rgba(242,166,90,.25);filter:blur(24px)}
-.ct-panel::after{content:"";position:absolute;left:0;right:0;height:120px;top:-120px;background:linear-gradient(180deg,transparent,rgba(139,197,63,.16),transparent);animation:scan 6s linear infinite;pointer-events:none}
-@keyframes scan{to{transform:translateY(calc(100% + 700px))}}
-.ct-panel>*{position:relative;z-index:1}
-.ct-signal{display:inline-flex;align-items:center;gap:9px;align-self:center;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(236,207,161,.35);font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#eccfa1;margin-bottom:22px}
-.ct-signal i{width:7px;height:7px;border-radius:50%;background:#7fe0a6;position:relative}
+/* dark message panel */
+.ct-msg{position:relative;display:flex;flex-direction:column;justify-content:center;gap:0;padding:48px 32px;border-radius:32px;overflow:hidden;text-align:center;color:#fff;background:linear-gradient(160deg,#173a28,#0f2a1f);box-shadow:var(--shadow-lift,0 30px 80px rgba(31,61,46,.18))}
+@media(min-width:768px){.ct-msg{padding:60px 44px}}
+.ct-msg .photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1522205408450-add114ad53fe') center/cover no-repeat;opacity:.14;mix-blend-mode:luminosity}
+.ct-msg::before{content:"";position:absolute;width:20rem;height:20rem;right:-7rem;top:-9rem;border-radius:50%;background:rgba(242,166,90,.25);filter:blur(24px)}
+.ct-msg::after{content:"";position:absolute;left:0;right:0;top:-120px;height:120px;background:linear-gradient(180deg,transparent,rgba(139,197,63,.16),transparent);animation:scan 6s linear infinite;pointer-events:none}
+@keyframes scan{to{transform:translateY(calc(100% + 760px))}}
+.ct-msg>*{position:relative;z-index:1}
+.ct-signal{display:inline-flex;align-items:center;gap:9px;align-self:center;margin-bottom:22px;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(236,207,161,.35);font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#eccfa1}
+.ct-signal i{position:relative;width:7px;height:7px;border-radius:50%;background:#7fe0a6}
 .ct-signal i::after{content:"";position:absolute;inset:0;border-radius:50%;background:#7fe0a6;animation:pulse 1.8s ease-out infinite}
-.ct-panel h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
-.ct-panel .lead{color:rgba(251,247,239,.78);font-size:1.02rem;line-height:1.65;max-width:34ch;margin:0 auto 34px}
-.ct-actions{display:flex;flex-direction:column;gap:14px;max-width:380px;width:100%;margin:0 auto}
-.ct-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 28px;border-radius:999px;text-decoration:none;font:700 1rem 'Inter',sans-serif;transition:transform .2s ease-out,box-shadow .3s,background .3s,border-color .3s,color .3s;overflow:hidden;will-change:transform}
+.ct-msg h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.ct-msg .lead{max-width:32ch;margin:0 auto 32px;font-size:1.02rem;line-height:1.65;color:rgba(251,247,239,.78)}
+.ct-actions{display:flex;flex-direction:column;gap:14px;width:100%;max-width:360px;margin:0 auto}
+.ct-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:56px;padding:0 26px;border-radius:999px;overflow:hidden;text-decoration:none;font:700 1rem 'Inter',sans-serif;transition:transform .2s ease-out,box-shadow .3s,background .3s,border-color .3s,color .3s;will-change:transform}
 .ct-btn.primary{background:linear-gradient(135deg,#f4dcb5,#eccfa1);color:#04201a;box-shadow:0 12px 34px -10px rgba(236,207,161,.6)}
 .ct-btn.primary:hover{box-shadow:0 18px 40px -10px rgba(236,207,161,.85)}
 .ct-btn.ghost{color:#fbf7ee;background:rgba(255,255,255,.08);border:1px solid rgba(251,247,238,.4);backdrop-filter:blur(10px)}
 .ct-btn.ghost:hover{border-color:#eccfa1;color:#eccfa1}
-.ct-btn i{font-size:1rem}
 .ct-btn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleAnim .6s ease-out;pointer-events:none}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
-.ct-btn:focus-visible,.ct-card:focus-visible{outline:2px solid #eccfa1;outline-offset:3px}
+.ct-btn:focus-visible,a.ct-card:focus-visible{outline:2px solid #eccfa1;outline-offset:3px}
+a.ct-card:focus-visible{outline-color:var(--forest)}
 
-.js-enabled .rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.js-enabled .rv.visible{opacity:1;transform:none}
+.ct-toast{position:fixed;left:50%;bottom:28px;z-index:1200;transform:translate(-50%,20px);padding:12px 20px;border-radius:99px;background:#0f2a1f;color:#fff;font:600 .86rem 'Inter',sans-serif;box-shadow:0 14px 34px rgba(15,42,31,.35);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s var(--ease)}
+.ct-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:640px){.ct-page{padding:124px 0 120px}.ct-header{margin-bottom:44px}}
 
-/* ===================== FOOTER (same as index) ===================== */
+/* ===================== FOOTER (same as the home page) ===================== */
 .sb-footer{--sb-ink:#f7f3e9;--sb-muted:rgba(247,243,233,.7);--sb-faint:rgba(247,243,233,.48);--sb-gold:#c9a24b;--sb-peach:#f2a65a;position:relative;overflow:hidden;background:linear-gradient(180deg,#faf9f6 0,#faf9f6 4.5rem,#0f2a1f 15rem,#173a28 100%);padding-top:4rem;color:var(--sb-ink)}
 .sb-footer::before,.sb-footer::after{content:"";position:absolute;border-radius:50%;pointer-events:none;opacity:.16}.sb-footer::before{width:22rem;height:22rem;background:#f2a65a;filter:blur(90px);top:15rem;left:-10rem}.sb-footer::after{width:18rem;height:18rem;background:#c9a24b;filter:blur(90px);right:-8rem;bottom:3rem}
 .sb-footer-inner{width:100%;max-width:1240px;margin:auto;padding:0 32px;position:relative;z-index:1}.sb-footer-cta{max-width:1180px;margin:-4rem auto 0;padding:3.5rem 2rem;text-align:center;border:1px solid rgba(255,255,255,.72);border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.62));box-shadow:0 24px 64px rgba(15,42,31,.25);color:#0f2a1f}.sb-footer-kicker{display:inline-block;padding:.45rem .9rem;border-radius:99px;background:rgba(15,42,31,.08);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.sb-footer-cta h2{margin:1rem 0 .75rem;font-family:Fraunces,serif;font-size:clamp(2rem,4vw,3rem);line-height:1.1}.sb-footer-cta p{max-width:35rem;margin:0 auto 1.6rem;color:#42554b;line-height:1.6}.sb-footer-actions{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap}.sb-footer-button{border:0;border-radius:99px;padding:.9rem 1.4rem;font:700 .9rem Inter,sans-serif;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s}.sb-footer-button:hover{transform:translateY(-2px)}.sb-footer-button.primary{background:#0f2a1f;color:#fff;box-shadow:0 10px 22px rgba(15,42,31,.28)}.sb-footer-button.secondary{color:#0f2a1f;background:rgba(15,42,31,.07);border:1px solid rgba(15,42,31,.18)}
 .sb-footer-main{padding:5.5rem 0 2.5rem}.sb-footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr) 1.15fr;gap:2.5rem}.sb-footer-logo{display:flex;align-items:center;gap:.65rem;margin-bottom:1rem;font:600 1.75rem Fraunces,serif}.sb-footer-mark{display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:.6rem;background:linear-gradient(135deg,var(--sb-peach),var(--sb-gold));color:#0f2a1f;font:800 1rem Inter,sans-serif}.sb-footer-desc{max-width:17rem;margin:0 0 1.3rem;color:var(--sb-muted);font-size:.9rem;line-height:1.7}.sb-footer-chips{display:flex;gap:.45rem;flex-wrap:wrap}.sb-footer-chip{padding:.45rem .65rem;border:1px solid rgba(255,255,255,.13);border-radius:99px;background:rgba(255,255,255,.06);color:var(--sb-muted);font-size:.7rem}.sb-footer-chip::before{content:"";display:inline-block;width:.35rem;height:.35rem;margin-right:.35rem;border-radius:50%;background:var(--sb-peach)}.sb-footer-title{margin:0 0 1.15rem;color:var(--sb-gold);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.sb-footer-list{list-style:none;padding:0;margin:0;display:grid;gap:.75rem}.sb-footer-list a,.sb-footer-list li{color:var(--sb-muted);font-size:.88rem;line-height:1.4;text-decoration:none}.sb-footer-list a:hover{color:#fff}.sb-footer-label{display:block;margin-bottom:.18rem;color:var(--sb-faint);font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.sb-footer-list strong{color:var(--sb-ink);font-weight:600}
-.sb-footer-cards{display:grid;grid-template-columns:1fr;gap:1.5rem;margin:4rem auto 3rem;max-width:700px}.sb-footer-card{position:relative;overflow:hidden;padding:2.25rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.065)}.sb-footer-card::after{content:"";position:absolute;width:13rem;height:13rem;border-radius:50%;right:-5rem;top:-6rem;background:rgba(242,166,90,.13);filter:blur(25px)}.sb-footer-card-content{position:relative;z-index:1}.sb-footer-card h3{margin:0 0 .7rem;font:600 1.5rem Fraunces,serif}.sb-footer-card p{max-width:24rem;margin:0 0 1.25rem;color:var(--sb-muted);font-size:.88rem;line-height:1.65}.sb-store-row{display:flex;gap:.6rem;flex-wrap:wrap}.sb-store{padding:.65rem .9rem;border:1px solid rgba(255,255,255,.16);border-radius:.55rem;background:rgba(255,255,255,.07);color:#fff;text-decoration:none;font-size:.8rem;font-weight:700}
+.sb-footer-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:4rem 0 3rem}.sb-footer-card{position:relative;overflow:hidden;padding:2.25rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.065)}.sb-footer-card::after{content:"";position:absolute;width:13rem;height:13rem;border-radius:50%;right:-5rem;top:-6rem;background:rgba(242,166,90,.13);filter:blur(25px)}.sb-footer-card-content{position:relative;z-index:1}.sb-footer-card h3{margin:0 0 .7rem;font:600 1.5rem Fraunces,serif}.sb-footer-card p{max-width:24rem;margin:0 0 1.25rem;color:var(--sb-muted);font-size:.88rem;line-height:1.65}.sb-store-row{display:flex;gap:.6rem;flex-wrap:wrap}.sb-store{padding:.65rem .9rem;border:1px solid rgba(255,255,255,.16);border-radius:.55rem;background:rgba(255,255,255,.07);color:#fff;text-decoration:none;font-size:.8rem;font-weight:700}
+.sb-footer-cards{grid-template-columns:1fr;max-width:700px;margin-left:auto;margin-right:auto}
 .sb-footer-row{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;padding:1.7rem 0;border-top:1px solid rgba(255,255,255,.1)}.sb-socials,.sb-payments,.sb-trust{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.sb-social{display:grid;place-items:center;width:2.5rem;height:2.5rem;border:1px solid rgba(255,255,255,.15);border-radius:50%;color:var(--sb-muted);background:rgba(255,255,255,.06);text-decoration:none;font-weight:800}.sb-social:hover{background:var(--sb-peach);color:#0f2a1f}.sb-payment{padding:.48rem .7rem;border:1px solid rgba(255,255,255,.13);border-radius:.4rem;color:var(--sb-muted);font-size:.7rem;font-weight:800}.sb-trust{color:var(--sb-faint);font-size:.75rem;font-weight:600}.sb-trust span::before{content:"✓";margin-right:.35rem;color:var(--sb-gold);font-weight:800}.sb-footer-bottom{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1.5rem 0 2rem;border-top:1px solid rgba(255,255,255,.1);color:var(--sb-faint);font-size:.75rem}.sb-footer-bottom a{color:inherit;text-decoration:none;margin-left:1.2rem}.sb-footer-bottom a:hover{color:#fff}
 @media(max-width:1050px){.sb-footer-grid{grid-template-columns:repeat(2,1fr)}.sb-footer-grid>div:first-child{grid-column:span 2}}@media(max-width:640px){.sb-footer{padding-top:2.5rem;background:linear-gradient(180deg,#faf9f6 0,#faf9f6 2.5rem,#0f2a1f 10rem,#173a28 100%)}.sb-footer-inner{padding:0 20px}.sb-footer-cta{margin:-2.5rem 0 0;padding:2.5rem 1.25rem;border-radius:20px}.sb-footer-main{padding-top:4rem}.sb-footer-grid,.sb-footer-cards{grid-template-columns:1fr}.sb-footer-grid>div:first-child{grid-column:auto}.sb-footer-card{padding:1.6rem}.sb-footer-bottom{display:grid}.sb-footer-bottom a{margin:0 .9rem 0 0}}
-  </style>
+
+    </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- NAVBAR (same as the home page; links point back to the home page sections) -->
 <nav>
   <div class="nav-logo"><a href="../"><img src="../Image/staarbox.png" alt="Staarbox"></a></div>
   <ul class="nav-links" id="primary-navigation">
-    <li><a href="../#top">Home</a></li>
+    <li><a href="../">Home</a></li>
     <li><a href="../#how-it-works">How It Works</a></li>
     <li><a href="../#plans">Plans</a></li>
     <li><a href="../#reviews">Reviews</a></li>
     <li><a href="../Aboutus/">About</a></li>
-    <li><a href="./" class="active">Contact Us</a></li>
+    <li><a href="./" class="active" aria-current="page">Contact Us</a></li>
   </ul>
   <button class="nav-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">
     <span></span><span></span><span></span>
@@ -180,7 +214,22 @@ nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:tra
   </div>
 </nav>
 
-<!-- CONTACT -->
+<div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutConfirmLabel">Confirm Login</h5>
+        <button type="button" class="btn-close" id="confirmModalCloseBtn" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="confirmModalBody">Do you want to log in?</div>
+      <div class="modal-footer">
+        <button type="button" id="logoutCancelBtn" class="btn btn-warning">No</button>
+        <button type="button" id="logoutConfirmBtn" class="btn btn-success">Yes, log in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <main class="ct-page" id="ctPage">
   <div class="ct-grid-bg"></div>
   <div class="ct-orb o1"></div>
@@ -194,42 +243,9 @@ nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:tra
       <p>Write to us or call us: we read every message.</p>
     </header>
 
-    <div class="ct-layout">
-      <!-- Info cards -->
-      <div class="ct-info">
-        <a class="ct-card rv" data-tilt href="https://www.google.com/maps/search/?api=1&query=StaarBox+Selvinagar+3rd+Cross+St+Survyer+Colony+Madurai+625007" target="_blank" rel="noopener">
-          <div class="ct-card-row">
-            <div class="ct-icon ci-1"><i class="fa-solid fa-location-dot"></i></div>
-            <div>
-              <h3>Address</h3>
-              <p>StaarBox, No. 1/15, Selvinagar 3rd Cross St,<br>Survyer Colony, Madurai-625007</p>
-            </div>
-          </div>
-        </a>
-
-        <div class="ct-card rv" data-tilt>
-          <div class="ct-card-row">
-            <div class="ct-icon ci-2"><i class="fa-solid fa-phone"></i></div>
-            <div>
-              <h3>Let's Talk</h3>
-              <p class="hl"><a href="tel:04524035878">0452-4035878</a>, <a href="tel:+916374341751">+91 6374341751</a></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="ct-card rv" data-tilt>
-          <div class="ct-card-row">
-            <div class="ct-icon ci-3"><i class="fa-solid fa-envelope"></i></div>
-            <div>
-              <h3>General Support</h3>
-              <p class="hl"><a href="mailto:service@staarbox.in">service@staarbox.in</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="ct-bento">
       <!-- Message panel -->
-      <section class="ct-panel rv" aria-label="Send us a message">
+      <section class="ct-msg rv" aria-label="Send us a message">
         <div class="photo"></div>
         <span class="ct-signal"><i></i>We read every message</span>
         <h2>Send Us A Message</h2>
@@ -237,14 +253,53 @@ nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:tra
         <div class="ct-actions">
           <a class="ct-btn primary" data-magnet href="mailto:service@staarbox.in"><i class="fa-solid fa-envelope"></i> Email us</a>
           <a class="ct-btn ghost" data-magnet href="tel:04524035878"><i class="fa-solid fa-phone"></i> Call us</a>
+          <a class="ct-btn ghost" data-magnet href="https://wa.me/+916374341751" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
         </div>
       </section>
+
+      <!-- Address -->
+      <a class="ct-card ct-addr rv" data-tilt style="--d:.08s" href="https://www.google.com/maps/search/?api=1&amp;query=StaarBox+Selvinagar+3rd+Cross+St+Survyer+Colony+Madurai+625007" target="_blank" rel="noopener">
+        <div class="ct-map"><svg viewBox="0 0 300 200" fill="none" stroke="rgba(2,97,78,.28)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M0 150 L120 120 L300 140"/><path d="M40 0 L70 200"/><path d="M150 0 L190 200"/><path d="M250 0 L230 200"/><path d="M0 60 L300 40"/><path d="M0 100 C80 90 140 110 300 80" stroke="rgba(139,197,63,.5)" stroke-width="3"/><circle cx="215" cy="125" r="34" stroke="rgba(2,97,78,.18)"/></svg></div><span class="ct-pin"></span>
+        <div class="ct-row">
+          <div class="ct-icon ci-1"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <h3>Address</h3>
+            <p>StaarBox, No. 1/15, Selvinagar 3rd Cross St,<br>Survyer Colony, Madurai-625007</p>
+            <span class="ct-open">Open in Maps <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Phone -->
+      <div class="ct-card ct-phone rv" data-tilt style="--d:.16s">
+        <div class="ct-row">
+          <div class="ct-icon ci-2"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <h3>Let's Talk</h3>
+            <p class="hl"><a href="tel:04524035878">0452-4035878</a>, <a href="tel:+916374341751">+91 6374341751</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="ct-card ct-mail rv" data-tilt style="--d:.24s">
+        <div class="ct-row">
+          <div class="ct-icon ci-3"><i class="fa-solid fa-envelope"></i></div>
+          <div>
+            <h3>General Support</h3>
+            <p class="hl"><a href="mailto:service@staarbox.in">service@staarbox.in</a></p>
+            <button type="button" class="ct-copy" data-copy="service@staarbox.in" data-done="Email address copied"><i class="fa-regular fa-copy"></i> Copy email</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="sb-footer">
+<div class="ct-toast" id="ctToast" role="status" aria-live="polite"></div>
+
+<!-- FOOTER (same as the home page) -->
+<footer class="sb-footer" id="contact">
   <div class="sb-footer-inner">
     <section class="sb-footer-cta">
       <span class="sb-footer-kicker">Fresh every morning</span>
@@ -256,20 +311,23 @@ nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:tra
       <div class="sb-footer-grid">
         <div><div class="sb-footer-logo"><span class="sb-footer-mark">S</span>Staarbox</div><p class="sb-footer-desc">Fresh fruits, protein-rich meals, healthy bowls, and personalized nutrition delivered fresh every morning.</p><div class="sb-footer-chips"><span class="sb-footer-chip">Fresh Daily</span><span class="sb-footer-chip">Morning Delivery</span><span class="sb-footer-chip">Premium Quality</span></div></div>
         <div><h3 class="sb-footer-title">Products</h3><ul class="sb-footer-list"><li><a href="../#plans">Daily Nutrition Boxes</a></li><li><a href="../#plans">Healthy Sandwiches</a></li><li><a href="../#plans">Fresh Bowls</a></li><li><a href="../#plans">Overnight Oat Meal</a></li></ul></div>
-        <div><h3 class="sb-footer-title">Company</h3><ul class="sb-footer-list"><li><a href="../Aboutus/">About Us</a></li><li><a href="../#how-it-works">How It Works</a></li><li><a href="../Terms&Conditions/">Privacy Policy</a></li><li><a href="../Contactus/">Contact Us</a></li></ul></div>
-        <div id="contact"><h3 class="sb-footer-title">Contact</h3><ul class="sb-footer-list"><li><span class="sb-footer-label">Phone</span><strong><a href="tel:0452-4035878" style="color: inherit; text-decoration: none;"><i class="fas fa-phone"></i> 0452-4035878</a>, <a href="tel:+916374341751" style="color: inherit; text-decoration: none;"><i class="fas fa-phone"></i> +91 6374341751</a></strong></li><li><span class="sb-footer-label">Email</span><strong><a href="mailto:service@staarbox.in" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> service@staarbox.in</a></strong></li><li><span class="sb-footer-label">WhatsApp</span><strong><a href="https://wa.me/+916374341751" target="_blank" style="color: inherit; text-decoration: none;"><i class="fab fa-whatsapp"></i> +91 6374341751</a></strong></li></ul></div>
+        <div><h3 class="sb-footer-title">Company</h3><ul class="sb-footer-list"><li><a href="../Aboutus/">About Us</a></li><li><a href="../#how-it-works">How It Works</a></li><li><a href="../Terms&amp;Conditions/">Privacy Policy</a></li><li><a href="./">Contact Us</a></li></ul></div>
+        <div><h3 class="sb-footer-title">Contact</h3><ul class="sb-footer-list"><li><span class="sb-footer-label">Phone</span><strong><a href="tel:0452-4035878" style="color: inherit; text-decoration: none;"><i class="fas fa-phone"></i> 0452-4035878</a>, <a href="tel:+916374341751" style="color: inherit; text-decoration: none;"><i class="fas fa-phone"></i> +91 6374341751</a></strong></li><li><span class="sb-footer-label">Email</span><strong><a href="mailto:service@staarbox.in" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> service@staarbox.in</a></strong></li><li><span class="sb-footer-label">WhatsApp</span><strong><a href="https://wa.me/+916374341751" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><i class="fab fa-whatsapp"></i> +91 6374341751</a></strong></li></ul></div>
       </div>
       <div class="sb-footer-cards">
         <section class="sb-footer-card"><div class="sb-footer-card-content"><h3>Download the Staarbox App</h3><p>Manage subscriptions, customize tomorrow's box, track deliveries, and receive healthy eating reminders.</p><div class="sb-store-row"><a class="sb-store" href="https://play.google.com/store/apps/details?id=com.staarbox.staarbox" target="_blank" rel="noopener">Google Play</a><a class="sb-store" href="https://apps.apple.com/in/app/staarbox/id6755515436" target="_blank" rel="noopener">App Store</a></div></div></section>
       </div>
       <div class="sb-footer-row"><div class="sb-socials"><a class="sb-social" href="https://www.instagram.com/staarbox.in" aria-label="Instagram">ig</a><a class="sb-social" href="https://www.facebook.com/profile.php?id=61581972518112" aria-label="Facebook">f</a><a class="sb-social" href="#" aria-label="YouTube">yt</a><a class="sb-social" href="#" aria-label="X/Twitter">X</a><a class="sb-social" href="https://wa.me/+916374341751" aria-label="WhatsApp">wa</a></div><div class="sb-payments"><span class="sb-payment">Visa</span><span class="sb-payment">Mastercard</span><span class="sb-payment">RuPay</span><span class="sb-payment">UPI</span><span class="sb-payment">Razorpay</span></div></div>
       <div class="sb-footer-row"><div class="sb-trust"><span>SSL Secured</span><span>Safe Payments</span><span>Fresh Daily</span><span>Customer Support</span><span>Premium Quality</span></div></div>
-      <div class="sb-footer-bottom"><span>&copy; 2026 Staarbox. All rights reserved.</span><span><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Policy</a></span></div>
+      <div class="sb-footer-bottom"><span>&copy; 2026 Staarbox. All rights reserved.</span><span><a href="../Terms&amp;Conditions/">Privacy Policy</a><a href="../Terms&amp;Conditions/">Terms of Service</a></span></div>
     </div>
   </div>
 </footer>
 
+<!-- Page effects (menu, reveal, tilt, copy). No inline scripts, so the strict CSP stays. -->
 <script src="../JS/contact.js"></script>
+<!-- Login / name button, confirm popup and the shared sign-in session (same as the home page) -->
+<script type="module" src="../JS/home.js"></script>
 <script type="module" src="../JS/site.js"></script>
 </body>
 </html>
